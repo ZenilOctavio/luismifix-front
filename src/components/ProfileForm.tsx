@@ -24,7 +24,7 @@ const FormSchema = z.object({
   })
 })
 
-export function ProfileForm({onSubmit}: {onSubmit: Function | undefined}) {
+export function ProfileForm({onSubmit, className}: {onSubmit: Function | undefined, className: string | undefined}) {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -58,7 +58,7 @@ export function ProfileForm({onSubmit}: {onSubmit: Function | undefined}) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} style={{
+      <form onSubmit={form.handleSubmit(handleSubmit)} className={className} style={{
         display: 'flex',
         flexDirection: 'column',
         gap: '2rem'
@@ -67,7 +67,7 @@ export function ProfileForm({onSubmit}: {onSubmit: Function | undefined}) {
           control={form.control}
           name="username"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="">
               <FormLabel>Username</FormLabel>
               <FormControl>
                 <Input placeholder="Your username" {...field} />
@@ -95,7 +95,7 @@ export function ProfileForm({onSubmit}: {onSubmit: Function | undefined}) {
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <Button type="submit" className="mt-auto">Submit</Button>
       </form>
     </Form>
   )

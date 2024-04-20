@@ -1,9 +1,13 @@
-
+import { Toaster } from "../ui/toaster"
 function HomePage(){
     return (
-        <main>
+        <>
+            <main>
             
-        </main>
+            </main>
+    
+            <Toaster/>
+        </>
     )
 }
 

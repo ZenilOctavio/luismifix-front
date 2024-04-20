@@ -14,9 +14,9 @@ function LoginPage(){
     }
 
     return (
-        <div className="flex justify-center w-screen h-screen items-center">
-            <div className="container relative hidden h-[800px] flex-col items-center justify-center md:grid  lg:grid-cols-2 lg:px-0 rounded-3xl overflow-hidden border">
-                <div className="relative hidden h-full flex-col bg-muted p-10 text-white lg:flex dark:border-r">
+        <div className="flex justify-center w-screen h-screen items-center ">
+            <div className="relative  h-[600px] flex flex-col items-center justify-center   rounded-3xl overflow-hidden border">
+                {/* <div className="relative hidden h-full flex-col bg-muted p-10 text-white lg:flex dark:border-r">
                 <div className="absolute inset-0 bg-secondary" />
                 <div className="relative z-20 flex items-center text-lg font-medium">
                     <svg
@@ -41,10 +41,10 @@ function LoginPage(){
                     <footer className="text-sm">Christopher Di Armani</footer>
                     </blockquote>
                 </div>
-                </div>
-                <div className="lg:p-8">
-                <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
-                    <div className="flex flex-col space-y-2 text-center">
+                </div> */}
+                <div className="lg:p-8 flex justify-center items-center h-full">
+                <div className="mx-auto flex w-full flex-col justify-evenly space-y-6 sm:w-[25rem] h-full">
+                    <div className="flex flex-col justify-center items-center space-y-2 text-center">
                     <h1 className="text-2xl font-semibold tracking-tight">
                         Log In
                     </h1>
@@ -52,7 +52,7 @@ function LoginPage(){
                         Sign in to your account
                     </p>
                     </div>
-                    <ProfileForm onSubmit={handleSubmit}/>
+                    <ProfileForm onSubmit={handleSubmit} className=" h-2/3"/>
                     <p className="px-8 text-center text-sm text-muted-foreground">
                     </p>
                 </div>
