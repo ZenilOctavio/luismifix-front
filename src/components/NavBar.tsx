@@ -2,7 +2,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom"
 import { HOME_PAGE_PATHNAME, INVENTORY_PAGE_PATHNAME, USERS_PAGE_PATHNAME } from "@/config/constants"
 import { Avatar, AvatarFallback } from "./ui/avatar"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "./ui/dropdown-menu"
-import { LogOut, Settings } from "lucide-react"
+import { BadgeAlert, LogOut, Settings } from "lucide-react"
 import ThemeButton from "./ThemeButton"
 import { toast } from "./ui/use-toast"
 import { LOGIN_PAGE_PATHNAME } from "@/config/constants"
@@ -18,9 +18,10 @@ function NavBar() {
     const handleLogOut = async () => {
         try{
             console.log('trying')
+            navigate(LOGIN_PAGE_PATHNAME)
             const response = await logout()
             toast({
-                title: 'Logout completed',
+                title: 'Log out completed',
                 content: response.message,
                 description: 
                 <span className="flex items-center gap-2">
@@ -28,17 +29,18 @@ function NavBar() {
                     <span>{response.message}</span>
                 </span>
             })
-            setTimeout(() => {
-                navigate(LOGIN_PAGE_PATHNAME)
-            }, 500)
         }
         catch(err){
             console.log('catching')
 
             const response = err as SessionResponse
             toast({
-                title: 'Logout failed',
-                content: response.message,
+                title: 'Log out failed',
+                description:         
+                <span className="flex items-center gap-2">
+                    <BadgeAlert size={16} />
+                    <span>{response.message}</span>
+                </span>,
                 variant: 'destructive'
 
             })

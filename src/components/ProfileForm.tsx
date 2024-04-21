@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input"
 import { toast } from "@/components/ui/use-toast"
 import { SessionResponse } from "@/types/session/SessionResponse"
 import { useAuth } from "@/providers/AuthProvider"
+import { CheckCheck, BadgeAlert } from "lucide-react"
 
 const FormSchema = z.object({
   username: z.string().min(2, {
@@ -39,11 +40,19 @@ export function ProfileForm({onSubmit, className}: {onSubmit: Function | undefin
   async function handleSubmit(data: z.infer<typeof FormSchema>) {
     try{
       const responseData = await signup(data.username, data.password)
+      
+      if(!responseData.user) throw new Error(responseData.message)
+
+      console.log(responseData)
       toast({
-        title: "Success",
-        description: "Logged In",
-        variant: 'default',
-      })
+        title: 'Log in completed',
+        content: responseData.message,
+        description: 
+        <span className="flex items-center gap-2">
+            <CheckCheck size={16} />
+            <span>{responseData.message}</span>
+        </span>
+    })
 
       if (onSubmit) onSubmit(responseData)
     }
@@ -51,8 +60,12 @@ export function ProfileForm({onSubmit, className}: {onSubmit: Function | undefin
       const response = error as SessionResponse
 
       toast({
-        title: "Failure",
-        description: response.message,
+        title: "Log in failed",
+        description:
+        <span className="flex items-center gap-2">
+          <BadgeAlert size={16} />
+          <span>{response.message}</span>
+      </span>,
         variant: 'destructive',  
       })
           

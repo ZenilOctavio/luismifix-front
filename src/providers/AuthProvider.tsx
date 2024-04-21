@@ -8,7 +8,7 @@ export const AuthContext = createContext({});
 
 interface AuthContextType {
     user: ProfileResponse,
-    signup: (username: string, password: string) => void,
+    signup: (username: string, password: string) => {user: ProfileResponse, message: string},
     logout: () => SessionResponse
 }
 
@@ -25,18 +25,19 @@ export const AuthProvider = ({children}: {children: any}) => {
 
     const signup = async (username: string, password: string) => {
         try{
-            await authenticate(username, password)
+            const loginResponse = await authenticate(username, password)
 
             const newUser = await profile()
             
             setUser(newUser)
 
-            return newUser
+            return {user: newUser, message: loginResponse.message}
         }
         catch(err){
             console.log(err)
+            return {user: null, message: 'Something went wrong'}
         }
-        return null
+
     }
 
     const logout = async () => {

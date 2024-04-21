@@ -13,7 +13,7 @@ function App() {
       <ThemeProvider defaultTheme= 'dark'>
         <Router>
           <Routes>
-            <Route index path={ LOGIN_PAGE_PATHNAME } element = {<LoginPage/>}></Route>
+            <Route index element = {<LoginPage/>}></Route>
             <Route path={ HOME_PAGE_PATHNAME } element = {<HomePage/>}></Route>
           </Routes>
         </Router>
