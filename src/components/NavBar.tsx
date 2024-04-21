@@ -4,15 +4,16 @@ import { Avatar, AvatarFallback } from "./ui/avatar"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "./ui/dropdown-menu"
 import { LogOut, Settings } from "lucide-react"
 import ThemeButton from "./ThemeButton"
-import { logout } from "@/services/session/logout"
 import { toast } from "./ui/use-toast"
 import { LOGIN_PAGE_PATHNAME } from "@/config/constants"
 import { SessionResponse } from "@/types/session/SessionResponse"
 import { CheckCheck } from "lucide-react"
+import { useAuth } from "@/providers/AuthProvider"
 
 function NavBar() {
     const location = useLocation()
     const navigate = useNavigate()
+    const { user, logout} = useAuth()
 
     const handleLogOut = async () => {
         try{
@@ -83,9 +84,9 @@ function NavBar() {
                     <DropdownMenuTrigger className="bg-transparent  px-3  p-0 border-primary border">
                         <div className="flex items-center justify-center hover:scale-105 transition-transform">
                             <Avatar className="hover:cursor-pointer  transition-transform mr-2">
-                                <AvatarFallback className=" min-w-8">RN</AvatarFallback>
+                                <AvatarFallback className=" min-w-8">{user.username.slice(0,2).toUpperCase()}</AvatarFallback>
                             </Avatar> 
-                            <span className="border-l-2 p-2">Luismifix</span> 
+                            <span className="border-l-2 p-2">{user.username}</span> 
                         </div>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>

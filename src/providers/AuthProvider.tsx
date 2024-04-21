@@ -2,11 +2,12 @@ import { createContext, useState, useContext  } from "react";
 import { authenticate } from "@/services/session/auth";
 import { profile } from "@/services/session/profile";
 import { ProfileResponse } from "@/types/session/SessionResponse";
+import { logout as logoutService } from "@/services/session/logout";
 
 export const AuthContext = createContext({});
 
 interface AuthContextType {
-    user: any,
+    user: ProfileResponse,
     signup: (username: string, password: string) => void
 }
 
@@ -36,8 +37,18 @@ export const AuthProvider = ({children}: {children: any}) => {
         }
         return null
     }
+
+    const logout = async () => {
+            const response = await logoutService()
+
+            console.log(response)
+            
+            setUser(null)
+            return response
+    }
+
     return (
-        <AuthContext.Provider value={{user, signup}}>
+        <AuthContext.Provider value={{user, signup, logout}}>
             {children}
         </AuthContext.Provider>
     )
