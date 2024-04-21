@@ -1,15 +1,47 @@
-import { Link, useLocation } from "react-router-dom"
+import { Link, useLocation, useNavigate } from "react-router-dom"
 import { HOME_PAGE_PATHNAME, INVENTORY_PAGE_PATHNAME, USERS_PAGE_PATHNAME } from "@/config/constants"
 import { Avatar, AvatarFallback } from "./ui/avatar"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "./ui/dropdown-menu"
 import { LogOut, Settings } from "lucide-react"
 import ThemeButton from "./ThemeButton"
+import { logout } from "@/services/session/logout"
+import { toast } from "./ui/use-toast"
+import { LOGIN_PAGE_PATHNAME } from "@/config/constants"
+import { SessionResponse } from "@/types/session/SessionResponse"
+import { CheckCheck } from "lucide-react"
 
 function NavBar() {
     const location = useLocation()
+    const navigate = useNavigate()
 
-    const handleLogOut = () => {
+    const handleLogOut = async () => {
+        try{
+            console.log('trying')
+            const response = await logout()
+            toast({
+                title: 'Logout completed',
+                content: response.message,
+                description: 
+                <span className="flex items-center gap-2">
+                    <CheckCheck size={16} />
+                    <span>{response.message}</span>
+                </span>
+            })
+            setTimeout(() => {
+                navigate(LOGIN_PAGE_PATHNAME)
+            }, 500)
+        }
+        catch(err){
+            console.log('catching')
 
+            const response = err as SessionResponse
+            toast({
+                title: 'Logout failed',
+                content: response.message,
+                variant: 'destructive'
+
+            })
+        }
     }
     const handleSettings = () => {
 
@@ -37,8 +69,8 @@ function NavBar() {
 
                 {links.map((link) => {
                     return (
-                    <li>
-                        <Link to={link.pathname} className={`text-sm font-bold transition-colors hover:text-primary ${(location.pathname == link.pathname)? "underline": ""}`}>{link.pageName}</Link>
+                    <li key={link.pathname}>
+                        <Link to={link.pathname} className={`text-primary  font-bold transition-colors  ${(location.pathname == link.pathname)? "underline": ""}`}>{link.pageName}</Link>
                     </li>
                     )
                 })}
@@ -48,11 +80,13 @@ function NavBar() {
             <div className="flex gap-4">
                 <ThemeButton></ThemeButton>
                 <DropdownMenu>
-                    <DropdownMenuTrigger className="bg-transparent flex items-center px-3 justify-center p-0 border-primary border">
-                        <Avatar className="hover:cursor-pointer hover:scale-110 transition-transform mr-2">
-                            <AvatarFallback className=" min-w-8">RN</AvatarFallback>
-                        </Avatar> 
-                        <span className="border-l-2 p-2">Luismifix</span> 
+                    <DropdownMenuTrigger className="bg-transparent  px-3  p-0 border-primary border">
+                        <div className="flex items-center justify-center hover:scale-105 transition-transform">
+                            <Avatar className="hover:cursor-pointer  transition-transform mr-2">
+                                <AvatarFallback className=" min-w-8">RN</AvatarFallback>
+                            </Avatar> 
+                            <span className="border-l-2 p-2">Luismifix</span> 
+                        </div>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
                         <DropdownMenuLabel>My account</DropdownMenuLabel>

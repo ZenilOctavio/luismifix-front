@@ -13,7 +13,8 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { toast } from "@/components/ui/use-toast"
-import { authenticate, ResponseLoginJson } from "@/services/auth"
+import { SessionResponse } from "@/types/session/SessionResponse"
+import { useAuth } from "@/providers/AuthProvider"
 
 const FormSchema = z.object({
   username: z.string().min(2, {
@@ -25,6 +26,8 @@ const FormSchema = z.object({
 })
 
 export function ProfileForm({onSubmit, className}: {onSubmit: Function | undefined, className: string | undefined}) {
+  const {signup} = useAuth()
+  
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -35,16 +38,17 @@ export function ProfileForm({onSubmit, className}: {onSubmit: Function | undefin
 
   async function handleSubmit(data: z.infer<typeof FormSchema>) {
     try{
-      const responseData = await authenticate(data.username, data.password)
+      const responseData = await signup(data.username, data.password)
       toast({
         title: "Success",
-        description: responseData.message,
+        description: "Logged In",
         variant: 'default',
       })
-      onSubmit?.(responseData)
+
+      if (onSubmit) onSubmit(responseData)
     }
     catch(error){
-      const response = error as ResponseLoginJson
+      const response = error as SessionResponse
 
       toast({
         title: "Failure",
