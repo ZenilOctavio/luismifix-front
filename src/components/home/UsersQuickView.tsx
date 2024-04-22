@@ -1,3 +1,4 @@
+import { getUserById, getUserByUsername } from "@/services/users/getUser"
 import { getUsers } from "@/services/users/getUsers"
 import { User } from "@/types/users/User"
 import { useEffect, useState } from "react"
@@ -8,6 +9,13 @@ function UsersQuickView() {
     useEffect(() => {
         getUsers().then( newUsers => {
             setUsers(newUsers)
+        })
+        getUserById('66208c554cd642eb6da8066e').then( (user: User) => {
+            console.log('User by id:',user)
+        })
+
+        getUserByUsername('Luismifix').then( (user: User) => {
+            console.log('User by Username:',user)
         })
     }, [])
     

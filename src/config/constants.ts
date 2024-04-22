@@ -13,3 +13,4 @@ export const API_LOGOUT_PATHNAME = 'api/logout'
 export const API_PROFILE_PATHNAME = 'api/profile'
 
 export const API_USERS_PATHNAME = 'api/users'
+export const API_USERS_BY_USERNAME_PATHNAME = 'api/searchUserForUsername'
