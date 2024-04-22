@@ -1,7 +1,7 @@
 import { createContext, useState, useContext  } from "react";
 import { authenticate } from "@/services/session/auth";
 import { profile } from "@/services/session/profile";
-import { ProfileResponse, SessionResponse } from "@/types/session/SessionResponse";
+import { ProfileResponse, LogInResponse } from "@/types/session/SessionResponse";
 import { logout as logoutService } from "@/services/session/logout";
 
 export const AuthContext = createContext({});
@@ -9,7 +9,7 @@ export const AuthContext = createContext({});
 interface AuthContextType {
     user: ProfileResponse,
     signup: (username: string, password: string) => {user: ProfileResponse, message: string},
-    logout: () => SessionResponse
+    logout: () => LogInResponse
 }
 
 export const useAuth = (): AuthContextType => {

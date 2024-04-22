@@ -11,3 +11,5 @@ export const INVENTORY_PAGE_PATHNAME = '/inventory'
 export const API_LOGIN_PATHNAME = 'api/login'
 export const API_LOGOUT_PATHNAME = 'api/logout'
 export const API_PROFILE_PATHNAME = 'api/profile'
+
+export const API_USERS_PATHNAME = 'api/users'

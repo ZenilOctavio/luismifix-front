@@ -1,10 +1,10 @@
 import { BACKEND_URL, API_LOGIN_PATHNAME } from "@/config/constants";
-import { SessionResponse } from "@/types/session/SessionResponse";
+import { LogInResponse } from "@/types/session/SessionResponse";
 import axios from "axios";
 
 axios.defaults.withCredentials = true;
 
-export async function authenticate(username: string, password: string): Promise<SessionResponse> {
+export async function authenticate(username: string, password: string): Promise<LogInResponse> {
 
     const url = new URL(BACKEND_URL)
     url.pathname = API_LOGIN_PATHNAME
@@ -15,7 +15,7 @@ export async function authenticate(username: string, password: string): Promise<
           'Access-Control-Allow-Credentials': true,
         }
       });
-    const data = response.data as SessionResponse
+    const data = response.data as LogInResponse
     console.log(response)
     console.log(response.headers['set-cookie'])
     

@@ -1,5 +1,5 @@
 import { API_PROFILE_PATHNAME, BACKEND_URL } from "@/config/constants";
-import { ProfileResponse, SessionResponse } from "@/types/session/SessionResponse";
+import { ProfileResponse, LogInResponse } from "@/types/session/SessionResponse";
 import axios from 'axios'
 
 export async function profile(): Promise<ProfileResponse> {
@@ -17,7 +17,7 @@ export async function profile(): Promise<ProfileResponse> {
     console.log(data)
     
     if (response.status > 299 || response.status < 200){
-        const error = response.data as SessionResponse
+        const error = response.data as LogInResponse
         throw new Error(error.message)
     }
     
