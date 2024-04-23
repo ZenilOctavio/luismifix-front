@@ -13,7 +13,7 @@ import { useAuth } from "@/providers/AuthProvider"
 function NavBar() {
     const location = useLocation()
     const navigate = useNavigate()
-    const { user, logout} = useAuth()
+    const { user, logout } = useAuth()
 
     const handleLogOut = async () => {
         try{
@@ -67,13 +67,13 @@ function NavBar() {
     ]
     
     return (
-        <nav className="border-b-2 fixed top-0 left-0 w-full py-2 flex justify-between items-center px-72">
+        <nav className="backdrop-blur-sm z-10 border-b-2 sticky top-0 w-full py-2 flex justify-between items-center px-72 bg-primary-foreground/60">
             <ul className="flex space-x-4">
 
                 {links.map((link) => {
                     return (
                     <li key={link.pathname}>
-                        <Link to={link.pathname} className={`text-primary  font-bold transition-colors  ${(location.pathname == link.pathname)? "underline": ""}`}>{link.pageName}</Link>
+                        <Link to={link.pathname} className={`text-primary  font-bold transition-colors   ${(location.pathname == link.pathname)? "underline": ""}`}>{link.pageName}</Link>
                     </li>
                     )
                 })}
