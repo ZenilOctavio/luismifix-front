@@ -1,4 +1,4 @@
-import { createContext, useState, useContext  } from "react";
+import { createContext, useState, useContext, useEffect } from "react";
 import { authenticate } from "@/services/session/auth";
 import { profile } from "@/services/session/profile";
 import { ProfileResponse, SessionResponse } from "@/types/session/SessionResponse";
@@ -9,7 +9,8 @@ export const AuthContext = createContext({});
 interface AuthContextType {
     user: ProfileResponse,
     signup: (username: string, password: string) => {user: ProfileResponse, message: string},
-    logout: () => SessionResponse
+    logout: () => SessionResponse,
+    refreshProfile: () => ProfileResponse
 }
 
 export const useAuth = (): AuthContextType => {
@@ -23,13 +24,24 @@ export const useAuth = (): AuthContextType => {
 export const AuthProvider = ({children}: {children: any}) => {
     const [user, setUser] = useState<ProfileResponse | null>(null);
 
+    const refreshProfile = async () => {
+        const newUser = await profile()
+            
+        setUser(newUser)
+
+        return newUser
+    }
+
+    useEffect(() => {
+        // Fetch user profile on component mount
+        refreshProfile();
+    }, []); 
+    
     const signup = async (username: string, password: string) => {
         try{
             const loginResponse = await authenticate(username, password)
 
-            const newUser = await profile()
-            
-            setUser(newUser)
+            const newUser = await refreshProfile()
 
             return {user: newUser, message: loginResponse.message}
         }
@@ -49,8 +61,12 @@ export const AuthProvider = ({children}: {children: any}) => {
             return response
     }
 
+
+
+
+
     return (
-        <AuthContext.Provider value={{user, signup, logout}}>
+        <AuthContext.Provider value={{user, signup, logout, refreshProfile}}>
             {children}
         </AuthContext.Provider>
     )

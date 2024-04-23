@@ -19,7 +19,4 @@ export async function registerUser(newUser: RegisterUser): Promise<SessionRespon
     const successMessage = response.data as SessionResponse
 
     return successMessage
-
-
-
 }

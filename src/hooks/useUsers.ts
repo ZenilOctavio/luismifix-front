@@ -39,6 +39,7 @@ function useUsers(){
             const newUsers = [...users]
             newUsers.push(newUserCreated!)
             setUsers(newUsers)
+            console.log('Nuevos usuarios',newUsers)
             setError('')
             
             return newUserCreated
@@ -51,6 +52,7 @@ function useUsers(){
             return 
         }
     }
+
 
     return {users, refreshUsers, getUser, registerNewUser, error}
 }

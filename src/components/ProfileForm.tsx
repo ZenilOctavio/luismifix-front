@@ -27,7 +27,7 @@ const FormSchema = z.object({
 })
 
 export function ProfileForm({onSubmit, className}: {onSubmit: Function | undefined, className: string | undefined}) {
-  const {signup} = useAuth()
+  const { signup } = useAuth()
   
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),

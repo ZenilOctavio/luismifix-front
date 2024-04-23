@@ -13,7 +13,7 @@ import { useAuth } from "@/providers/AuthProvider"
 function NavBar() {
     const location = useLocation()
     const navigate = useNavigate()
-    const { user, logout} = useAuth()
+    const { user, logout } = useAuth()
 
     const handleLogOut = async () => {
         try{
