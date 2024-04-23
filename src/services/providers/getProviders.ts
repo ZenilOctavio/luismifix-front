@@ -1,0 +1,1 @@
+import { BACKEND_URL } from "@/config/constants";
