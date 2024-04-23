@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { toast } from "@/components/ui/use-toast"
-import { LogInResponse } from "@/types/session/SessionResponse"
+import { SessionResponse } from "@/types/session/SessionResponse"
 import { useAuth } from "@/providers/AuthProvider"
 import { CheckCheck, BadgeAlert } from "lucide-react"
 
@@ -57,7 +57,7 @@ export function ProfileForm({onSubmit, className}: {onSubmit: Function | undefin
       if (onSubmit) onSubmit(responseData)
     }
     catch(error){
-      const response = error as LogInResponse
+      const response = error as SessionResponse
 
       toast({
         title: "Log in failed",

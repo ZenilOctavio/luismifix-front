@@ -1,4 +1,4 @@
-export interface LogInResponse{
+export interface SessionResponse{
     message: string
 }
 export interface ProfileResponse{

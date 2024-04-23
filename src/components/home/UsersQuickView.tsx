@@ -1,28 +1,25 @@
-import { getUserById, getUserByUsername } from "@/services/users/getUser"
-import { getUsers } from "@/services/users/getUsers"
-import { User } from "@/types/users/User"
-import { useEffect, useState } from "react"
+import useUsers from "@/hooks/useUsers"
+import { useEffect } from "react"
 
 function UsersQuickView() {
-    const [users, setUsers] = useState<Array<never> | Array<User> >([])
+
+    const { users, error } = useUsers()
 
     useEffect(() => {
-        getUsers().then( newUsers => {
-            setUsers(newUsers)
-        })
-        getUserById('66208c554cd642eb6da8066e').then( (user: User) => {
-            console.log('User by id:',user)
-        })
 
-        getUserByUsername('Luismifix').then( (user: User) => {
-            console.log('User by Username:',user)
-        })
     }, [])
+
+    useEffect(() => {
+        console.log(error)
+    },[error])
+
     
     return (
         <ul>
-            { users.length ?
+            { users ?
                 users.map( user => {
+                    
+                    if (user)
                     return (
                         <li key={user._id}>{user.username}</li>
                     )

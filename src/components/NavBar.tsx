@@ -6,7 +6,7 @@ import { BadgeAlert, LogOut, Settings } from "lucide-react"
 import ThemeButton from "./ThemeButton"
 import { toast } from "./ui/use-toast"
 import { LOGIN_PAGE_PATHNAME } from "@/config/constants"
-import { LogInResponse } from "@/types/session/SessionResponse"
+import { SessionResponse } from "@/types/session/SessionResponse"
 import { CheckCheck } from "lucide-react"
 import { useAuth } from "@/providers/AuthProvider"
 
@@ -33,7 +33,7 @@ function NavBar() {
         catch(err){
             console.log('catching')
 
-            const response = err as LogInResponse
+            const response = err as SessionResponse
             toast({
                 title: 'Log out failed',
                 description:         
