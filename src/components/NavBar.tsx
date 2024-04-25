@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from "react-router-dom"
-import { HOME_PAGE_PATHNAME, INVENTORY_PAGE_PATHNAME, USERS_PAGE_PATHNAME } from "@/config/constants"
+import { HOME_PAGE_PATHNAME, INVENTORY_PAGE_PATHNAME, PROVIDERS_PAGE_PATHNAME, USERS_PAGE_PATHNAME } from "@/config/constants"
 import { Avatar, AvatarFallback } from "./ui/avatar"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "./ui/dropdown-menu"
 import { BadgeAlert, LogOut, Settings } from "lucide-react"
@@ -62,6 +62,10 @@ function NavBar() {
         {
             pageName: 'Inventory',
             pathname: INVENTORY_PAGE_PATHNAME
+        },
+        {
+            pageName: 'Providers',
+            pathname: PROVIDERS_PAGE_PATHNAME
         }
 
     ]
