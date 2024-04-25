@@ -8,6 +8,7 @@ export async function authenticate(username: string, password: string): Promise<
 
     const url = new URL(BACKEND_URL)
     url.pathname = API_LOGIN_PATHNAME
+    console.log(url)
 
     const response = await axios.post(url.toString(), { username, password }, {
         headers: {

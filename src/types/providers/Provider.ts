@@ -1,4 +1,4 @@
-import { TypeProvider } from "./typeProvider"
+import { TypeProvider } from "./TypeProvider"
 
 export interface Provider{
     creationDateProvider: Date
@@ -8,4 +8,10 @@ export interface Provider{
     _id: string
     statusProvider: boolean
     __v: number
+}
+
+export interface CreationProvider{
+    idTypeProvider: string,
+    nameProvider: string,
+    noteProvider: string
 }

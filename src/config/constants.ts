@@ -22,3 +22,6 @@ export const API_PROVIDERS_PATHNAME = 'api/providers'
 export const API_PROVIDER_PATHNAME = API_PROVIDERS_PATHNAME + '/provider'
 export const API_PROVIDER_CONTACTS_PATHNAME = API_PROVIDERS_PATHNAME + '/contacts'
 export const API_PROVIDER_BY_NAME_PATHNAME = API_PROVIDERS_PATHNAME + '/search'
+
+export const API_TYPES_PATHNAME = 'api/types'
+export const API_TYPES_PROVIDER_PATHNAME = API_TYPES_PATHNAME + '/typesProvider'

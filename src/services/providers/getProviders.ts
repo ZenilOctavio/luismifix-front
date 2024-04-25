@@ -6,7 +6,7 @@ import { Provider } from "@/types/providers/Provider";
 
 const url = new URL(BACKEND_URL)
 
-export async function getProviders() {
+export async function getProviders(): Promise<Provider[]> {
     url.pathname = API_PROVIDERS_PATHNAME
 
     const response = await axios.get(url.toString())
@@ -17,7 +17,9 @@ export async function getProviders() {
         throw new Error(error.message)
     }
 
-    return response.data as Array<Provider>
+    const providers = response.data as Array<Provider>
+
+    return providers
 }
 
 async function getProvider(pathname: string, value: string){
@@ -45,7 +47,7 @@ export async function getProviderByName(name: string) {
 }
 
 export async function getProviderById(id: string){
-    return await getProvider(API_PROVIDER_PATHNAME, id)
+    return await getProvider(API_PROVIDER_PATHNAME, id) as Provider
 }
 
 export async function getProviderContacts(id: string){
