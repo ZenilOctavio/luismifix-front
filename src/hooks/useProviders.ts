@@ -1,13 +1,31 @@
 import {getProviders, getProviderByName, getProviderById } from "@/services/providers/getProviders";
 import { CreationProvider, Provider } from "@/types/providers/Provider";
-import { useEffect, useState } from "react";
+import { Dispatch, useEffect, useState } from "react";
 import { createProvider as createProviderService } from "@/services/providers/postProvider";
 import { AxiosError } from "axios";
 import { ErrorResponse } from "@/types/ErrorResponse";
 import { updateProvider as updateProviderService, enableProvider as enableProviderService, disableProvider as disableProviderService } from "@/services/providers/putProviders";
+import { useProvidersContext } from "@/providers/ProvidersProvider";
 
 function useProviders(){
-    const [providers, setProviders] = useState<Array<Provider>>([])
+    let providers: Provider[] = []
+    let setProviders: Dispatch<Provider[]> = () => {}
+
+    try{
+        const context = useProvidersContext()
+        if(context){
+            console.log('Using context')
+            providers = context.providers!
+            setProviders = context.setProviders!
+        }
+    }
+    catch(err){
+        console.log(err, 'Using independent state')
+        const state = useState<Provider[]>([])
+        providers = state[0]
+        setProviders = state[1]
+    }
+    
     const [ error, setError ] = useState<string>('')
 
     const refreshProviders = async () => {
