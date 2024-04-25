@@ -1,4 +1,4 @@
-import { getTypesOfUser } from "@/services/typesOfUser/getTypesOfUser";
+import { getTypesOfUser } from "@/services/typesUser/getTypesOfUser";
 import { useEffect, useState } from "react";
 
 function useUserTypes(){

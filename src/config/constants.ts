@@ -17,3 +17,11 @@ export const API_USERS_PATHNAME = 'api/users'
 export const API_USERS_BY_USERNAME_PATHNAME = 'api/searchUserForUsername'
 
 export const API_TYPES_USER_PATHNAME = 'api/types/typesUser'
+
+export const API_PROVIDERS_PATHNAME = 'api/providers'
+export const API_PROVIDER_PATHNAME = API_PROVIDERS_PATHNAME + '/provider'
+export const API_PROVIDER_CONTACTS_PATHNAME = API_PROVIDERS_PATHNAME + '/contacts'
+export const API_PROVIDER_BY_NAME_PATHNAME = API_PROVIDERS_PATHNAME + '/search'
+
+export const API_TYPES_PATHNAME = 'api/types'
+export const API_TYPES_PROVIDER_PATHNAME = API_TYPES_PATHNAME + '/typesProvider'
