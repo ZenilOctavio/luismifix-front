@@ -6,6 +6,9 @@ export const LOGIN_PAGE_PATHNAME = '/'
 export const HOME_PAGE_PATHNAME = '/home'
 export const USERS_PAGE_PATHNAME = '/users'
 export const INVENTORY_PAGE_PATHNAME = '/inventory'
+export const CLIENTS_PAGE_PATHNAME = '/clients'
+export const BOARD_PAGE_PATHNAME = '/board'
+export const TODO_PAGE_PATHNAME = '/to-do'
 
 //API Routes
 export const API_REGISTER_PATHNAME = 'api/register'
