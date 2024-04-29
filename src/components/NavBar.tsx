@@ -102,14 +102,14 @@ function NavBar() {
             <div className="flex gap-4 ">
                 <ThemeButton></ThemeButton>
                 <DropdownMenu>
-                    <DropdownMenuTrigger asChild className="bg-transparent  px-3  p-1 hover:outline-none hover:border-none">
+                    {user && <DropdownMenuTrigger asChild className="bg-transparent  px-3  p-1 hover:outline-none hover:border-none">
                         <div className="flex items-center justify-center hover:scale-105 transition-transform hover:outline-none hover:border-none hover:cursor-pointer">
                             <Avatar className="hover:cursor-pointer  transition-transform mr-2">
                                 <AvatarFallback className=" min-w-8">{user.username.slice(0,2).toUpperCase()}</AvatarFallback>
                             </Avatar> 
                             <span className="border-l-2 p-2 text-xl">{user.username}</span> 
                         </div>
-                    </DropdownMenuTrigger>
+                    </DropdownMenuTrigger>}
                     <DropdownMenuContent>
                         <DropdownMenuLabel>My account</DropdownMenuLabel>
                         <DropdownMenuSeparator></DropdownMenuSeparator>

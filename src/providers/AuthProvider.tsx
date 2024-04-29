@@ -26,6 +26,8 @@ export const AuthProvider = ({children}: {children: any}) => {
 
     const refreshProfile = async () => {
         const newUser = await profile()
+
+        console.log(newUser)
             
         setUser(newUser)
 
