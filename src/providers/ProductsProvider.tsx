@@ -7,7 +7,6 @@ interface ProductsContextType{
     setProducts?: Dispatch<Product[]>
     productTypes?: ProductType[]
     setProductTypes?: Dispatch<ProductType[]>
-    something?: string
 }
 
 export const ProductsContext = createContext<ProductsContextType>({})
@@ -25,10 +24,9 @@ export const ProductsProvider  = ({children}:{children: any}) => {
 
     const [products, setProducts] = useState<Product[]>([])
     const [productTypes, setProductTypes] = useState<ProductType[]>([])
-    const something = ''
 
     return (
-        <ProductsContext.Provider value={{products, setProducts, productTypes, setProductTypes, something}}>
+        <ProductsContext.Provider value={{products, setProducts, productTypes, setProductTypes}}>
             {children}
         </ProductsContext.Provider>
     )

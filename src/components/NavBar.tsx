@@ -56,22 +56,22 @@ function NavBar() {
             pageName: 'Inventario',
             pathname: INVENTORY_PAGE_PATHNAME
         },
-        {
-            pageName: 'Clientes',
-            pathname: CLIENTS_PAGE_PATHNAME
-        },
-        {
-            pageName: 'Tablero',
-            pathname: BOARD_PAGE_PATHNAME
-        },
-        {
-            pageName: 'Pendientes',
-            pathname: TODO_PAGE_PATHNAME
-        },
-        {
-            pageName: 'Home',
-            pathname: HOME_PAGE_PATHNAME
-        },
+        // {
+        //     pageName: 'Clientes',
+        //     pathname: CLIENTS_PAGE_PATHNAME
+        // },
+        // {
+        //     pageName: 'Tablero',
+        //     pathname: BOARD_PAGE_PATHNAME
+        // },
+        // {
+        //     pageName: 'Pendientes',
+        //     pathname: TODO_PAGE_PATHNAME
+        // },
+        // {
+        //     pageName: 'Home',
+        //     pathname: HOME_PAGE_PATHNAME
+        // },
         // {
         //     pageName: 'Users',
         //     pathname: USERS_PAGE_PATHNAME

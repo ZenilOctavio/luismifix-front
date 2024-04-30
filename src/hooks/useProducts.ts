@@ -7,6 +7,21 @@ import { getTypesProduct } from "@/services/typesProduct/getTypesProduct";
 import { createProduct as createProductService } from "@/services/products/postProducts";
 import { updateProduct as updateProductService, disableProduct as disableProductService, enableProduct as enableProductService } from "@/services/products/putProduct";
 
+import { postPurchase as createPurchaseService } from "@/services/purchases/postPurchases";
+
+import { 
+    getPurchasesForProduct, 
+    getPurchasesForProvider 
+} from "@/services/purchases/getPurchases";
+
+import { 
+    updatePurchase as updatePurchaseService, 
+    enablePurchase as enablePurchaseService ,
+    disablePurchase as disablePurchaseService 
+} from "@/services/purchases/putPurchases";
+import { CreationPurchase, Purchase } from "@/types/purchases/Purchase";
+import { Provider } from "@/types/providers/Provider";
+
 export default function useProducts(){
 
     let products: Product[] = []
@@ -15,6 +30,8 @@ export default function useProducts(){
     let productTypes: ProductType[] = []
     let setProductTypes: Dispatch<ProductType[]> = () => {}
 
+    const [purchasesForProducts, setPurchaseForProduct] = useState<Record<string, Purchase[]>>({})
+    const [purchasesForProvider, setPurchaseForProvider] = useState<Record<string, Purchase[]>>({})
     const [isLoading, setIsLoading] = useState<boolean>(false)
 
     const refreshProducts = async () => {
@@ -96,6 +113,71 @@ export default function useProducts(){
         setIsLoading(false)
     }
     
+    const searchPurchasesForProduct = async (product: Product) => {
+        setIsLoading(true)
+
+        const purchases = await getPurchasesForProduct(product._id)
+
+        const newPurchases = {...purchasesForProducts}
+        newPurchases[product._id] = purchases
+
+        setPurchaseForProduct(newPurchases)
+
+        setIsLoading(false)
+
+        return purchases
+    }
+
+    const searchPurchasesForProvider = async (provider: Provider) => {
+        setIsLoading(true)
+
+        const purchases = await getPurchasesForProvider(provider._id)
+
+        const newPurchases = {...purchasesForProducts}
+        newPurchases[provider._id] = purchases
+
+        setPurchaseForProvider(newPurchases)
+
+        setIsLoading(false)
+
+        return purchases
+    }
+
+    const updatePurchase = async (purchase: Purchase, newPurchaseData: CreationPurchase) => {
+        setIsLoading(true)
+        await updatePurchaseService(purchase.__id, newPurchaseData)
+        
+        searchPurchasesForProduct(purchase.idProduct)
+        searchPurchasesForProvider(purchase.idProvider)
+
+        setIsLoading(false)
+    }
+
+    const enablePurchase = async (purchase: Purchase) => {
+        setIsLoading(true)
+        await enablePurchaseService(purchase.__id)
+        setIsLoading(false)
+    }
+
+    const disablePurchase = async (purchase: Purchase) => {
+        setIsLoading(true)
+        await disablePurchaseService(purchase.__id)
+        setIsLoading(false)
+    }
+
+    const createPurchase = async (purchase: CreationPurchase) => {
+        setIsLoading(true)
+        
+        await createPurchaseService(purchase)
+
+        const product = await getProduct('id', purchase.idProduct)
+        if(product){
+            searchPurchasesForProduct(product)
+        }
+        
+        setIsLoading(false)
+
+    }
 
     try{
         const context = useProductsContext()
@@ -133,6 +215,14 @@ export default function useProducts(){
         disableProduct,
         enableProduct,
         productTypes,
+        searchPurchasesForProduct,
+        searchPurchasesForProvider,
+        purchasesForProducts,
+        purchasesForProvider,
+        updatePurchase,
+        disablePurchase,
+        enablePurchase,
+        createPurchase,
         isLoading
     }
 }
