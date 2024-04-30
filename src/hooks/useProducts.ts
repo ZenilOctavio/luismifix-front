@@ -99,6 +99,8 @@ export default function useProducts(){
 
     try{
         const context = useProductsContext()
+        if(Object.keys(context).length == 0) throw new Error('No ProductsContext reached')
+
         if(context){
             console.log('Using context')
             products = context.products!
