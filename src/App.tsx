@@ -5,7 +5,7 @@ import HomePage from './components/pages/HomePage'
 import { ThemeProvider } from './providers/ThemeProvider'
 import { HOME_PAGE_PATHNAME, INVENTORY_PAGE_PATHNAME } from './config/constants'
 import { AuthProvider } from './providers/AuthProvider'
-import InventoryPage from './components/pages/InventoryPage'
+import { InventoryProviders } from './components/inventory/InventoryProviders'
 
 function App() {
 
@@ -16,7 +16,7 @@ function App() {
           <Routes>
             <Route index element = {<LoginPage/>}></Route>
             <Route path={ HOME_PAGE_PATHNAME } element = {<HomePage/>}></Route>
-            <Route path={ INVENTORY_PAGE_PATHNAME } element = {<InventoryPage/>}></Route>
+            <Route path={ INVENTORY_PAGE_PATHNAME } element = {<InventoryProviders/>}></Route>
           </Routes>
         </Router>
       </ThemeProvider>

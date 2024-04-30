@@ -1,5 +1,5 @@
 import { BACKEND_URL, API_PRODUCTS_ENABLE_PATHNAME, API_PRODUCTS_DISABLE_PATHNAME, API_PRODUCTS_PATHNAME  } from "@/config/constants";
-import { CreationProduct, Product } from "@/types/products/Product";
+import { CreationProduct } from "@/types/products/Product";
 import axios from "axios";
 import { ErrorResponse } from "@/types/ErrorResponse";
 
