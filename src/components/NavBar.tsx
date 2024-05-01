@@ -10,11 +10,19 @@ import { SessionResponse } from "@/types/session/SessionResponse"
 import { CheckCheck } from "lucide-react"
 import { useAuth } from "@/providers/AuthProvider"
 import logo from '@/assets/logo_luismifix.png'
+import { useEffect } from "react"
 
 function NavBar() {
     const location = useLocation()
     const navigate = useNavigate()
     const { user, logout } = useAuth()
+
+    useEffect(() => {
+        if (!user || Object.keys(user).length == 0){
+            console.log('Theres no user')
+            navigate(LOGIN_PAGE_PATHNAME)
+        }
+    }, [])
 
     const handleLogOut = async () => {
         try{
