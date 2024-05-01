@@ -41,6 +41,8 @@ export default function useProducts(){
         setProducts(newProducts)
         
         setIsLoading(false)
+
+        return newProducts
     }
 
     const refreshProductTypes = async () => {
@@ -179,6 +181,7 @@ export default function useProducts(){
 
     }
 
+
     try{
         const context = useProductsContext()
         if(Object.keys(context).length == 0) throw new Error('No ProductsContext reached')
@@ -202,7 +205,11 @@ export default function useProducts(){
     }
 
     useEffect(() => {
-        refreshProducts()
+        refreshProducts().then((products: Product[]) => {
+            for (let product of products){
+                searchPurchasesForProduct(product)
+            }
+        })
         refreshProductTypes()
     }, [])
 

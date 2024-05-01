@@ -53,9 +53,17 @@ function NavBar() {
 
     const links = [
         {
+            pageName: 'Home',
+            pathname: HOME_PAGE_PATHNAME
+        },
+        {
             pageName: 'Inventario',
             pathname: INVENTORY_PAGE_PATHNAME
         },
+        // {
+        //     pageName: 'Proveedores',
+        //     pathName: PROVIDERS_PAGE_PATHNAME
+        // }
         // {
         //     pageName: 'Clientes',
         //     pathname: CLIENTS_PAGE_PATHNAME
@@ -68,10 +76,7 @@ function NavBar() {
         //     pageName: 'Pendientes',
         //     pathname: TODO_PAGE_PATHNAME
         // },
-        // {
-        //     pageName: 'Home',
-        //     pathname: HOME_PAGE_PATHNAME
-        // },
+
         // {
         //     pageName: 'Users',
         //     pathname: USERS_PAGE_PATHNAME
