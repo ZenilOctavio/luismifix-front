@@ -1,15 +1,16 @@
-import { Table, TableBody, TableHeader, TableRow, TableCell, TableHead } from "./ui/table"
+import { Table, TableBody, TableHeader, TableRow, TableCell, TableHead } from "../ui/table"
 import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table"
 import { Provider } from "@/types/providers/Provider"
 import useProviders from "@/hooks/useProviders"
-import { toast } from "./ui/use-toast"
-import { Edit, EllipsisVertical } from "lucide-react"
-import { DropdownMenu, DropdownMenuSeparator, DropdownMenuTrigger, DropdownMenuItem, DropdownMenuLabel, DropdownMenuContent } from "./ui/dropdown-menu"
-import { Button } from "./ui/button"
+import { toast } from "../ui/use-toast"
+import { Edit, EllipsisVertical, Settings2 } from "lucide-react"
+import { DropdownMenu, DropdownMenuSeparator, DropdownMenuTrigger, DropdownMenuItem, DropdownMenuLabel, DropdownMenuContent, DropdownMenuCheckboxItem } from "../ui/dropdown-menu"
+import { Button } from "../ui/button"
 
 
 interface ProviderTableProps {
     onEditProvider: (provider: Provider) => void
+    onProviderRowSelection: (provider: Provider) => void
 }
 
 function copyToClipboard(value: string, valueName: string){
@@ -28,12 +29,13 @@ function copyToClipboard(value: string, valueName: string){
 
 
 
-export default function ProvidersTable({onEditProvider}: ProviderTableProps){
+export default function ProvidersTable({onEditProvider, onProviderRowSelection}: ProviderTableProps){
     const { providers, enableProvider, disableProvider } = useProviders()
     
 
     const columns: ColumnDef<Provider>[] = [
         {
+            id: 'ID',
             accessorKey: '_id',
             header: 'ID',
             cell: (providerContext) => {
@@ -55,23 +57,24 @@ export default function ProvidersTable({onEditProvider}: ProviderTableProps){
             }
         },
         {
+            id: 'Nombre',
             accessorKey: 'nameProvider',
-            header: 'Name',
+            header: 'Nombre',
         },
         {
             accessorFn: (provider) => provider.idTypeProvider.nameTypeProvider,
-            header: 'Provider type'
+            header: 'Tipo de proveedor'
         },
         {
             accessorKey: 'noteProvider',
-            header: 'Note'
+            header: 'Nota'
         },
         {
             accessorFn: (provider) => {
                 console.log(provider.statusProvider)
                 return provider.statusProvider? 'Active' : 'Inactive'
             },
-            header: 'Status'
+            header: 'Estado'
         },
         {
             accessorFn: (provider) => {
@@ -80,9 +83,9 @@ export default function ProvidersTable({onEditProvider}: ProviderTableProps){
                 const formattedDate = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`
                 return formattedDate
             },
-            header: 'Created at'
+            header: 'Fecha de creación'
         },
-        {   id: 'edit',
+        {   id: 'Edit',
             header: () => {
                 return <span className="flex items-center gap-1">Edit <Edit className="inline" size={15}/></span>
             },
@@ -131,6 +134,36 @@ export default function ProvidersTable({onEditProvider}: ProviderTableProps){
 
     return (
         <section>
+            <div className="flex">
+            <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button className="rounded shadow  flex gap-2 bg-background hover:bg-white  text-foreground ml-auto">
+                    <Settings2/>
+                    Vista
+                </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            {table
+              .getAllColumns()
+              .filter((column) => column.getCanHide())
+              .map((column, index, array) => {
+                if(index == array.length-1) return
+                return (
+                  <DropdownMenuCheckboxItem
+                    key={column.id}
+                    className="capitalize"
+                    checked={column.getIsVisible()}
+                    onCheckedChange={(value) =>
+                      column.toggleVisibility(!!value)
+                    }
+                  >
+                    {column.id}
+                  </DropdownMenuCheckboxItem>
+                )
+              })}
+          </DropdownMenuContent>
+        </DropdownMenu>
+            </div>
             <Table className="p-3">
                 <TableHeader>
                     {table.getHeaderGroups().map((headerGroup) => (
@@ -156,6 +189,9 @@ export default function ProvidersTable({onEditProvider}: ProviderTableProps){
                     <TableRow
                     key={row.id}
                     data-state={row.getIsSelected() && "selected"}
+                    onClick={() => {
+                        if (onProviderRowSelection) onProviderRowSelection(row.original)
+                    }}
                     >
                     {row.getVisibleCells().map((cell) => (
                         <TableCell key={cell.id}>
