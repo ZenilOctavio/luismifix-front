@@ -1,5 +1,4 @@
 import useUsers from "@/hooks/useUsers"
-import { useEffect } from "react"
 import { Avatar, AvatarFallback } from "../ui/avatar"
 import { Badge } from "../ui/badge"
 import { useAuth } from "@/providers/AuthProvider"
@@ -7,12 +6,8 @@ import { Card, CardContent, CardDescription, CardFooter, CardTitle, CardHeader }
 
 function UsersQuickView({className}: {className?:string}) {
 
-    const { users, error } = useUsers()
+    const { users } = useUsers()
     const { user } = useAuth()
-    
-    useEffect(() => {
-        console.log(error)
-    },[error])
 
     return (
         <>

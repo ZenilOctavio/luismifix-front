@@ -1,4 +1,4 @@
-import {getProviders, getProviderByName, getProviderById } from "@/services/providers/getProviders";
+import {getProviders, getProviderByName, getProviderById, getProviderContacts } from "@/services/providers/getProviders";
 import { CreationProvider, Provider } from "@/types/providers/Provider";
 import { Dispatch, useEffect, useState } from "react";
 import { createProvider as createProviderService } from "@/services/providers/postProvider";
@@ -8,12 +8,14 @@ import { updateProvider as updateProviderService, enableProvider as enableProvid
 import { useProvidersContext } from "@/providers/ProvidersProvider";
 import { getTypesProviders } from "@/services/typesProvider/getTypesProvider";
 import { TypeProvider } from "@/types/providers/TypeProvider";
+import { ProvidersContact } from "@/types/providers/Contact";
 
 function useProviders(){
     let providers: Provider[] = []
     let setProviders: Dispatch<Provider[]> = () => {}
     let typesProviders: TypeProvider[] = []
     let setTypesProviders: Dispatch<TypeProvider[]> = () => {}
+
     
     try{
         const context = useProvidersContext()
@@ -37,8 +39,19 @@ function useProviders(){
         typesProviders = typeProvidersState[0]
         setTypesProviders = typeProvidersState[1]
     }
-    
+
+    const [ providersContacts, setProvidersContacts ] = useState<Record<string, ProvidersContact[]>>({}) 
     const [ error, setError ] = useState<string>('')
+
+    const refreshProvidersContacts = async (provider: Provider) => {
+        const newContacts = await getProviderContacts(provider._id)
+
+        const newProvidersContacts = {...providersContacts}
+        newProvidersContacts[provider._id] = newContacts
+
+        setProvidersContacts(newProvidersContacts)
+        
+    }
 
     const refreshProviders = async () => {
         const newProviders = await getProviders()
@@ -101,12 +114,22 @@ function useProviders(){
         refreshProviders()
     }
 
+    const refreshAllProvidersContacts = () => {
+        providers.forEach(provider => {
+            refreshProvidersContacts(provider).then(() => {console.log(providersContacts)})
+        })
+    }
+
     useEffect(() => {
         refreshProviders()
+        refreshAllProvidersContacts()
     }, [])
 
 
-    return { providers, refreshProviders, createProvider, getProvider, error, updateProvider, enableProvider, disableProvider, typesProviders }
+    return { 
+        providers, refreshProviders, createProvider, getProvider, error, updateProvider, enableProvider, disableProvider, typesProviders,
+        providersContacts, refreshProvidersContacts, refreshAllProvidersContacts
+     }
 }
 
 export default useProviders
