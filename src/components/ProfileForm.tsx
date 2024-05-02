@@ -107,7 +107,7 @@ export function ProfileForm({onSubmit, className}: {onSubmit: Function | undefin
             </FormItem>
           )}
         />
-        <Button type="submit" className="mt-auto bg-slate-900 max-w-24 self-center rounded-sm text-lg font-normal px-4 py-6 shadow-md shadow-slate-400">Entrar</Button>
+        <Button type="submit" className="mt-auto text-foreground bg-slate-900 max-w-24 self-center rounded-sm text-lg font-normal px-4 py-6 shadow-md dark:shadow-none shadow-slate-400">Entrar</Button>
       </form>
     </Form>
   )

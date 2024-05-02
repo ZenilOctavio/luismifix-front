@@ -13,7 +13,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table"
-import { ChevronsUpDown, ChevronsRight, ChevronsLeft, ChevronRight, ChevronLeft, Ellipsis, Settings2, EllipsisVertical } from "lucide-react"
+import { ChevronsUpDown, ChevronsRight, ChevronsLeft, ChevronRight, ChevronLeft, Ellipsis, Settings2 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import {
