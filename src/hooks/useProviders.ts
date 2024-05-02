@@ -1,4 +1,4 @@
-import {getProviders, getProviderByName, getProviderById } from "@/services/providers/getProviders";
+import {getProviders, getProviderByName, getProviderById, getProviderContacts } from "@/services/providers/getProviders";
 import { CreationProvider, Provider } from "@/types/providers/Provider";
 import { Dispatch, useEffect, useState } from "react";
 import { createProvider as createProviderService } from "@/services/providers/postProvider";
@@ -8,12 +8,17 @@ import { updateProvider as updateProviderService, enableProvider as enableProvid
 import { useProvidersContext } from "@/providers/ProvidersProvider";
 import { getTypesProviders } from "@/services/typesProvider/getTypesProvider";
 import { TypeProvider } from "@/types/providers/TypeProvider";
+import { CreationProvidersContact, ProvidersContact } from "@/types/providers/Contact";
+import { createProviderContact as createProviderContactService} from "@/services/providers/postProvider"
+import { TypeContact } from "@/types/providers/TypeContact";
+import { getTypesContacts } from "@/services/providers/typesContacts/getTypesContacts";
 
 function useProviders(){
     let providers: Provider[] = []
     let setProviders: Dispatch<Provider[]> = () => {}
     let typesProviders: TypeProvider[] = []
     let setTypesProviders: Dispatch<TypeProvider[]> = () => {}
+
     
     try{
         const context = useProvidersContext()
@@ -37,8 +42,26 @@ function useProviders(){
         typesProviders = typeProvidersState[0]
         setTypesProviders = typeProvidersState[1]
     }
-    
+
+    const [ providersContacts, setProvidersContacts ] = useState<Record<string, ProvidersContact[]>>({}) 
+    const [ typeContacts, setTypeContacts ] = useState<TypeContact[]>([])
     const [ error, setError ] = useState<string>('')
+
+    const refreshTypeContacts = async () => {
+        const newTypeContacts = await getTypesContacts()
+        setTypeContacts(newTypeContacts)
+    }
+    
+
+    const refreshProvidersContacts = async (provider: Provider) => {
+        const newContacts = await getProviderContacts(provider._id)
+
+        const newProvidersContacts = {...providersContacts}
+        newProvidersContacts[provider._id] = newContacts
+
+        setProvidersContacts(newProvidersContacts)
+        
+    }
 
     const refreshProviders = async () => {
         const newProviders = await getProviders()
@@ -101,12 +124,46 @@ function useProviders(){
         refreshProviders()
     }
 
+    const refreshAllProvidersContacts = async () => {
+        providers.forEach(async (provider) => {
+            const providersContacts = await refreshProvidersContacts(provider)
+            console.log(providersContacts)
+        })
+    }
+
+    const createProviderContact = async (newContact: CreationProvidersContact) => {
+        try{
+            await createProviderContactService(newContact)
+            await refreshProviders()
+            await refreshAllProvidersContacts()
+
+            const newContactCreated = providersContacts[newContact.idProvider].find(contact => (contact.idTypeContact._id == newContact.idTypeContact 
+                                                                                                && contact.idProvider._id == newContact.idProvider
+                                                                                                && contact.data == newContact.data))
+
+            setError('')
+            return newContactCreated
+        }
+        catch(err){
+            const axiosError = err as AxiosError
+            const errorMessage = axiosError.response?.data as ErrorResponse
+            setError(errorMessage.message)
+            
+            return 
+        }
+    }
+
     useEffect(() => {
         refreshProviders()
+        refreshTypeContacts()
+        refreshAllProvidersContacts()
     }, [])
 
 
-    return { providers, refreshProviders, createProvider, getProvider, error, updateProvider, enableProvider, disableProvider, typesProviders }
+    return { 
+        providers, refreshProviders, createProvider, getProvider, error, updateProvider, enableProvider, disableProvider, typesProviders,
+        providersContacts, refreshProvidersContacts, refreshAllProvidersContacts, refreshTypeContacts, typeContacts, createProviderContact
+     }
 }
 
 export default useProviders

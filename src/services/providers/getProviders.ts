@@ -3,6 +3,7 @@ import { BACKEND_URL } from "@/config/constants";
 import { API_PROVIDERS_PATHNAME, API_PROVIDER_BY_NAME_PATHNAME, API_PROVIDER_CONTACTS_PATHNAME, API_PROVIDER_PATHNAME } from "@/config/constants";
 import { ErrorResponse } from "@/types/ErrorResponse";
 import { Provider } from "@/types/providers/Provider";
+import { ProvidersContact } from "@/types/providers/Contact";
 
 const url = new URL(BACKEND_URL)
 
@@ -61,5 +62,5 @@ export async function getProviderContacts(id: string){
         throw new Error(error.message)
     }
 
-    return response.data
+    return response.data as Array<ProvidersContact>
 }

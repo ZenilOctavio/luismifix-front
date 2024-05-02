@@ -21,6 +21,6 @@ export async function getUsers(): Promise<Array<User>> {
     const users = response.data as Array<User>
     
     
-    console.log(users)
+    // console.log(users)
     return users
 }

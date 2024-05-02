@@ -1,21 +1,27 @@
 import { Avatar, AvatarFallback } from "../ui/avatar"
-import { Badge } from "../ui/badge"
 import { Button } from "../ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardTitle, CardHeader } from "../ui/card"
 import useProviders from "@/hooks/useProviders"
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
+import { useEffect } from "react"
 
 
 export default function ProvidersQuickView({className}: {className?: string}){
 
-    const { providers } = useProviders()
+    const { providers, providersContacts, refreshAllProvidersContacts } = useProviders()
+
+    console.log(providersContacts)
+
+    useEffect(() => {
+        refreshAllProvidersContacts()
+    }, [providers])
 
     return (
         <>
         <Card className={className? className: ''}>
             <CardHeader>
                 <CardTitle className="text-xl">Providers</CardTitle>
-                <CardDescription>Users registered in the platform</CardDescription>
+                <CardDescription>Providers registered in the platform</CardDescription>
             </CardHeader>
             <CardContent className="">
             <ul className="flex-col">
@@ -34,24 +40,34 @@ export default function ProvidersQuickView({className}: {className?: string}){
                                     <Button variant="outline" className="ml-auto rounded">Ver contactos</Button>
                                     </PopoverTrigger>
                                     <PopoverContent className="w-auto">
-                                        <div className=" bg-red-50">
-                                            <h3 className="font-semibold">Contactos</h3>
-                                            <ul>
-                                                <li className="flex items-center gap-2">
-                                                    <Avatar>
-                                                        <AvatarFallback asChild><span className="text-sm">ER</span></AvatarFallback>
-                                                    </Avatar>
-                                                    <span className="text-sm font-semibold grow px-2">Juan Carlos</span>
-                                                    <div className="border border-slate-400 rounded-sm p-2">
-                                                        <span className="underline">some_email@email.com</span>
-                                                    </div>
-                                                    <div className="border border-slate-400 rounded-sm p-2">
-                                                        <span className="underline">+52 662 167 8480</span>
-                                                    </div>
+                                        <div>          
+                                                {
+                                                   providersContacts && providersContacts[currentProvider._id] && providersContacts[currentProvider._id].length?
+                                                        <>
+                                                            <h3 className="font-semibold mb-4">Contactos</h3>
+                                                            <ul className="flex flex-col gap-4">
+                                                            { providersContacts[currentProvider._id].map(contact => {
+                                                                return (
+                                                                    <li className="flex items-center gap-2">
+                                                                        {/* <Avatar>
+                                                                            <AvatarFallback asChild><span className="text-sm">ER</span></AvatarFallback>
+                                                                        </Avatar> */}
+                                                                        <span className="text-sm font-semibold grow px-2">{contact.idTypeContact.nameTypeContact}</span>
+                                                                        <div className="border border-slate-400 rounded-sm p-2">
+                                                                            <span className="underline">{contact.data}</span>
+                                                                        </div>
+                                                                        {/* <div className="border border-slate-400 rounded-sm p-2">
+                                                                            <span className="underline pb-1">+52 662 167 8480</span>
+                                                                        </div> */}
+                                                                    </li>
+                                                                )
+                                                            })}
+                                                            </ul>
+                                                        </>
+                                                        :
+                                                        <div>No Contacts to show</div>
+                                                }
 
-
-                                                </li>
-                                            </ul>
                                         </div>
                                     </PopoverContent>
                                 </Popover>
@@ -64,7 +80,7 @@ export default function ProvidersQuickView({className}: {className?: string}){
                 }
             </ul>
             </CardContent>
-            <CardFooter><span className="text-[0.8rem] text-slate-500">Go to Users page for more information</span></CardFooter>
+            <CardFooter><span className="text-[0.8rem] text-slate-500">Go to Providers page for more information</span></CardFooter>
         </Card>            
         </>
     )
