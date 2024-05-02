@@ -12,53 +12,41 @@ import { Textarea } from "../ui/textarea";
 import { toast } from "../ui/use-toast";
 
 
-interface EditProviderDialogProps {
-    provider: Provider
+interface CreateProviderDialogProps {
     open: boolean
     onOpenChange: (open: boolean) => void
 }
 
-const EditProviderFormSchema = z.object({
+const CreateProviderFormSchema = z.object({
     idTypeProvider: z.string(),
     nameProvider: z.string(),
     noteProvider: z.string()
 })
 
-export default function EditProviderDialog({provider, open, onOpenChange}: EditProviderDialogProps) {
+export default function CreateProviderDialog({open, onOpenChange}: CreateProviderDialogProps) {
 
-    const { updateProvider, typesProviders } = useProviders()
+    const { createProvider, typesProviders } = useProviders()
 
-    const form = useForm<z.infer<typeof EditProviderFormSchema>>({
-        resolver: zodResolver(EditProviderFormSchema),
+    const form = useForm<z.infer<typeof CreateProviderFormSchema>>({
+        resolver: zodResolver(CreateProviderFormSchema),
         defaultValues: {
-            idTypeProvider: provider.idTypeProvider._id,
-            nameProvider: provider.nameProvider,
-            noteProvider: provider.noteProvider
+            idTypeProvider: '',
+            nameProvider: '',
+            noteProvider: ''
         }
     })
 
-    const currentValues = form.getValues()
-    const idTypeProviderChanged = provider.idTypeProvider._id !== currentValues.idTypeProvider
-    const nameProviderChanged = provider.nameProvider !== currentValues.nameProvider
-    const noteProviderChanged = provider.noteProvider !== currentValues.noteProvider
-
-    const nameProviderNotEmpty = currentValues.nameProvider.length > 0
-    const noteProviderNotEmpty = currentValues.noteProvider.length > 0
-
-    const submitable = (idTypeProviderChanged || nameProviderChanged || noteProviderChanged) && nameProviderNotEmpty && noteProviderNotEmpty
-
-
-    const handleSubmitForm = async (data: z.infer<typeof EditProviderFormSchema>) => {
+    const handleSubmitForm = async (data: z.infer<typeof CreateProviderFormSchema>) => {
         try{
-            await updateProvider(provider, data)
+            await createProvider(data)
             toast({
-                title: 'Proveedor actualizado exitosamente'
+                title: 'Proveedor creado con éxito'
             })
             onOpenChange(false)
         }
         catch(err){
             toast({
-                title: 'No se pudo actualizar al proveedor',
+                title: 'Couldn`t update the provider',
                 // description: err.message,
                 variant: 'destructive'
             })
@@ -69,7 +57,7 @@ export default function EditProviderDialog({provider, open, onOpenChange}: EditP
         <Dialog open={open} onOpenChange={onOpenChange}>
         <DialogContent className="sm:max-w-[425px] p-4" >
           <DialogHeader>
-            <DialogTitle>Editar Proveedor</DialogTitle>
+            <DialogTitle>Crear Proveedor</DialogTitle>
           </DialogHeader>
 
             <Form {...form}>
@@ -81,7 +69,7 @@ export default function EditProviderDialog({provider, open, onOpenChange}: EditP
                             <FormItem>
                                 <FormLabel>Nombre</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="Escribe el nuevo nombre del proveedor" {...field}/>
+                                    <Input placeholder="Escribe el nombre" {...field}/>
                                 </FormControl>
                             </FormItem>
                         ))}
@@ -92,7 +80,7 @@ export default function EditProviderDialog({provider, open, onOpenChange}: EditP
                         name="idTypeProvider"
                         render={(({field}) => (
                             <FormItem>
-                                <FormLabel>Provider type</FormLabel>
+                                <FormLabel>Tipo de provedor</FormLabel>
                                 <FormControl>
                                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                                         <SelectTrigger>
@@ -106,7 +94,7 @@ export default function EditProviderDialog({provider, open, onOpenChange}: EditP
                                                             <SelectItem key={typeProvider._id} value={typeProvider._id}>{typeProvider.nameTypeProvider}</SelectItem>
                                                         ))
                                                         :
-                                                        <SelectItem value="0">No hay tipos de proveedor</SelectItem>
+                                                        <SelectItem value="0">No hay tipos para el proveedor</SelectItem>
                                                 }   
                                             </SelectGroup>
                                         </SelectContent>
@@ -127,7 +115,7 @@ export default function EditProviderDialog({provider, open, onOpenChange}: EditP
                             </FormItem>
                         ))}
                     />
-                    <Button type="submit" disabled={!submitable}>Guardar cambios</Button>
+                    <Button type="submit">Guardar</Button>
                 </form>
             </Form>
         </DialogContent>

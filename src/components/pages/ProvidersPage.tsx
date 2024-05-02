@@ -6,10 +6,14 @@ import EditProviderDialog from "../providers/EditProviderDialog"
 import { useState } from "react"
 import { Provider } from "@/types/providers/Provider"
 import { ProviderContactsList } from "../providers/ProviderContactsList"
+import CreateProviderDialog from "../providers/CreateProviderDialog"
+import { Button } from "../ui/button"
+import { CirclePlus } from "lucide-react"
 
 export default function ProvidersPage(){
 
     const [providerEditing, setProviderEditing] = useState<Provider | null>(null)
+    const [providerCreating, setProviderCreating] = useState<boolean>(false)
     const [providerContactsShowing, setProviderContactsShowing] = useState<Provider | null>(null)
 
     const closeProviderEdition = () => {
@@ -33,7 +37,15 @@ export default function ProvidersPage(){
                 <NavBar/>
                 <main className="p-4 grid grid-flow-col grid-cols-4 grid-rows-5 min-h-screen gap-4">
                     <section className="border rounded p-3 col-start-1 col-end-4 row-start-1 row-end-3">
-                        <h3>Providers</h3>
+                        <CreateProviderDialog open={providerCreating} onOpenChange={() => {setProviderCreating(!providerCreating)}}/>
+                        <Button 
+                            variant="outline" 
+                            className="rounded flex gap-4"
+                            onClick={() => setProviderCreating(!providerCreating)}
+                        >
+                            <CirclePlus/>
+                            Crear proveedor
+                        </Button>
                         <ProvidersTable onEditProvider={handleProviderEdition} onProviderRowSelection={handleProviderRowSelection}/>
                         {providerEditing && editDialog}
                     </section>

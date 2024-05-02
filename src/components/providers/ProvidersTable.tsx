@@ -6,6 +6,7 @@ import { toast } from "../ui/use-toast"
 import { Edit, EllipsisVertical, Settings2 } from "lucide-react"
 import { DropdownMenu, DropdownMenuSeparator, DropdownMenuTrigger, DropdownMenuItem, DropdownMenuLabel, DropdownMenuContent, DropdownMenuCheckboxItem } from "../ui/dropdown-menu"
 import { Button } from "../ui/button"
+import CreateProviderDialog from "./CreateProviderDialog"
 
 
 interface ProviderTableProps {
@@ -97,19 +98,19 @@ export default function ProvidersTable({onEditProvider, onProviderRowSelection}:
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="h-8 w-8 p-0 bg-transparent">
                     <EllipsisVertical/>
-                  <span className="sr-only">Open menu</span>
+                  <span className="sr-only">Abrir menú</span>
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                <DropdownMenuLabel>Acciones</DropdownMenuLabel>
                 <DropdownMenuItem
                   onClick={() => copyToClipboard(provider._id, 'ID')}
                 >
-                  Copy provider ID
+                  Copiar ID
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => {onEditProvider(provider)}}>
-                    Edit provider
+                    Editar proveedor
                 </DropdownMenuItem>
                 <DropdownMenuItem 
                 onClick={() => {
@@ -118,7 +119,7 @@ export default function ProvidersTable({onEditProvider, onProviderRowSelection}:
                     enableProvider(provider)
                 }}
                 >
-                    {provider.statusProvider? 'Disable provider' : 'Enable provider'}
+                    {provider.statusProvider? 'Deshabilitar proveedor' : 'Habilitar proveedor'}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
