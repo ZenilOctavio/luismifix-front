@@ -1,6 +1,5 @@
 // Base URL
-export const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
-
+export const BACKEND_URL = (import.meta.env.DEV)? import.meta.env.VITE_BACKEND_URL : window.location.href
 // Routes
 export const LOGIN_PAGE_PATHNAME = '/'
 export const HOME_PAGE_PATHNAME = '/home'
@@ -44,3 +43,9 @@ export const API_PURCHASES_FOR_PROVIDER_PATHNAME = API_PURCHASES_PATHNAME + '/pr
 export const API_PURCHASES_FOR_PRODUCT_PATHNAME = API_PURCHASES_PATHNAME + '/product'
 export const API_PURCHASES_ENABLE_PATHNAME = API_PURCHASES_PATHNAME + '/enable'
 export const API_PURCHASES_DISABLE_PATHNAME = API_PURCHASES_PATHNAME + '/disable'
+
+console.log('isDev: ',import.meta.env.DEV)
+console.log('mode: ',import.meta.env.MODE)
+console.log('VITE_B_URL:',import.meta.env.VITE_BACKEND_URL)
+console.log('windowLocation: ',window.location.href)
+console.log('BACKEND_URL: ',BACKEND_URL)
