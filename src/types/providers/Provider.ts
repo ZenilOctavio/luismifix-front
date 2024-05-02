@@ -1,4 +1,4 @@
-import { TypeProvider } from "./TypeProvider"
+import { TypeProvider } from "./typeProvider"
 
 export interface Provider{
     creationDateProvider: Date

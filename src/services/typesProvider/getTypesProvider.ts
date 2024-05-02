@@ -1,6 +1,6 @@
 import axios from "axios"
 import { BACKEND_URL, API_TYPES_PROVIDER_PATHNAME } from "@/config/constants";
-import { TypeProvider } from "@/types/providers/TypeProvider";
+import { TypeProvider } from "@/types/providers/typeProvider";
 import { ErrorResponse } from "@/types/ErrorResponse";
 
 const url = new URL(BACKEND_URL)

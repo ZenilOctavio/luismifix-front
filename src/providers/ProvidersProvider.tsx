@@ -1,5 +1,5 @@
 import { Provider } from "@/types/providers/Provider";
-import { TypeProvider } from "@/types/providers/TypeProvider";
+import { TypeProvider } from "@/types/providers/typeProvider";
 import { createContext, useState, useContext } from "react";
 
 

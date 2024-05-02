@@ -7,7 +7,7 @@ import { ErrorResponse } from "@/types/ErrorResponse";
 import { updateProvider as updateProviderService, enableProvider as enableProviderService, disableProvider as disableProviderService } from "@/services/providers/putProviders";
 import { useProvidersContext } from "@/providers/ProvidersProvider";
 import { getTypesProviders } from "@/services/typesProvider/getTypesProvider";
-import { TypeProvider } from "@/types/providers/TypeProvider";
+import { TypeProvider } from "@/types/providers/typeProvider";
 import { CreationProvidersContact, ProvidersContact } from "@/types/providers/Contact";
 import { createProviderContact as createProviderContactService} from "@/services/providers/postProvider"
 import { TypeContact } from "@/types/providers/TypeContact";
