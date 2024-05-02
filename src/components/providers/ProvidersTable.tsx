@@ -3,10 +3,9 @@ import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from "@tanstack
 import { Provider } from "@/types/providers/Provider"
 import useProviders from "@/hooks/useProviders"
 import { toast } from "../ui/use-toast"
-import { Edit, EllipsisVertical, Settings2 } from "lucide-react"
+import {  EllipsisVertical, Settings2 } from "lucide-react"
 import { DropdownMenu, DropdownMenuSeparator, DropdownMenuTrigger, DropdownMenuItem, DropdownMenuLabel, DropdownMenuContent, DropdownMenuCheckboxItem } from "../ui/dropdown-menu"
 import { Button } from "../ui/button"
-import CreateProviderDialog from "./CreateProviderDialog"
 
 
 interface ProviderTableProps {

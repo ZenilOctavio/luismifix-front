@@ -1,4 +1,4 @@
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "../ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Provider } from "@/types/providers/Provider";
@@ -92,7 +92,7 @@ export default function EditProviderDialog({provider, open, onOpenChange}: EditP
                         name="idTypeProvider"
                         render={(({field}) => (
                             <FormItem>
-                                <FormLabel>Provider type</FormLabel>
+                                <FormLabel>Tipo de proveedor</FormLabel>
                                 <FormControl>
                                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                                         <SelectTrigger>
