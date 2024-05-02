@@ -13,6 +13,9 @@ function useProviders(){
 
     try{
         const context = useProvidersContext()
+
+        if(Object.keys(context).length == 0) throw new Error('No ProvidersContext reached')
+        
         if(context){
             console.log('Using context')
             providers = context.providers!

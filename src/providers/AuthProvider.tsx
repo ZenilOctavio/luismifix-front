@@ -24,8 +24,11 @@ export const useAuth = (): AuthContextType => {
 export const AuthProvider = ({children}: {children: any}) => {
     const [user, setUser] = useState<ProfileResponse | null>(null);
 
+
     const refreshProfile = async () => {
         const newUser = await profile()
+
+        console.log(newUser)
             
         setUser(newUser)
 

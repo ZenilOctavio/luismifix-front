@@ -10,11 +10,19 @@ import { SessionResponse } from "@/types/session/SessionResponse"
 import { CheckCheck } from "lucide-react"
 import { useAuth } from "@/providers/AuthProvider"
 import logo from '@/assets/logo_luismifix.png'
+import { useEffect } from "react"
 
 function NavBar() {
     const location = useLocation()
     const navigate = useNavigate()
     const { user, logout } = useAuth()
+
+    useEffect(() => {
+        if (!user || Object.keys(user).length == 0){
+            console.log('Theres no user')
+            navigate(LOGIN_PAGE_PATHNAME)
+        }
+    }, [])
 
     const handleLogOut = async () => {
         try{
@@ -53,25 +61,30 @@ function NavBar() {
 
     const links = [
         {
-            pageName: 'Inventario',
-            pathname: INVENTORY_PAGE_PATHNAME
-        },
-        {
-            pageName: 'Clientes',
-            pathname: CLIENTS_PAGE_PATHNAME
-        },
-        {
-            pageName: 'Tablero',
-            pathname: BOARD_PAGE_PATHNAME
-        },
-        {
-            pageName: 'Pendientes',
-            pathname: TODO_PAGE_PATHNAME
-        },
-        {
             pageName: 'Home',
             pathname: HOME_PAGE_PATHNAME
         },
+        {
+            pageName: 'Inventario',
+            pathname: INVENTORY_PAGE_PATHNAME
+        },
+        // {
+        //     pageName: 'Proveedores',
+        //     pathName: PROVIDERS_PAGE_PATHNAME
+        // }
+        // {
+        //     pageName: 'Clientes',
+        //     pathname: CLIENTS_PAGE_PATHNAME
+        // },
+        // {
+        //     pageName: 'Tablero',
+        //     pathname: BOARD_PAGE_PATHNAME
+        // },
+        // {
+        //     pageName: 'Pendientes',
+        //     pathname: TODO_PAGE_PATHNAME
+        // },
+
         // {
         //     pageName: 'Users',
         //     pathname: USERS_PAGE_PATHNAME
@@ -102,25 +115,25 @@ function NavBar() {
             <div className="flex gap-4 ">
                 <ThemeButton></ThemeButton>
                 <DropdownMenu>
-                    <DropdownMenuTrigger asChild className="bg-transparent  px-3  p-1 hover:outline-none hover:border-none">
+                    {user && <DropdownMenuTrigger asChild className="bg-transparent  px-3  p-1 hover:outline-none hover:border-none">
                         <div className="flex items-center justify-center hover:scale-105 transition-transform hover:outline-none hover:border-none hover:cursor-pointer">
                             <Avatar className="hover:cursor-pointer  transition-transform mr-2">
                                 <AvatarFallback className=" min-w-8">{user.username.slice(0,2).toUpperCase()}</AvatarFallback>
                             </Avatar> 
                             <span className="border-l-2 p-2 text-xl">{user.username}</span> 
                         </div>
-                    </DropdownMenuTrigger>
+                    </DropdownMenuTrigger>}
                     <DropdownMenuContent>
                         <DropdownMenuLabel>My account</DropdownMenuLabel>
                         <DropdownMenuSeparator></DropdownMenuSeparator>
-                        <DropdownMenuItem     
+                        {/* <DropdownMenuItem     
                             onClick={handleSettings}
                             className="flex gap-4 cursor-pointer"
                         >
 
                             <Settings size={20} />
                             <span>Settings</span>
-                        </DropdownMenuItem>
+                        </DropdownMenuItem> */}
                         <DropdownMenuItem     
                             onClick={handleLogOut}
                             className="flex gap-4 cursor-pointer"
