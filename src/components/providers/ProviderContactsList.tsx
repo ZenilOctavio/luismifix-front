@@ -1,10 +1,10 @@
 import useProviders from "@/hooks/useProviders"
 import { ProvidersContact } from "@/types/providers/Contact"
 import { Provider } from "@/types/providers/Provider"
-import { Phone, Instagram, Mail, Facebook, MessageCircle, Users, CirclePlus } from "lucide-react"
+import { Phone, Instagram, Mail, Facebook, MessageCircle, Users } from "lucide-react"
 import { useEffect } from "react"
 import { toast } from "../ui/use-toast"
-import { Button } from "../ui/button"
+import CreateContactDialog from "./CreateContactDialog"
 
 export function ProviderContactsList({provider = null}: {provider: Provider | null}){
 
@@ -47,10 +47,7 @@ export function ProviderContactsList({provider = null}: {provider: Provider | nu
                     <h2 className="text-lg font-semibold">Contactos</h2>
                     <p>{provider.nameProvider}</p>
                 </div>
-                    <Button className="self-end flex gap-2" variant="outline">
-                        <CirclePlus/>
-                        Agregar nuevo contacto
-                    </Button>
+                    <CreateContactDialog provider={provider}/>
                 </header>
                     <ul className="flex flex-col gap-4 mt-5 w-max">
                         {
@@ -90,7 +87,10 @@ export function ProviderContactsList({provider = null}: {provider: Provider | nu
                 </>
                 :
                 <div className=" self-start flex flex-col items-center gap-8">
+                    <header className="flex items-center gap-10">
                     <h2 className="text-lg font-semibold">Contactos</h2>
+                    <CreateContactDialog provider={provider}/>
+                    </header>
                     <p className="opacity-80">No hay contactos para {provider.nameProvider}</p>
                 </div>
             }

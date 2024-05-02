@@ -87,7 +87,8 @@ export default function ProvidersTable({onEditProvider, onProviderRowSelection}:
         },
         {   id: 'Edit',
             header: () => {
-                return <span className="flex items-center gap-1">Edit <Edit className="inline" size={15}/></span>
+                // return <span className="flex items-center gap-1">Edit <Edit className="inline" size={15}/></span>
+                return <></>
             },
             cell: ({cell}) => {
                 const provider = cell.row.original
@@ -164,7 +165,7 @@ export default function ProvidersTable({onEditProvider, onProviderRowSelection}:
           </DropdownMenuContent>
         </DropdownMenu>
             </div>
-            <Table className="p-3">
+            <Table className="p-3 mt-4">
                 <TableHeader>
                     {table.getHeaderGroups().map((headerGroup) => (
                     <TableRow key={headerGroup.id}>

@@ -25,10 +25,12 @@ export const API_TYPES_USER_PATHNAME = 'api/types/typesUser'
 export const API_PROVIDERS_PATHNAME = 'api/providers'
 export const API_PROVIDER_PATHNAME = API_PROVIDERS_PATHNAME + '/provider'
 export const API_PROVIDER_CONTACTS_PATHNAME = API_PROVIDERS_PATHNAME + '/contacts'
+export const API_PROVIDER_POST_CONTACTS_PATHNAME = API_PROVIDERS_PATHNAME + '/contact'
 export const API_PROVIDER_BY_NAME_PATHNAME = API_PROVIDERS_PATHNAME + '/search'
 
 export const API_TYPES_PATHNAME = 'api/types'
 export const API_TYPES_PROVIDER_PATHNAME = API_TYPES_PATHNAME + '/typesProvider'
+export const API_TYPES_PROVIDER_CONTACT_PATHNAME = API_TYPES_PATHNAME + '/typesContact'
 export const API_TYPES_PRODUCT_PATHNAME = API_TYPES_PATHNAME + '/typesProduct'
 
 export const API_PRODUCTS_PATHNAME = 'api/products'
