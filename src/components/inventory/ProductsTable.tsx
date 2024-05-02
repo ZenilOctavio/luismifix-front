@@ -13,7 +13,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table"
-import { ChevronsUpDown, ChevronsRight, ChevronsLeft, ChevronRight, ChevronLeft, Ellipsis, Settings2 } from "lucide-react"
+import { ChevronsUpDown, ChevronsRight, ChevronsLeft, ChevronRight, ChevronLeft, Ellipsis, Settings2, EllipsisVertical } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -21,6 +21,8 @@ import {
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
@@ -42,9 +44,9 @@ const headersClassNames = "bg-background text-slate-500 hover:bg-background text
 
 
 
-export function ProductsTable() {
+export function ProductsTable({onEditProduct}: {onEditProduct?: Function | undefined}) {
     
-    const { products, purchasesForProducts } = useProducts() 
+    const { products, purchasesForProducts, enableProduct, disableProduct } = useProducts() 
 
     
     const [sorting, setSorting] = React.useState<SortingState>([])
@@ -52,7 +54,11 @@ export function ProductsTable() {
     const [columnVisibility, setColumnVisibility] =
       React.useState<VisibilityState>({})
     const [rowSelection, setRowSelection] = React.useState({})
-  
+    
+    const handleEditProduct = (product: Product) => {
+        if (onEditProduct) onEditProduct(product)
+    }
+
     const productsTableColumns = React.useMemo<ColumnDef<Product>[]>(() => {
         return ([
             {
@@ -169,9 +175,34 @@ export function ProductsTable() {
                 cell: ({row}) => {
                     // console.log(row.original)
                     return (
-                        <Button className="bg-white text-foreground p-0 w-12 rounded active:bg-white focus:bg-white hover:bg-white cursor-pointer dark:bg-slate-900 dark:text-primary">
-                            <Ellipsis className="h-5 text-foreground"/>
-                        </Button>
+                                    <DropdownMenu>
+                                    <DropdownMenuTrigger asChild>
+                                        <Button className="bg-white text-foreground p-0 w-12 rounded active:bg-white focus:bg-white hover:bg-white cursor-pointer dark:bg-slate-900 dark:text-primary">
+                                            <Ellipsis className="h-5 text-foreground"/>
+                                        </Button>
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent align="end">
+                                      <DropdownMenuLabel>Acciones</DropdownMenuLabel>
+                                      <DropdownMenuItem
+                                        onClick={() => navigator.clipboard.writeText(row.original._id).then(() => {toast({title: 'ID copiado al portapapeles'})})}
+                                      >
+                                        Copiar ID
+                                      </DropdownMenuItem>
+                                      <DropdownMenuSeparator />
+                                      <DropdownMenuItem onClick={() => {handleEditProduct(row.original)}}>
+                                          Editar producto
+                                      </DropdownMenuItem>
+                                      <DropdownMenuItem 
+                                      onClick={() => {
+                                          row.original.statusProduct? 
+                                          disableProduct(row.original) : 
+                                          enableProduct(row.original)
+                                      }}
+                                      >
+                                          {row.original.statusProduct? 'Deshabilitar producto' : 'Habilitar producto'}
+                                      </DropdownMenuItem>
+                                    </DropdownMenuContent>
+                                  </DropdownMenu>
                     )
                 }
             }

@@ -92,7 +92,7 @@ export default function EditProviderDialog({provider, open, onOpenChange}: EditP
                         name="idTypeProvider"
                         render={(({field}) => (
                             <FormItem>
-                                <FormLabel>Provider type</FormLabel>
+                                <FormLabel>Tipo de proveedor</FormLabel>
                                 <FormControl>
                                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                                         <SelectTrigger>
