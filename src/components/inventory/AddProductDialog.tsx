@@ -56,6 +56,8 @@ export function AddProductDialog(){
                 title: "Producto creado",
                 description: "El producto se ha creado correctamente",
             })
+
+            form.reset()    
     
         }).catch((err : AxiosError) => {
             if (err.response?.data){
@@ -76,7 +78,7 @@ export function AddProductDialog(){
     return (
         <Dialog>
         <DialogTrigger asChild>
-            <Button variant="outline" className="text-slate-800 rounded border-dotted flex gap-4 items-center justify-center">
+            <Button variant="outline" className="text-foreground rounded border-dotted flex gap-4 items-center justify-center">
                 <CirclePlus className=""/>
                 Añadir producto
             </Button>

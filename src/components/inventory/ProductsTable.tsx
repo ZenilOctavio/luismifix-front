@@ -13,11 +13,12 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table"
-import { ChevronsUpDown, ChevronsRight, ChevronsLeft, ChevronRight, ChevronLeft } from "lucide-react"
+import { ChevronsUpDown, ChevronsRight, ChevronsLeft, ChevronRight, ChevronLeft, Ellipsis, Settings2 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
+  DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
@@ -34,6 +35,7 @@ import {
 import { Product } from "@/types/products/Product"
 import { Purchase } from "@/types/purchases/Purchase"
 import { AddProductDialog } from "./AddProductDialog"
+import { toast } from "../ui/use-toast"
 
 
 const headersClassNames = "bg-background text-slate-500 hover:bg-background text-center flex gap-2"
@@ -42,7 +44,7 @@ const headersClassNames = "bg-background text-slate-500 hover:bg-background text
 
 export function ProductsTable() {
     
-    const { products, purchasesForProducts} = useProducts() 
+    const { products, purchasesForProducts } = useProducts() 
 
     
     const [sorting, setSorting] = React.useState<SortingState>([])
@@ -54,7 +56,28 @@ export function ProductsTable() {
     const productsTableColumns = React.useMemo<ColumnDef<Product>[]>(() => {
         return ([
             {
-                id: "nameProduct",
+                id: "select",
+                header: ({ table }) => (
+                  <input
+                    type="checkbox"
+                    defaultChecked={false}
+                    onChange={() => table.toggleAllPageRowsSelected()}
+                    aria-label="Select all"
+                  />
+                ),
+                cell: ({ row }) => (
+                  <input
+                    type="checkbox"
+                    checked={row.getIsSelected()}
+                    onChange={() => row.toggleSelected()}
+                    aria-label="Select row"
+                  />
+                ),
+                enableSorting: false,
+                enableHiding: false,
+              },
+            {
+                id: "Nombre",
                 accessorKey: "nameProduct",
                 header: ({column}) => {
                     return(
@@ -67,10 +90,10 @@ export function ProductsTable() {
                         </Button>
                     )
                 },
-                cell: ({ row }) => <div>{row.getValue("nameProduct")}</div>
+                cell: ({ row }) => <div>{row.getValue("Nombre")}</div>
             },
             {
-                id: "descriptionProduct",
+                id: "Descripción",
                 accessorKey: "descriptionProduct",
                 header: ({column}) => {
                     return(
@@ -83,21 +106,20 @@ export function ProductsTable() {
                         </Button>
                     )
                 },
-                cell: ({row}) => <div>{row.getValue("descriptionProduct")}</div>
+                cell: ({row}) => <div>{row.original.descriptionProduct}</div>
             },
             {
-                id: "links",
+                id: "Link de compra",
                 header: () => ( <div>Link de compra</div>),
                 cell: ({row}) => {
 
-                    const productName = row.getValue('nameProduct')
-                    const product = products.find(product => product.nameProduct == productName)!
+                    const product = row.original
 
-                    console.log(purchasesForProducts)
+                    // console.log(purchasesForProducts)
                     return (
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
-                                <Button className="bg-slate-50 text-slate-600 flex gap-2">
+                                <Button className="bg-slate-50 text-slate-600 flex gap-2 dark:bg-slate-800 dark:text-slate-400">
                                     Link(s)
                                     <ChevronsUpDown className="w-4 h-4" />
                                 </Button>
@@ -110,7 +132,19 @@ export function ProductsTable() {
                                         },
                                         []
                                     ).map((link: string, index: number) => (
-                                        <DropdownMenuItem key={index}>{link}</DropdownMenuItem>
+                                        <DropdownMenuItem 
+                                            key={index}
+                                            onClick={(event) => {
+                                                event.preventDefault()
+                                                navigator.clipboard.writeText(link)
+                                                toast({
+                                                    title: 'Link copiado',
+                                                    description: link
+                                                })
+                                            }}
+                                        >
+                                            {link}
+                                        </DropdownMenuItem>
                                     ))
                                 ) : (
                                     <DropdownMenuItem>No Links to show</DropdownMenuItem>
@@ -121,17 +155,29 @@ export function ProductsTable() {
                 }
             },
             {
-                id: "availableUnits",
+                id: "Unidades disponibles",
                 accessorKey: 'amountProduct',
                 header: () => (<div className="text-center">Unidades disponibles</div>),
                 cell: ({cell}) => {
     
                     return (<div className="text-center">{ cell.getValue() as number | string}</div>)
                 }
+            },
+            {
+                id: "Editar",
+                header: () => {return ''},
+                cell: ({row}) => {
+                    // console.log(row.original)
+                    return (
+                        <Button className="bg-white text-foreground p-0 w-12 rounded active:bg-white focus:bg-white hover:bg-white cursor-pointer dark:bg-slate-900 dark:text-primary">
+                            <Ellipsis className="h-5 text-foreground"/>
+                        </Button>
+                    )
+                }
             }
         
         ])
-    } , [products])
+    } , [products, purchasesForProducts])
 
     const table = useReactTable({
         data: products,
@@ -154,16 +200,45 @@ export function ProductsTable() {
     
     return (
         <section className="p-12">
-            <div className="pb-4 flex gap-3">
+            <div className="pb-4 px-1 flex gap-3">
                 <Input 
                     placeholder="Buscar Producto" 
-                    value={(table.getColumn('nameProduct')?.getFilterValue() as string ?? "")}
+                    value={(table.getColumn('Nombre')?.getFilterValue() as string ?? "")}
                     onChange={(e) => {
-                        table.getColumn('nameProduct')?.setFilterValue(e.target.value)
+                        table.getColumn('Nombre')?.setFilterValue(e.target.value)
                     }}
                     className="max-w-80 rounded"
                 />
                 <AddProductDialog/>
+
+                <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button className="rounded shadow  flex gap-2 bg-background hover:bg-white  text-foreground ml-auto">
+                    <Settings2/>
+                    Vista
+                </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            {table
+              .getAllColumns()
+              .filter((column) => column.getCanHide())
+              .map((column) => {
+                return (
+                  <DropdownMenuCheckboxItem
+                    key={column.id}
+                    className="capitalize"
+                    checked={column.getIsVisible()}
+                    onCheckedChange={(value) =>
+                      column.toggleVisibility(!!value)
+                    }
+                  >
+                    {column.id}
+                  </DropdownMenuCheckboxItem>
+                )
+              })}
+          </DropdownMenuContent>
+        </DropdownMenu>
+
             </div>
             <div className="border rounded-md">
                 <Table>
@@ -190,11 +265,18 @@ export function ProductsTable() {
                         {table.getRowModel().rows?.length ? (
                         table.getRowModel().rows.map((row) => (
                             <TableRow
-                            key={row.id}
-                            data-state={row.getIsSelected() && "selected"}
+                                key={row.id}
+                                data-state={row.getIsSelected() && "selected"}
+
                             >
                             {row.getVisibleCells().map((cell) => (
-                                <TableCell key={cell.id}>
+                                <TableCell 
+                                    key={cell.id}
+                                    onClick={() => {
+                                        console.log('cellId: ',cell.id)
+                                        if (cell.id != '0_Editar') row.toggleSelected()
+                                    }}
+                                >
                                 {flexRender(
                                     cell.column.columnDef.cell,
                                     cell.getContext()
@@ -218,7 +300,7 @@ export function ProductsTable() {
 
             </div>
         <div className= "flex justify-end p-2">
-            <span className="mr-auto">Selection</span>
+            <span className="mr-auto text-sm">{table.getSelectedRowModel().rows.length} of {table.getRowCount()} row(s) selected</span>
             <div className="flex items-center gap-4">
             <label className="text-sm font-semibold ">Rows per page</label>
                 <Input type="number" className="w-20" value={table.getState().pagination.pageSize} onChange={(e) => {table.setPageSize(Number(e.target.value))}}/>

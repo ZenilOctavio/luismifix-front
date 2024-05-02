@@ -126,14 +126,14 @@ function NavBar() {
                     <DropdownMenuContent>
                         <DropdownMenuLabel>My account</DropdownMenuLabel>
                         <DropdownMenuSeparator></DropdownMenuSeparator>
-                        <DropdownMenuItem     
+                        {/* <DropdownMenuItem     
                             onClick={handleSettings}
                             className="flex gap-4 cursor-pointer"
                         >
 
                             <Settings size={20} />
                             <span>Settings</span>
-                        </DropdownMenuItem>
+                        </DropdownMenuItem> */}
                         <DropdownMenuItem     
                             onClick={handleLogOut}
                             className="flex gap-4 cursor-pointer"
