@@ -5,15 +5,17 @@ import { Button } from "@/components/ui/button"
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
+import { Input, PasswordInput } from "@/components/ui/input"
 import { toast } from "@/components/ui/use-toast"
-import { authenticate, ResponseLoginJson } from "@/services/auth"
+import { SessionResponse } from "@/types/session/SessionResponse"
+import { useAuth } from "@/providers/AuthProvider"
+import { CheckCheck, BadgeAlert } from "lucide-react"
+
 
 const FormSchema = z.object({
   username: z.string().min(2, {
@@ -25,6 +27,9 @@ const FormSchema = z.object({
 })
 
 export function ProfileForm({onSubmit, className}: {onSubmit: Function | undefined, className: string | undefined}) {
+  const { signup } = useAuth()
+
+  
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -35,20 +40,33 @@ export function ProfileForm({onSubmit, className}: {onSubmit: Function | undefin
 
   async function handleSubmit(data: z.infer<typeof FormSchema>) {
     try{
-      const responseData = await authenticate(data.username, data.password)
+      const responseData = await signup(data.username, data.password)
+      
+      if(!responseData.user) throw new Error(responseData.message)
+
+      console.log(responseData)
       toast({
-        title: "Success",
-        description: responseData.message,
-        variant: 'default',
-      })
-      onSubmit?.(responseData)
+        title: 'Log in completed',
+        content: responseData.message,
+        description: 
+        <span className="flex items-center gap-2">
+            <CheckCheck size={16} />
+            <span>{responseData.message}</span>
+        </span>
+    })
+
+      if (onSubmit) onSubmit(responseData)
     }
     catch(error){
-      const response = error as ResponseLoginJson
+      const response = error as SessionResponse
 
       toast({
-        title: "Failure",
-        description: response.message,
+        title: "Log in failed",
+        description:
+        <span className="flex items-center gap-2">
+          <BadgeAlert size={16} />
+          <span>{response.message}</span>
+      </span>,
         variant: 'destructive',  
       })
           
@@ -68,13 +86,10 @@ export function ProfileForm({onSubmit, className}: {onSubmit: Function | undefin
           name="username"
           render={({ field }) => (
             <FormItem className="">
-              <FormLabel>Username</FormLabel>
+              <FormLabel className="sm:text-lg text-sm">Usuario</FormLabel>
               <FormControl>
-                <Input placeholder="Your username" {...field} />
+                <Input placeholder="Tu nombre de usuario" {...field} className="rounded-sm h-12 shadow-lg"/>
               </FormControl>
-              <FormDescription>
-                This is your public display name.
-              </FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -84,18 +99,15 @@ export function ProfileForm({onSubmit, className}: {onSubmit: Function | undefin
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Password</FormLabel>
+              <FormLabel className="sm:text-lg text-sm">Contraseña</FormLabel>
               <FormControl>
-                <Input type="password" placeholder="Your password" {...field} />
+                <PasswordInput placeholder="Tu contraseña" {...field}  className="rounded-sm h-12 shadow-lg"/>
               </FormControl>
-              <FormDescription>
-                This is your private password.
-              </FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button type="submit" className="mt-auto">Submit</Button>
+        <Button type="submit" className="mt-auto text-foreground bg-slate-900 max-w-24 self-center rounded-sm text-lg font-normal px-4 py-6 shadow-md dark:shadow-none shadow-slate-400">Entrar</Button>
       </form>
     </Form>
   )

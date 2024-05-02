@@ -28,18 +28,18 @@ function ThemeButton() {
     
     return (
         <DropdownMenu>
-            <DropdownMenuTrigger className="aspect-square rounded-full border-primary border bg-background">
-                <button className="flex justify-center items-center  p-0 bg-transparent border-none">
+            <DropdownMenuTrigger asChild className="aspect-square rounded-full border-primary border bg-background">
+                <span className="flex justify-center items-center  p-0 bg-transparent border-none hover:cursor-pointer hover:scale-105 transition-transform">
                     {
                         (theme == 'light')? 
-                            <SunDim size={20} /> 
+                            <SunDim size={30} /> 
                         : 
                             (theme == 'dark')?
-                                <LucideMoonStar size={20}/>
+                                <LucideMoonStar size={30}/>
                             :
-                            <CloudCogIcon size={20} />
+                            <CloudCogIcon size={30} />
                     }
-                </button>
+                </span>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
                 <DropdownMenuLabel>Select theme</DropdownMenuLabel>
@@ -47,7 +47,8 @@ function ThemeButton() {
                 
                 {themes.map( themeObject => {
                     return (                        
-                        <DropdownMenuCheckboxItem 
+                        <DropdownMenuCheckboxItem
+                            key={themeObject.value} 
                             checked={themeObject.value == theme} 
                             onCheckedChange={() => {
                             setTheme(themeObject.value)

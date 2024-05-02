@@ -61,3 +61,21 @@
       @apply bg-background text-foreground;
     }
   }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    opacity: 60%;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--background));
+    opacity: 60%;
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--secondary));
+    border-radius: 1rem;
+    opacity: 60%;
+  }
