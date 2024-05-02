@@ -5,6 +5,7 @@ export const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
 export const LOGIN_PAGE_PATHNAME = '/'
 export const HOME_PAGE_PATHNAME = '/home'
 export const USERS_PAGE_PATHNAME = '/users'
+export const PROVIDERS_PAGE_PATHNAME = '/providers'
 export const INVENTORY_PAGE_PATHNAME = '/inventory'
 export const CLIENTS_PAGE_PATHNAME = '/clients'
 export const BOARD_PAGE_PATHNAME = '/board'

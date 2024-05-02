@@ -6,11 +6,15 @@ import { AxiosError } from "axios";
 import { ErrorResponse } from "@/types/ErrorResponse";
 import { updateProvider as updateProviderService, enableProvider as enableProviderService, disableProvider as disableProviderService } from "@/services/providers/putProviders";
 import { useProvidersContext } from "@/providers/ProvidersProvider";
+import { getTypesProviders } from "@/services/typesProvider/getTypesProvider";
+import { TypeProvider } from "@/types/providers/TypeProvider";
 
 function useProviders(){
     let providers: Provider[] = []
     let setProviders: Dispatch<Provider[]> = () => {}
-
+    let typesProviders: TypeProvider[] = []
+    let setTypesProviders: Dispatch<TypeProvider[]> = () => {}
+    
     try{
         const context = useProvidersContext()
 
@@ -20,21 +24,29 @@ function useProviders(){
             console.log('Using context')
             providers = context.providers!
             setProviders = context.setProviders!
+            typesProviders = context.typesProviders!
+            setTypesProviders = context.setTypesProviders!
         }
     }
     catch(err){
         console.log(err, 'Using independent state')
-        const state = useState<Provider[]>([])
-        providers = state[0]
-        setProviders = state[1]
+        const providersState = useState<Provider[]>([])
+        const typeProvidersState = useState<TypeProvider[]>([])
+        providers = providersState[0]
+        setProviders = providersState[1]
+        typesProviders = typeProvidersState[0]
+        setTypesProviders = typeProvidersState[1]
     }
     
     const [ error, setError ] = useState<string>('')
 
     const refreshProviders = async () => {
         const newProviders = await getProviders()
+        const newProvidersTypes = await getTypesProviders()
         if(newProviders)
             setProviders(newProviders)
+        if(newProvidersTypes)
+            setTypesProviders(newProvidersTypes)
     }
 
     const getProvider = async (by: 'id' | 'name', value: string) => {
@@ -93,7 +105,8 @@ function useProviders(){
         refreshProviders()
     }, [])
 
-    return { providers, refreshProviders, createProvider, getProvider, error, updateProvider, enableProvider, disableProvider }
+
+    return { providers, refreshProviders, createProvider, getProvider, error, updateProvider, enableProvider, disableProvider, typesProviders }
 }
 
 export default useProviders

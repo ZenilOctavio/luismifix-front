@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from "react-router-dom"
-import { BOARD_PAGE_PATHNAME, CLIENTS_PAGE_PATHNAME, HOME_PAGE_PATHNAME, INVENTORY_PAGE_PATHNAME, TODO_PAGE_PATHNAME, USERS_PAGE_PATHNAME } from "@/config/constants"
+import { HOME_PAGE_PATHNAME, INVENTORY_PAGE_PATHNAME, USERS_PAGE_PATHNAME } from "@/config/constants"
 import { Avatar, AvatarFallback } from "./ui/avatar"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "./ui/dropdown-menu"
 import { BadgeAlert, LogOut, Settings } from "lucide-react"

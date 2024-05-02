@@ -1,8 +1,11 @@
 import { Provider } from "@/types/providers/Provider";
+import { TypeProvider } from "@/types/providers/TypeProvider";
 import { createContext, useState, useContext } from "react";
 
 
 interface ProvidersContextType {
+    typesProviders?: TypeProvider[],
+    setTypesProviders?: (typesProviders: TypeProvider[]) => void
     providers?: Provider[]
     setProviders?: (providers: Provider[]) => void
 }
@@ -18,9 +21,10 @@ export const useProvidersContext = (): ProvidersContextType => {
 
 export const ProvidersProvider = ({children}: {children: any}) => {
     const [providers, setProviders] = useState<Provider[]>([])
+    const [typesProviders, setTypesProviders] = useState<TypeProvider[]>([])
 
     return (
-        <ProvidersContext.Provider value={{providers, setProviders}}>
+        <ProvidersContext.Provider value={{providers, setProviders, typesProviders, setTypesProviders}}>
             {children}
         </ProvidersContext.Provider>
     )
