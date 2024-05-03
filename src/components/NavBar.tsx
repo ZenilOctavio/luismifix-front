@@ -11,8 +11,7 @@ import { CheckCheck, Menu } from "lucide-react"
 import { useAuth } from "@/providers/AuthProvider"
 import logo from '@/assets/logo_luismifix.png'
 import { useEffect } from "react"
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "./ui/sheet"
-import { Button } from "./ui/button"
+import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet"
 import { useTheme } from "@/providers/ThemeProvider"
 
 function NavBar() {

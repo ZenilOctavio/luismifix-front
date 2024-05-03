@@ -24,7 +24,7 @@ function UsersQuickView({className}: {className?:string}) {
                         if (currentUser && currentUser._id != user._id)
                         return (
                             <li className="p-4 border-b-2 flex items-center gap-7 hover:bg-slate-100 dark:hover:bg-slate-800 rounded transition-colors overflow-hidden text-ellipsis" key={currentUser._id}>
-                                <Avatar style={{width: '2rem', height: '2rem'}} >
+                                <Avatar style={{width: '2rem', height: '2rem'}} className="hidden sm:block" >
                                    <AvatarFallback asChild><span className="text-sm">{currentUser.username.slice(0,2).toUpperCase()}</span></AvatarFallback> 
                                 </Avatar>
                                 <span className="tracking-wide text-sm max-w-32 text-ellipsis overflow-hidden">{currentUser.username}</span>
