@@ -17,11 +17,11 @@ import { useTheme } from "@/providers/ThemeProvider"
 function NavBar() {
     const location = useLocation()
     const navigate = useNavigate()
-    const { user, logout } = useAuth()
+    const { user, logout, isLoading } = useAuth()
     const {setTheme, theme} = useTheme()
 
     useEffect(() => {
-        if (!user || Object.keys(user).length == 0){
+        if ( !isLoading && (!user || Object.keys(user).length == 0)){
             console.log('Theres no user')
             navigate(LOGIN_PAGE_PATHNAME)
         }

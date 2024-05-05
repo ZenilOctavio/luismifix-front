@@ -11,6 +11,7 @@ interface AuthContextType {
     signup: (username: string, password: string) => {user: ProfileResponse, message: string},
     logout: () => SessionResponse,
     refreshProfile: () => ProfileResponse
+    isLoading: boolean
 }
 
 export const useAuth = (): AuthContextType => {
@@ -23,15 +24,19 @@ export const useAuth = (): AuthContextType => {
 
 export const AuthProvider = ({children}: {children: any}) => {
     const [user, setUser] = useState<ProfileResponse | null>(null);
+    const [isLoading, setIsLoading] = useState(true)
 
 
     const refreshProfile = async () => {
+        setIsLoading(true)
         const newUser = await profile()
 
         console.log(newUser)
             
         setUser(newUser)
 
+        setIsLoading(false)
+        
         return newUser
     }
 
@@ -69,7 +74,7 @@ export const AuthProvider = ({children}: {children: any}) => {
 
 
     return (
-        <AuthContext.Provider value={{user, signup, logout, refreshProfile}}>
+        <AuthContext.Provider value={{user, signup, logout, refreshProfile, isLoading}}>
             {children}
         </AuthContext.Provider>
     )
