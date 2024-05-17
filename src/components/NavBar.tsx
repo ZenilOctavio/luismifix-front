@@ -30,8 +30,8 @@ function NavBar() {
     const handleLogOut = async () => {
         try{
             console.log('trying')
-            navigate(LOGIN_PAGE_PATHNAME)
             const response = await logout()
+            navigate(LOGIN_PAGE_PATHNAME)
             toast({
                 title: 'Log out completed',
                 content: response.message,
