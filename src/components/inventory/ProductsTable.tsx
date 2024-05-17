@@ -246,7 +246,7 @@ export function ProductsTable({onEditProduct}: {onEditProduct?: Function | undef
           <DropdownMenuTrigger asChild>
             <Button className="rounded shadow  flex gap-2 bg-background hover:bg-white  text-foreground ml-auto">
                     <Settings2/>
-                    Vista
+                    <span className="hidden md:inline">Vista</span>
                 </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">

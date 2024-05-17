@@ -140,7 +140,7 @@ export default function ProvidersTable({onEditProvider, onProviderRowSelection}:
           <DropdownMenuTrigger asChild>
             <Button className="rounded shadow  flex gap-2 bg-background hover:bg-white  text-foreground ml-auto">
                     <Settings2/>
-                    Vista
+                    <span>Vista</span>
                 </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">

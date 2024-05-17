@@ -3,15 +3,24 @@ import { Toaster } from "../ui/toaster"
 import { useNavigate } from 'react-router-dom'
 import { HOME_PAGE_PATHNAME } from "@/config/constants"
 import logo from '@/assets/logo_luismifix.png'
+import { useEffect } from "react"
+import { useAuth } from "@/providers/AuthProvider"
 
 function LoginPage(){    
     const navigate = useNavigate()
+    const { tryToLogIn, user } = useAuth()
 
     const handleSubmit = () => {
         setTimeout(() => {
             navigate(HOME_PAGE_PATHNAME)
         }, 500)
     }
+
+    useEffect(() => {
+        tryToLogIn().then((profile: boolean) => {
+            if(profile) navigate(HOME_PAGE_PATHNAME)
+        })
+    }, [user])
 
     return (
         <div className="flex justify-center w-screen h-screen items-center bg-gradient-to-t to-cyan-500 from-blue-500">

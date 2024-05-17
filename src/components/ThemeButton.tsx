@@ -29,15 +29,15 @@ function ThemeButton() {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild className="aspect-square rounded-full border-primary border bg-background">
-                <span className="flex justify-center items-center  p-0 bg-transparent border-none hover:cursor-pointer hover:scale-105 transition-transform">
+                <span className="md:flex justify-center items-center  p-0 bg-transparent border-none hover:cursor-pointer hover:scale-105 transition-transform hidden">
                     {
                         (theme == 'light')? 
-                            <SunDim size={30} /> 
+                            <SunDim /> 
                         : 
                             (theme == 'dark')?
-                                <LucideMoonStar size={30}/>
+                                <LucideMoonStar/>
                             :
-                            <CloudCogIcon size={30} />
+                            <CloudCogIcon/>
                     }
                 </span>
             </DropdownMenuTrigger>

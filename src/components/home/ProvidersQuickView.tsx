@@ -30,7 +30,7 @@ export default function ProvidersQuickView({className}: {className?: string}){
                         
                         return (
                             <li className="p-4 border-b-2 flex items-center gap-7 hover:bg-slate-100 dark:hover:bg-slate-800 rounded transition-colors overflow-hidden text-ellipsis" key={currentProvider._id}>
-                                <Avatar style={{width: '2rem', height: '2rem'}} >
+                                <Avatar className="w-8 h-8 hidden sm:block">
                                    <AvatarFallback asChild><span className="text-sm">{currentProvider.nameProvider.slice(0,2).toUpperCase()}</span></AvatarFallback> 
                                 </Avatar>
                                 <span className="tracking-wide text-sm  text-ellipsis overflow-hidden">{currentProvider.nameProvider}</span>

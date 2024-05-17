@@ -9,8 +9,10 @@ export const AuthContext = createContext({});
 interface AuthContextType {
     user: ProfileResponse,
     signup: (username: string, password: string) => {user: ProfileResponse, message: string},
-    logout: () => SessionResponse,
+    logout: () => Promise<SessionResponse>,
     refreshProfile: () => ProfileResponse
+    isLoading: boolean
+    tryToLogIn: () => Promise<boolean>
 }
 
 export const useAuth = (): AuthContextType => {
@@ -23,15 +25,19 @@ export const useAuth = (): AuthContextType => {
 
 export const AuthProvider = ({children}: {children: any}) => {
     const [user, setUser] = useState<ProfileResponse | null>(null);
+    const [isLoading, setIsLoading] = useState(true)
 
 
     const refreshProfile = async () => {
+        setIsLoading(true)
         const newUser = await profile()
 
         console.log(newUser)
             
         setUser(newUser)
 
+        setIsLoading(false)
+        
         return newUser
     }
 
@@ -64,12 +70,16 @@ export const AuthProvider = ({children}: {children: any}) => {
             return response
     }
 
+    const tryToLogIn = async() => {
+        const user = await refreshProfile()
+        return user ? true : false
+    }
 
 
 
 
     return (
-        <AuthContext.Provider value={{user, signup, logout, refreshProfile}}>
+        <AuthContext.Provider value={{user, signup, logout, refreshProfile, isLoading, tryToLogIn}}>
             {children}
         </AuthContext.Provider>
     )

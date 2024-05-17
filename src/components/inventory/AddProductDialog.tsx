@@ -79,8 +79,8 @@ export function AddProductDialog(){
         <Dialog>
         <DialogTrigger asChild>
             <Button variant="outline" className="text-foreground rounded border-dotted flex gap-4 items-center justify-center">
-                <CirclePlus className=""/>
-                Añadir producto
+                <CirclePlus/>
+                <span className="hidden sm:inline">Añadir producto</span>
             </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
