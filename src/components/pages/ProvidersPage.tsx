@@ -35,7 +35,7 @@ export default function ProvidersPage(){
         <ProvidersProvider>
             <div className="w-screen min-h-screen">
                 <NavBar/>
-                <main className="p-4 grid grid-flow-col grid-cols-4 grid-rows-5 min-h-screen gap-4">
+                <main className="p-4 flex flex-col md:grid grid-flow-col grid-cols-4 grid-rows-5 min-h-screen gap-4">
                     <section className="border rounded p-3 col-start-1 col-end-4 row-start-1 row-end-3">
                         <CreateProviderDialog open={providerCreating} onOpenChange={() => {setProviderCreating(!providerCreating)}}/>
                         <Button 
@@ -44,7 +44,7 @@ export default function ProvidersPage(){
                             onClick={() => setProviderCreating(!providerCreating)}
                         >
                             <CirclePlus/>
-                            Crear proveedor
+                            <span>Crear proveedor</span>
                         </Button>
                         <ProvidersTable onEditProvider={handleProviderEdition} onProviderRowSelection={handleProviderRowSelection}/>
                         {providerEditing && editDialog}
