@@ -37,7 +37,7 @@ export function ProviderContactsList({provider = null}: {provider: Provider | nu
     }
 
     return (
-        <div className=" self-start flex flex-col items-center gap-2">
+        <div className=" self-start flex flex-col items-center gap-2 w-full">
             {
                 providersContacts && provider && providersContacts[provider._id] &&
                 providersContacts[provider._id].length?
@@ -49,7 +49,7 @@ export function ProviderContactsList({provider = null}: {provider: Provider | nu
                 </div>
                     <CreateContactDialog provider={provider}/>
                 </header>
-                    <ul className="flex flex-col gap-4 mt-5 w-max">
+                    <ul className="flex flex-col gap-4 mt-5 items-stretch w-full">
                         {
                             providersContacts[provider._id].map((contact: ProvidersContact, index) => {
                                 const Icon = BrandIcons[contact.idTypeContact.nameTypeContact]
@@ -57,7 +57,7 @@ export function ProviderContactsList({provider = null}: {provider: Provider | nu
                                 return (
                                     <li 
                                         key={index} 
-                                        className="flex  items-center gap-3 hover:scale-105 transition-transform cursor-pointer border-b-2 pb-2 overflow-hidden min-w-72 shadow p-2"
+                                        className="flex  items-center gap-3 hover:scale-105 transition-transform cursor-pointer border-b-2 pb-2 overflow-hidden  shadow p-2"
                                         onClick={() => { navigator.clipboard.writeText(contact.data).then(
                                             () => {
                                                 toast({
@@ -68,7 +68,7 @@ export function ProviderContactsList({provider = null}: {provider: Provider | nu
                                         ) }}
                                     >
                                             <span>{Icon ? Icon : ''}</span>
-                                        <span className="font-semibold text-sm flex gap-2 ">
+                                        <span className="font-semibold text-sm lg:inline hidden">
                                             {contact.idTypeContact.nameTypeContact}
                                         </span>
                                         <span className="ml-auto text-sm text-ellipsis overflow-hidden">
