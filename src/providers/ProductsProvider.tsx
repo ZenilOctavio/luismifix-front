@@ -1,5 +1,6 @@
 import { Product } from "@/types/products/Product";
 import { ProductType } from "@/types/products/ProductType";
+import { Purchase } from "@/types/purchases/Purchase";
 import { useContext, createContext, useState, Dispatch } from "react";
 
 interface ProductsContextType{
@@ -7,6 +8,8 @@ interface ProductsContextType{
     setProducts?: Dispatch<Product[]>
     productTypes?: ProductType[]
     setProductTypes?: Dispatch<ProductType[]>
+    purchasesForProducts?: Record<string, Purchase[]>
+    setPurchasesForProducts?: Dispatch<Record<string, Purchase[]>>
 }
 
 export const ProductsContext = createContext<ProductsContextType>({})
@@ -24,9 +27,11 @@ export const ProductsProvider  = ({children}:{children: any}) => {
 
     const [products, setProducts] = useState<Product[]>([])
     const [productTypes, setProductTypes] = useState<ProductType[]>([])
+    const [purchasesForProducts, setPurchasesForProducts] = useState<Record<string, Purchase[]>>({})
+    
 
     return (
-        <ProductsContext.Provider value={{products, setProducts, productTypes, setProductTypes}}>
+        <ProductsContext.Provider value={{products, setProducts, productTypes, setProductTypes, purchasesForProducts, setPurchasesForProducts}}>
             {children}
         </ProductsContext.Provider>
     )

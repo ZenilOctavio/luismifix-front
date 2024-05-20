@@ -44,7 +44,8 @@ const headersClassNames = "bg-background text-slate-500 hover:bg-background text
 
 
 
-export function ProductsTable({onEditProduct}: {onEditProduct?: Function | undefined}) {
+export function ProductsTable({onEditProduct, onEditLinks}: {onEditProduct?: Function | undefined, onEditLinks?: Function | undefined}) {
+
     
     const { products, purchasesForProducts, enableProduct, disableProduct } = useProducts() 
 
@@ -57,6 +58,12 @@ export function ProductsTable({onEditProduct}: {onEditProduct?: Function | undef
     
     const handleEditProduct = (product: Product) => {
         if (onEditProduct) onEditProduct(product)
+    }
+
+    const handleEditLinks = (product: Product) => {
+        if (onEditLinks) onEditLinks(product)
+        console.log('Editing links')
+
     }
 
     const productsTableColumns = React.useMemo<ColumnDef<Product>[]>(() => {
@@ -132,12 +139,15 @@ export function ProductsTable({onEditProduct}: {onEditProduct?: Function | undef
                             </DropdownMenuTrigger>
                             <DropdownMenuContent>
                                 {purchasesForProducts[product._id] ? (
-                                    purchasesForProducts[product._id].reduce(
+                                    purchasesForProducts[product._id]
+                                    .filter(purchase => purchase.statusPurchase)
+                                    .reduce(
                                         (prev: string[], curr: Purchase) => {
                                             return prev.concat(curr.linkProvider);
                                         },
                                         []
-                                    ).map((link: string, index: number) => (
+                                    )
+                                    .map((link: string, index: number) => (
                                         <DropdownMenuItem 
                                             key={index}
                                             onClick={(event) => {
@@ -191,6 +201,9 @@ export function ProductsTable({onEditProduct}: {onEditProduct?: Function | undef
                                       <DropdownMenuSeparator />
                                       <DropdownMenuItem onClick={() => {handleEditProduct(row.original)}}>
                                           Editar producto
+                                      </DropdownMenuItem>
+                                      <DropdownMenuItem onClick={() => {handleEditLinks(row.original)}}>
+                                          Administrar links
                                       </DropdownMenuItem>
                                       <DropdownMenuItem 
                                       onClick={() => {
