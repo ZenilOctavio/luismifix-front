@@ -8,7 +8,7 @@ import { isValidUrl, moneyFormat, turnFormattedMoneyStringToNumber } from "@/lib
 
 export function LinkItem({purchase, key}: {purchase: Purchase, key: string | number}) {
 
-    const { createPurchase, enablePurchase, disablePurchase, updatePurchase } = useProducts()
+    const {disablePurchase, updatePurchase} = useProducts()
     
     const [editingPrice, setEditingPrice] = useState<boolean>(false)
     const [price, setPrice] = useState(moneyFormat(purchase.priceProduct))
