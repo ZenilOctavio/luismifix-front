@@ -6,7 +6,7 @@ export interface Purchase {
     idProvider: Provider
     linkProvider: string
     priceProduct: string
-    statusPurchases: boolean
+    statusPurchase: boolean
     __v: number
 }
 

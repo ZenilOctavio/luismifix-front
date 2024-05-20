@@ -45,7 +45,9 @@ export function EditLinksDialog({product, open, onOpenChange}:{product: Product,
                         {
                             purchasesForProducts[product._id]
                             &&
-                            purchasesForProducts[product._id].map(purchase => {
+                            purchasesForProducts[product._id]
+                            .filter(purchase => purchase.statusPurchase)
+                            .map(purchase => {
                                 return (
                                     <LinkItem purchase={purchase} key={purchase._id}/>
                                 )

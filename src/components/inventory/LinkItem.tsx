@@ -5,11 +5,6 @@ import React, { useState } from "react";
 import { Input } from "../ui/input";
 import { toast } from "../ui/use-toast";
 import { isValidUrl, moneyFormat, turnFormattedMoneyStringToNumber } from "@/lib/formating";
-import { Provider } from "@/types/providers/Provider";
-import useProviders from "@/hooks/useProviders";
-import { Select, SelectContent, SelectItem } from "../ui/select";
-import { SelectTrigger, SelectValue } from "@radix-ui/react-select";
-
 
 export function LinkItem({purchase, key}: {purchase: Purchase, key: string | number}) {
 
@@ -99,6 +94,21 @@ export function LinkItem({purchase, key}: {purchase: Purchase, key: string | num
         )
     }
 
+    const handleDeletePurchase = () => {
+        disablePurchase(purchase)
+        .then(() => {
+            toast({
+                title: 'Opcion de compra eliminada',
+            })
+        })
+        .catch(() => {
+            toast({
+                title: 'No se pudo eliminar la opcion de compra',
+                variant: 'destructive'
+            })
+        })
+    }
+
     const handleEnter = (event: React.KeyboardEvent<HTMLInputElement>, callback: Function) => {
         if (event.key === 'Enter') callback()
 
@@ -140,7 +150,10 @@ export function LinkItem({purchase, key}: {purchase: Purchase, key: string | num
                 :
                 <span onClick={handlePriceClick}>{price}</span>
             }
-            <button className="bg-white absolute right-20">
+            <button 
+                className="bg-white absolute right-20"
+                onClick={handleDeletePurchase}
+            >
                 <Trash2 className="text-red-400"/>
             </button>
             <button className="bg-white text-blue-500 dark:bg-slate-900 group flex items-center justify-center gap-2 overflow-hidden transition-all absolute right-0">

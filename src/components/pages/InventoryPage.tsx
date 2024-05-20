@@ -5,6 +5,8 @@ import { Toaster } from "../ui/toaster";
 import { Product } from "@/types/products/Product";
 import EditProductDialog from "../inventory/EditProductDialog";
 import { EditLinksDialog } from "../inventory/EditLinksDialog";
+import { ProvidersProvider } from "@/providers/ProvidersProvider";
+import { ProductsProvider } from "@/providers/ProductsProvider";
 
 export default function InventoryPage(){
     const [ editingProduct, setEditingProduct ] = useState<Product | null>(null)
@@ -34,14 +36,18 @@ export default function InventoryPage(){
     
     return (
         <>
-            <NavBar/>
-            <div className="min-w-screen w-screen min-h-screen">
-            {/* <DataTableDemo/> */}
-            <ProductsTable onEditProduct={handleEditProduct} onEditLinks={handleEditLinks}/>
-            { editingProduct && editDialog }
-            { editingLinks && editLinksDialog }
-            </div>
-            <Toaster/>
+            <ProductsProvider>
+                <ProvidersProvider>
+                    <NavBar/>
+                    <div className="min-w-screen w-screen min-h-screen">
+                    {/* <DataTableDemo/> */}
+                    <ProductsTable onEditProduct={handleEditProduct} onEditLinks={handleEditLinks}/>
+                    { editingProduct && editDialog }
+                    { editingLinks && editLinksDialog }
+                    </div>
+                    <Toaster/>
+                </ProvidersProvider>
+            </ProductsProvider>
         </>
     )
 }

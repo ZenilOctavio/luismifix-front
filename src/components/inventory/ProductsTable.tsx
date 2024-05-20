@@ -139,12 +139,15 @@ export function ProductsTable({onEditProduct, onEditLinks}: {onEditProduct?: Fun
                             </DropdownMenuTrigger>
                             <DropdownMenuContent>
                                 {purchasesForProducts[product._id] ? (
-                                    purchasesForProducts[product._id].reduce(
+                                    purchasesForProducts[product._id]
+                                    .filter(purchase => purchase.statusPurchase)
+                                    .reduce(
                                         (prev: string[], curr: Purchase) => {
                                             return prev.concat(curr.linkProvider);
                                         },
                                         []
-                                    ).map((link: string, index: number) => (
+                                    )
+                                    .map((link: string, index: number) => (
                                         <DropdownMenuItem 
                                             key={index}
                                             onClick={(event) => {
