@@ -30,8 +30,10 @@ export default function useProducts(){
     let productTypes: ProductType[] = []
     let setProductTypes: Dispatch<ProductType[]> = () => {}
 
-    const [purchasesForProducts, setPurchaseForProduct] = useState<Record<string, Purchase[]>>({})
-    const [purchasesForProvider, setPurchaseForProvider] = useState<Record<string, Purchase[]>>({})
+    let purchasesForProducts: Record<string, Purchase[]>
+    let setPurchasesForProducts: Dispatch<Record<string, Purchase[]>>
+
+    let [purchasesForProvider, setPurchaseForProvider] = useState<Record<string, Purchase[]>>({})
     const [isLoading, setIsLoading] = useState<boolean>(false)
 
     const refreshProducts = async () => {
@@ -50,7 +52,7 @@ export default function useProducts(){
         
         const newProductTypes = await getTypesProduct()
         setProductTypes(newProductTypes)
-        
+    
         setIsLoading(false)
     }
 
@@ -115,17 +117,21 @@ export default function useProducts(){
         setIsLoading(false)
     }
     
-    const searchPurchasesForProduct = async (product: Product) => {
+    const searchPurchasesForProduct = async (product: Product | string) => {
         setIsLoading(true)
-
-        const purchases = await getPurchasesForProduct(product._id)
-
+        let productId
+        if (typeof product == 'string')
+            productId = product
+        else
+            productId = product._id
+        const purchases = await getPurchasesForProduct(productId)
+    
         const newPurchases = {...purchasesForProducts}
-        newPurchases[product._id] = purchases
+        newPurchases[productId] = purchases
 
         console.log(purchases)
 
-        setPurchaseForProduct(newPurchases)
+        setPurchasesForProducts(newPurchases)
 
         setIsLoading(false)
 
@@ -149,9 +155,9 @@ export default function useProducts(){
 
     const updatePurchase = async (purchase: Purchase, newPurchaseData: CreationPurchase) => {
         setIsLoading(true)
-        console.log(purchase)   
-        console.log(purchase._id)   
         await updatePurchaseService(purchase._id, newPurchaseData)
+
+        console.log(purchase.idProduct)
         
         searchPurchasesForProduct(purchase.idProduct)
         searchPurchasesForProvider(purchase.idProvider)
@@ -196,6 +202,8 @@ export default function useProducts(){
             setProducts = context.setProducts!
             productTypes = context.productTypes!
             setProductTypes = context.setProductTypes!
+            purchasesForProducts = context.purchasesForProducts!
+            setPurchasesForProducts = context.setPurchasesForProducts!
         }
     }
     catch(err){
@@ -203,9 +211,14 @@ export default function useProducts(){
         const state = useState<Product[]>([])
         products = state[0]
         setProducts = state[1]
+        
         const typesState = useState<ProductType[]>([])
         productTypes = typesState[0]
         setProductTypes = typesState[1]
+
+        const purchasesState = useState<Record<string, Purchase[]>>({})
+        purchasesForProducts = purchasesState[0]
+        setPurchasesForProducts = purchasesState[1]
     }
 
     useEffect(() => {

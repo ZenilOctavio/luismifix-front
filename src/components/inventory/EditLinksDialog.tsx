@@ -1,7 +1,6 @@
 import { Product } from "@/types/products/Product";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "../ui/dialog";
 import useProducts from "@/hooks/useProducts";
-import { Select } from "../ui/select";
 import { LinkItem } from "./LinkItem";
 import { Skeleton } from "../ui/skeleton";
 
