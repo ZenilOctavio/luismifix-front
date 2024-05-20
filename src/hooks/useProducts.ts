@@ -118,6 +118,8 @@ export default function useProducts(){
     }
     
     const searchPurchasesForProduct = async (product: Product | string) => {
+        console.log('searching purchases for product')
+        
         setIsLoading(true)
         let productId
         if (typeof product == 'string')
@@ -174,6 +176,7 @@ export default function useProducts(){
     const disablePurchase = async (purchase: Purchase) => {
         setIsLoading(true)
         await disablePurchaseService(purchase._id)
+        await searchPurchasesForProduct(purchase.idProduct)
         setIsLoading(false)
     }
 
@@ -222,11 +225,7 @@ export default function useProducts(){
     }
 
     useEffect(() => {
-        refreshProducts().then((products: Product[]) => {
-            for (let product of products){
-                searchPurchasesForProduct(product)
-            }
-        })
+        refreshProducts()
         refreshProductTypes()
     }, [])
 

@@ -47,7 +47,7 @@ const headersClassNames = "bg-background text-slate-500 hover:bg-background text
 export function ProductsTable({onEditProduct, onEditLinks}: {onEditProduct?: Function | undefined, onEditLinks?: Function | undefined}) {
 
     
-    const { products, purchasesForProducts, enableProduct, disableProduct } = useProducts() 
+    const { products, purchasesForProducts, enableProduct, disableProduct, searchPurchasesForProduct } = useProducts() 
 
     
     const [sorting, setSorting] = React.useState<SortingState>([])
@@ -128,16 +128,26 @@ export function ProductsTable({onEditProduct, onEditLinks}: {onEditProduct?: Fun
 
                     const product = row.original
 
-                    // console.log(purchasesForProducts)
+                    React.useEffect(() => {
+                        if(purchasesForProducts && purchasesForProducts[product._id]) return
+                        searchPurchasesForProduct(product)
+                    }, [])
+                    
                     return (
-                        <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                                <Button className="bg-slate-50 text-slate-600 flex gap-2 dark:bg-slate-800 dark:text-slate-400">
+                        <DropdownMenu
+                        >
+                            <DropdownMenuTrigger asChild
+                            >
+                                <Button 
+                                    className="bg-slate-50 text-slate-600 flex gap-2 dark:bg-slate-800 dark:text-slate-400"
+                                >
                                     Link(s)
-                                    <ChevronsUpDown className="w-4 h-4" />
+                                    <ChevronsUpDown className="w-4 h-4" 
+                                    />
                                 </Button>
                             </DropdownMenuTrigger>
-                            <DropdownMenuContent>
+                            <DropdownMenuContent
+                            >
                                 {purchasesForProducts[product._id] ? (
                                     purchasesForProducts[product._id]
                                     .filter(purchase => purchase.statusPurchase)
