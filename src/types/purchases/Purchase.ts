@@ -1,9 +1,8 @@
-import { Product } from "../products/Product"
 import { Provider } from "../providers/Provider"
 
 export interface Purchase {
-    __id: string
-    idProduct: Product
+    _id: string
+    idProduct: string
     idProvider: Provider
     linkProvider: string
     priceProduct: string

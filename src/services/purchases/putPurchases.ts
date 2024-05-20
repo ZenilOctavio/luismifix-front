@@ -6,8 +6,11 @@ import { ErrorResponse } from "@/types/ErrorResponse";
 const url = new URL(BACKEND_URL)
 
 export async function updatePurchase(purchaseId: string, newPurchaseData: CreationPurchase) {
+    console.log(arguments)
 
     url.pathname = `${API_PURCHASES_PATHNAME}/${purchaseId}`
+
+    console.log(url)
 
     const response = await axios.put(url.toString(), newPurchaseData)
 

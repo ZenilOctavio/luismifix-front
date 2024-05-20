@@ -123,6 +123,8 @@ export default function useProducts(){
         const newPurchases = {...purchasesForProducts}
         newPurchases[product._id] = purchases
 
+        console.log(purchases)
+
         setPurchaseForProduct(newPurchases)
 
         setIsLoading(false)
@@ -147,7 +149,9 @@ export default function useProducts(){
 
     const updatePurchase = async (purchase: Purchase, newPurchaseData: CreationPurchase) => {
         setIsLoading(true)
-        await updatePurchaseService(purchase.__id, newPurchaseData)
+        console.log(purchase)   
+        console.log(purchase._id)   
+        await updatePurchaseService(purchase._id, newPurchaseData)
         
         searchPurchasesForProduct(purchase.idProduct)
         searchPurchasesForProvider(purchase.idProvider)
@@ -157,13 +161,13 @@ export default function useProducts(){
 
     const enablePurchase = async (purchase: Purchase) => {
         setIsLoading(true)
-        await enablePurchaseService(purchase.__id)
+        await enablePurchaseService(purchase._id)
         setIsLoading(false)
     }
 
     const disablePurchase = async (purchase: Purchase) => {
         setIsLoading(true)
-        await disablePurchaseService(purchase.__id)
+        await disablePurchaseService(purchase._id)
         setIsLoading(false)
     }
 
