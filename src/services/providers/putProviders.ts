@@ -1,8 +1,8 @@
 import axios from "axios";
-import { BACKEND_URL, API_PROVIDERS_PATHNAME, API_PROVIDER_CONTACTS_PATHNAME } from "@/config/constants";
+import { BACKEND_URL, API_PROVIDERS_PATHNAME, API_PROVIDER_CONTACTS_PATHNAME, API_PROVIDER_POST_CONTACTS_PATHNAME } from "@/config/constants";
 import { CreationProvider } from "@/types/providers/Provider";
 import { ErrorResponse } from "@/types/ErrorResponse";
-import { CreationProvidersContact } from "@/types/providers/Contact";
+import { CreationProvidersContact, EditProvidersContact } from "@/types/providers/Contact";
 
 const url = new URL(BACKEND_URL)
 
@@ -60,4 +60,18 @@ export async function disableProvider(id: string){
     }
 
     return response.data as {message: string}
+}
+
+export async function updateContact(id: string, values: EditProvidersContact){
+    url.pathname = `${API_PROVIDER_POST_CONTACTS_PATHNAME}/${id}`
+
+    const response = await axios.put(url.toString(), values)
+
+    if (response.status < 200 || response.status > 299){
+        const error = response.data as ErrorResponse
+
+        throw new Error(error.message)
+    }
+
+    return response.data as {mesage: string}
 }

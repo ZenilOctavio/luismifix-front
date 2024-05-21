@@ -8,10 +8,11 @@ import { updateProvider as updateProviderService, enableProvider as enableProvid
 import { useProvidersContext } from "@/providers/ProvidersProvider";
 import { getTypesProviders } from "@/services/typesProvider/getTypesProvider";
 import { TypeProvider } from "@/types/providers/typeProvider";
-import { CreationProvidersContact, ProvidersContact } from "@/types/providers/Contact";
+import { CreationProvidersContact, EditProvidersContact, ProvidersContact } from "@/types/providers/Contact";
 import { createProviderContact as createProviderContactService} from "@/services/providers/postProvider"
 import { TypeContact } from "@/types/providers/TypeContact";
 import { getTypesContacts } from "@/services/providers/typesContacts/getTypesContacts";
+import { updateContact as updateContactService } from "@/services/providers/putProviders";
 
 function useProviders(){
     let providers: Provider[] = []
@@ -131,6 +132,13 @@ function useProviders(){
         })
     }
 
+    const updateContact = async (contact: ProvidersContact, data: EditProvidersContact) => {
+        await updateContactService(contact._id, data)
+
+        await refreshProvidersContacts(contact.idProvider)
+
+    }
+
     const createProviderContact = async (newContact: CreationProvidersContact) => {
         try{
             await createProviderContactService(newContact)
@@ -162,7 +170,7 @@ function useProviders(){
 
     return { 
         providers, refreshProviders, createProvider, getProvider, error, updateProvider, enableProvider, disableProvider, typesProviders,
-        providersContacts, refreshProvidersContacts, refreshAllProvidersContacts, refreshTypeContacts, typeContacts, createProviderContact
+        providersContacts, refreshProvidersContacts, refreshAllProvidersContacts, refreshTypeContacts, typeContacts, createProviderContact, updateContact
      }
 }
 

@@ -14,3 +14,8 @@ export interface CreationProvidersContact {
     idProvider: string
     data: string
 }
+
+export interface EditProvidersContact{
+    idTypeContact: string
+    data: string
+}
