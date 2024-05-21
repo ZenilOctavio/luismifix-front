@@ -75,3 +75,16 @@ export async function updateContact(id: string, values: EditProvidersContact){
 
     return response.data as {mesage: string}
 }
+
+export async function disableContact(id: string){
+    url.pathname = `${API_PROVIDER_POST_CONTACTS_PATHNAME}/disable/${id}`
+
+    try{
+        const response = await axios.put(url.toString())
+        return response.data
+    }catch(err){
+        if(axios.isAxiosError(err)){
+            return err.response?.data
+        }
+    }
+}
