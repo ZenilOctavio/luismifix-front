@@ -45,7 +45,7 @@ export const API_PURCHASES_FOR_PRODUCT_PATHNAME = API_PURCHASES_PATHNAME + '/pro
 export const API_PURCHASES_ENABLE_PATHNAME = API_PURCHASES_PATHNAME + '/enable'
 export const API_PURCHASES_DISABLE_PATHNAME = API_PURCHASES_PATHNAME + '/disable'
 
-export const API_PRODUCTS_HISTORICAL_PATHNAME = 'api/historys/produts'
+export const API_PRODUCTS_HISTORICAL_PATHNAME = 'api/historys/products'
 
 console.log('isDev: ',import.meta.env.DEV)
 console.log('mode: ',import.meta.env.MODE)
