@@ -290,7 +290,7 @@ export function ProductsTable({onEditProduct, onEditLinks}: {onEditProduct?: Fun
 
                 <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button className="rounded shadow  flex gap-2 bg-background hover:bg-white  text-foreground ml-auto">
+            <Button className="rounded shadow  flex gap-2 bg-background hover:bg-white dark:hover:bg-slate-800 text-foreground ml-auto">
                     <Settings2/>
                     <span className="hidden md:inline">Vista</span>
                 </Button>
