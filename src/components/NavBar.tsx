@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from "react-router-dom"
-import { HOME_PAGE_PATHNAME, INVENTORY_PAGE_PATHNAME, PROVIDERS_PAGE_PATHNAME } from "@/config/constants"
+import { HOME_PAGE_PATHNAME, INVENTORY_PAGE_PATHNAME, PRODUCTS_HISTORICAL_PAGE_PATHNAME, PROVIDERS_PAGE_PATHNAME } from "@/config/constants"
 import { Avatar, AvatarFallback } from "./ui/avatar"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "./ui/dropdown-menu"
 import { BadgeAlert, LogOut, Moon, Sun } from "lucide-react"
@@ -61,7 +61,7 @@ function NavBar() {
 
     const links = [
         {
-            pageName: 'Home',
+            pageName: 'Inicio',
             pathname: HOME_PAGE_PATHNAME
         },
         {
@@ -71,6 +71,10 @@ function NavBar() {
         {
             pageName: 'Proveedores',
             pathname: PROVIDERS_PAGE_PATHNAME
+        },
+        {
+            pageName: 'Reportes',
+            pathname: PRODUCTS_HISTORICAL_PAGE_PATHNAME
         }
         // {
         //     pageName: 'Clientes',
