@@ -12,6 +12,7 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
+  SortingFn
 } from "@tanstack/react-table"
 import { ChevronsUpDown, ChevronsRight, ChevronsLeft, ChevronRight, ChevronLeft, Ellipsis, Settings2 } from "lucide-react"
 
@@ -64,6 +65,10 @@ export function ProductsTable({onEditProduct, onEditLinks}: {onEditProduct?: Fun
         if (onEditLinks) onEditLinks(product)
         console.log('Editing links')
 
+    }
+
+    const sortingWithStatus: SortingFn<Product> = (rowA, rowB) => {
+        return Number(rowA.original.statusProduct) - Number(rowB.original.statusProduct)
     }
 
     const productsTableColumns = React.useMemo<ColumnDef<Product>[]>(() => {
@@ -120,6 +125,24 @@ export function ProductsTable({onEditProduct, onEditLinks}: {onEditProduct?: Fun
                     )
                 },
                 cell: ({row}) => <div>{row.original.descriptionProduct}</div>
+            },
+            {
+                id: "Estado",
+                accessorKey: "stateProduct",
+                sortingFn: sortingWithStatus,
+                header:({column}) => {
+                    return(
+                        <Button
+                            className={headersClassNames}
+                            onClick={() => {column.toggleSorting()}}
+                        >
+                            Estado
+                            <ChevronsUpDown className="w-4"/>
+                        </Button>
+                    )
+                },
+                cell: ({row}) => <div className="grid items-center">{row.original.statusProduct? "Activo" : "Inactivo"}</div>
+
             },
             {
                 id: "Link de compra",
