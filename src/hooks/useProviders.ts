@@ -142,12 +142,12 @@ function useProviders(){
     const createProviderContact = async (newContact: CreationProvidersContact) => {
         try{
             await createProviderContactService(newContact)
-            await refreshProviders()
-            await refreshAllProvidersContacts()
-
             const newContactCreated = providersContacts[newContact.idProvider].find(contact => (contact.idTypeContact._id == newContact.idTypeContact 
                                                                                                 && contact.idProvider._id == newContact.idProvider
                                                                                                 && contact.data == newContact.data))
+            const provider = providers.find(provider => provider._id == newContact.idProvider)!                                                                      
+
+            await refreshProvidersContacts(provider)
 
             setError('')
             return newContactCreated
