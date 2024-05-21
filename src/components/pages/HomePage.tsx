@@ -2,15 +2,8 @@ import { Toaster } from "../ui/toaster"
 import NavBar from "../NavBar"
 import UsersQuickView from "../home/UsersQuickView"
 import ProvidersQuickView from "../home/ProvidersQuickView"
-import { useEffect } from "react"
-import { getAllProductsHistoricalData } from "@/services/historical/getProductsHistorical"
 
 function HomePage(){
-
-
-    useEffect(() => {
-        getAllProductsHistoricalData().then(historicalData => {console.log(historicalData)})
-    },[])
     
     return (
         <div className="min-w-screen min-h-screen">
