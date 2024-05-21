@@ -162,7 +162,7 @@ export function ProductsTable({onEditProduct, onEditLinks}: {onEditProduct?: Fun
                             <DropdownMenuTrigger asChild
                             >
                                 <Button 
-                                    className="bg-slate-50 text-slate-600 flex gap-2 dark:bg-slate-800 dark:text-slate-400"
+                                    className="bg-slate-50 text-slate-600 flex gap-2 dark:bg-slate-800 dark:text-slate-400 hover:text-white"
                                 >
                                     Link(s)
                                     <ChevronsUpDown className="w-4 h-4" 
@@ -290,7 +290,7 @@ export function ProductsTable({onEditProduct, onEditLinks}: {onEditProduct?: Fun
 
                 <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button className="rounded shadow  flex gap-2 bg-background hover:bg-white  text-foreground ml-auto">
+            <Button className="rounded shadow  flex gap-2 bg-background hover:bg-white dark:hover:bg-slate-800 text-foreground ml-auto">
                     <Settings2/>
                     <span className="hidden md:inline">Vista</span>
                 </Button>
