@@ -16,7 +16,7 @@ export function EditContactDialog({contact, onCloseEditing}: {contact: Providers
     if (!contact || !onCloseEditing) return <></>
     const isOpen = contact?  true : false;
 
-    const { typeContacts, updateContact } = useProviders()
+    const { typeContacts, updateContact, disableProviderContact } = useProviders()
 
     const editContactSchema = z.object({
         idTypeContact: z.string(),
@@ -60,6 +60,23 @@ export function EditContactDialog({contact, onCloseEditing}: {contact: Providers
         console.log(values.data, contact.data)
 
         return isTypeContactDifferent || isDataDifferent
+    }
+
+    const handleDisableContact = () => {
+        disableProviderContact(contact)
+        .then(() => {
+            toast({
+                title: 'El contacto se eliminó correctamente',
+            })
+            onCloseEditing(true)
+        })
+        .catch(() => {
+            toast({
+                title: 'El contacto no se pudo eliminar',
+                variant: 'destructive'
+            })
+        })
+        
     }
     
     return (
@@ -119,6 +136,7 @@ export function EditContactDialog({contact, onCloseEditing}: {contact: Providers
                             }}
                         />
                         <Button disabled={!isDataDifferent()} type="submit">Guardar cambios</Button>
+                        <Button variant="destructive" type="button" onClick={handleDisableContact}>Eliminar contacto</Button>
                     </form>
 
                 </Form>

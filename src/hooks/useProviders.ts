@@ -4,7 +4,7 @@ import { Dispatch, useEffect, useState } from "react";
 import { createProvider as createProviderService } from "@/services/providers/postProvider";
 import { AxiosError } from "axios";
 import { ErrorResponse } from "@/types/ErrorResponse";
-import { updateProvider as updateProviderService, enableProvider as enableProviderService, disableProvider as disableProviderService } from "@/services/providers/putProviders";
+import { updateProvider as updateProviderService, enableProvider as enableProviderService, disableProvider as disableProviderService, disableContact } from "@/services/providers/putProviders";
 import { useProvidersContext } from "@/providers/ProvidersProvider";
 import { getTypesProviders } from "@/services/typesProvider/getTypesProvider";
 import { TypeProvider } from "@/types/providers/typeProvider";
@@ -161,6 +161,15 @@ function useProviders(){
         }
     }
 
+    const disableProviderContact = async (contact: ProvidersContact ) => {
+
+        await disableContact(contact._id)
+
+        const provider = providers.find(provider => provider._id == contact.idProvider._id)!
+
+        await refreshProvidersContacts(provider)
+    }
+
     useEffect(() => {
         refreshProviders()
         refreshTypeContacts()
@@ -170,7 +179,8 @@ function useProviders(){
 
     return { 
         providers, refreshProviders, createProvider, getProvider, error, updateProvider, enableProvider, disableProvider, typesProviders,
-        providersContacts, refreshProvidersContacts, refreshAllProvidersContacts, refreshTypeContacts, typeContacts, createProviderContact, updateContact
+        providersContacts, refreshProvidersContacts, refreshAllProvidersContacts, refreshTypeContacts, typeContacts, createProviderContact, updateContact,
+        disableProviderContact
      }
 }
 

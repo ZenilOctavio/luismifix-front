@@ -58,7 +58,9 @@ export function ProviderContactsList({provider = null}: {provider: Provider | nu
                     </header>
                         <ul className="flex flex-col gap-4 mt-5 items-stretch w-full">
                             {
-                                providersContacts[provider._id].map((contact: ProvidersContact, index) => {
+                                providersContacts[provider._id]
+                                .filter(contact => contact.statusContact)
+                                .map((contact: ProvidersContact, index) => {
                                     const Icon = BrandIcons[contact.idTypeContact.nameTypeContact]
                                     console.log(Icon)
                                     return (

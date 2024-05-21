@@ -5,6 +5,7 @@ export interface ProvidersContact {
     _id: string
     idTypeContact: TypeContact
     idProvider: Provider
+    statusContact: boolean
     data: string
     __v: number
 }
