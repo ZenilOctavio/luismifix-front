@@ -53,7 +53,7 @@ export default function CreateContactDialog({provider}: {provider?: Provider | u
             <DialogTrigger asChild>
             <Button className="self-end flex gap-2" variant="outline">
                         <CirclePlus/>
-                        Agregar nuevo contacto
+                        <span className="hidden xl:inline text-xs">Agregar nuevo contacto</span>
                     </Button>
             </DialogTrigger>
             <DialogContent>

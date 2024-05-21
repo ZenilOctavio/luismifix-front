@@ -6,6 +6,7 @@ export const HOME_PAGE_PATHNAME = '/home'
 export const USERS_PAGE_PATHNAME = '/users'
 export const PROVIDERS_PAGE_PATHNAME = '/providers'
 export const INVENTORY_PAGE_PATHNAME = '/inventory'
+export const PRODUCTS_HISTORICAL_PAGE_PATHNAME = '/historical'
 export const CLIENTS_PAGE_PATHNAME = '/clients'
 export const BOARD_PAGE_PATHNAME = '/board'
 export const TODO_PAGE_PATHNAME = '/to-do'
@@ -43,6 +44,8 @@ export const API_PURCHASES_FOR_PROVIDER_PATHNAME = API_PURCHASES_PATHNAME + '/pr
 export const API_PURCHASES_FOR_PRODUCT_PATHNAME = API_PURCHASES_PATHNAME + '/product'
 export const API_PURCHASES_ENABLE_PATHNAME = API_PURCHASES_PATHNAME + '/enable'
 export const API_PURCHASES_DISABLE_PATHNAME = API_PURCHASES_PATHNAME + '/disable'
+
+export const API_PRODUCTS_HISTORICAL_PATHNAME = 'api/historys/products'
 
 console.log('isDev: ',import.meta.env.DEV)
 console.log('mode: ',import.meta.env.MODE)

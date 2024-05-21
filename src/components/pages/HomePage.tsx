@@ -4,9 +4,6 @@ import UsersQuickView from "../home/UsersQuickView"
 import ProvidersQuickView from "../home/ProvidersQuickView"
 
 function HomePage(){
-
-
-    
     
     return (
         <div className="min-w-screen min-h-screen">

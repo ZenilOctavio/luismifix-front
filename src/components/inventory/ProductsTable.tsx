@@ -12,6 +12,7 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
+  SortingFn
 } from "@tanstack/react-table"
 import { ChevronsUpDown, ChevronsRight, ChevronsLeft, ChevronRight, ChevronLeft, Ellipsis, Settings2 } from "lucide-react"
 
@@ -44,9 +45,10 @@ const headersClassNames = "bg-background text-slate-500 hover:bg-background text
 
 
 
-export function ProductsTable({onEditProduct}: {onEditProduct?: Function | undefined}) {
+export function ProductsTable({onEditProduct, onEditLinks}: {onEditProduct?: Function | undefined, onEditLinks?: Function | undefined}) {
+
     
-    const { products, purchasesForProducts, enableProduct, disableProduct } = useProducts() 
+    const { products, purchasesForProducts, enableProduct, disableProduct, searchPurchasesForProduct } = useProducts() 
 
     
     const [sorting, setSorting] = React.useState<SortingState>([])
@@ -57,6 +59,16 @@ export function ProductsTable({onEditProduct}: {onEditProduct?: Function | undef
     
     const handleEditProduct = (product: Product) => {
         if (onEditProduct) onEditProduct(product)
+    }
+
+    const handleEditLinks = (product: Product) => {
+        if (onEditLinks) onEditLinks(product)
+        console.log('Editing links')
+
+    }
+
+    const sortingWithStatus: SortingFn<Product> = (rowA, rowB) => {
+        return Number(rowA.original.statusProduct) - Number(rowB.original.statusProduct)
     }
 
     const productsTableColumns = React.useMemo<ColumnDef<Product>[]>(() => {
@@ -115,29 +127,60 @@ export function ProductsTable({onEditProduct}: {onEditProduct?: Function | undef
                 cell: ({row}) => <div>{row.original.descriptionProduct}</div>
             },
             {
+                id: "Estado",
+                accessorKey: "stateProduct",
+                sortingFn: sortingWithStatus,
+                header:({column}) => {
+                    return(
+                        <Button
+                            className={headersClassNames}
+                            onClick={() => {column.toggleSorting()}}
+                        >
+                            Estado
+                            <ChevronsUpDown className="w-4"/>
+                        </Button>
+                    )
+                },
+                cell: ({row}) => <div className="grid items-center">{row.original.statusProduct? "Activo" : "Inactivo"}</div>
+
+            },
+            {
                 id: "Link de compra",
                 header: () => ( <div>Link de compra</div>),
                 cell: ({row}) => {
 
                     const product = row.original
 
-                    // console.log(purchasesForProducts)
+                    React.useEffect(() => {
+                        if(purchasesForProducts && purchasesForProducts[product._id]) return
+                        searchPurchasesForProduct(product)
+                    }, [])
+                    
                     return (
-                        <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                                <Button className="bg-slate-50 text-slate-600 flex gap-2 dark:bg-slate-800 dark:text-slate-400">
+                        <DropdownMenu
+                        >
+                            <DropdownMenuTrigger asChild
+                            >
+                                <Button 
+                                    className="bg-slate-50 text-slate-600 flex gap-2 dark:bg-slate-800 dark:text-slate-400 hover:text-white"
+                                >
                                     Link(s)
-                                    <ChevronsUpDown className="w-4 h-4" />
+                                    <ChevronsUpDown className="w-4 h-4" 
+                                    />
                                 </Button>
                             </DropdownMenuTrigger>
-                            <DropdownMenuContent>
+                            <DropdownMenuContent
+                            >
                                 {purchasesForProducts[product._id] ? (
-                                    purchasesForProducts[product._id].reduce(
+                                    purchasesForProducts[product._id]
+                                    .filter(purchase => purchase.statusPurchase)
+                                    .reduce(
                                         (prev: string[], curr: Purchase) => {
                                             return prev.concat(curr.linkProvider);
                                         },
                                         []
-                                    ).map((link: string, index: number) => (
+                                    )
+                                    .map((link: string, index: number) => (
                                         <DropdownMenuItem 
                                             key={index}
                                             onClick={(event) => {
@@ -192,6 +235,9 @@ export function ProductsTable({onEditProduct}: {onEditProduct?: Function | undef
                                       <DropdownMenuItem onClick={() => {handleEditProduct(row.original)}}>
                                           Editar producto
                                       </DropdownMenuItem>
+                                      <DropdownMenuItem onClick={() => {handleEditLinks(row.original)}}>
+                                          Administrar links
+                                      </DropdownMenuItem>
                                       <DropdownMenuItem 
                                       onClick={() => {
                                           row.original.statusProduct? 
@@ -244,7 +290,7 @@ export function ProductsTable({onEditProduct}: {onEditProduct?: Function | undef
 
                 <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button className="rounded shadow  flex gap-2 bg-background hover:bg-white  text-foreground ml-auto">
+            <Button className="rounded shadow  flex gap-2 bg-background hover:bg-white dark:hover:bg-slate-800 text-foreground ml-auto">
                     <Settings2/>
                     <span className="hidden md:inline">Vista</span>
                 </Button>

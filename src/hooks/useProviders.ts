@@ -4,14 +4,15 @@ import { Dispatch, useEffect, useState } from "react";
 import { createProvider as createProviderService } from "@/services/providers/postProvider";
 import { AxiosError } from "axios";
 import { ErrorResponse } from "@/types/ErrorResponse";
-import { updateProvider as updateProviderService, enableProvider as enableProviderService, disableProvider as disableProviderService } from "@/services/providers/putProviders";
+import { updateProvider as updateProviderService, enableProvider as enableProviderService, disableProvider as disableProviderService, disableContact } from "@/services/providers/putProviders";
 import { useProvidersContext } from "@/providers/ProvidersProvider";
 import { getTypesProviders } from "@/services/typesProvider/getTypesProvider";
 import { TypeProvider } from "@/types/providers/typeProvider";
-import { CreationProvidersContact, ProvidersContact } from "@/types/providers/Contact";
+import { CreationProvidersContact, EditProvidersContact, ProvidersContact } from "@/types/providers/Contact";
 import { createProviderContact as createProviderContactService} from "@/services/providers/postProvider"
 import { TypeContact } from "@/types/providers/TypeContact";
 import { getTypesContacts } from "@/services/providers/typesContacts/getTypesContacts";
+import { updateContact as updateContactService } from "@/services/providers/putProviders";
 
 function useProviders(){
     let providers: Provider[] = []
@@ -131,15 +132,22 @@ function useProviders(){
         })
     }
 
+    const updateContact = async (contact: ProvidersContact, data: EditProvidersContact) => {
+        await updateContactService(contact._id, data)
+
+        await refreshProvidersContacts(contact.idProvider)
+
+    }
+
     const createProviderContact = async (newContact: CreationProvidersContact) => {
         try{
             await createProviderContactService(newContact)
-            await refreshProviders()
-            await refreshAllProvidersContacts()
-
             const newContactCreated = providersContacts[newContact.idProvider].find(contact => (contact.idTypeContact._id == newContact.idTypeContact 
                                                                                                 && contact.idProvider._id == newContact.idProvider
                                                                                                 && contact.data == newContact.data))
+            const provider = providers.find(provider => provider._id == newContact.idProvider)!                                                                      
+
+            await refreshProvidersContacts(provider)
 
             setError('')
             return newContactCreated
@@ -153,6 +161,15 @@ function useProviders(){
         }
     }
 
+    const disableProviderContact = async (contact: ProvidersContact ) => {
+
+        await disableContact(contact._id)
+
+        const provider = providers.find(provider => provider._id == contact.idProvider._id)!
+
+        await refreshProvidersContacts(provider)
+    }
+
     useEffect(() => {
         refreshProviders()
         refreshTypeContacts()
@@ -162,7 +179,8 @@ function useProviders(){
 
     return { 
         providers, refreshProviders, createProvider, getProvider, error, updateProvider, enableProvider, disableProvider, typesProviders,
-        providersContacts, refreshProvidersContacts, refreshAllProvidersContacts, refreshTypeContacts, typeContacts, createProviderContact
+        providersContacts, refreshProvidersContacts, refreshAllProvidersContacts, refreshTypeContacts, typeContacts, createProviderContact, updateContact,
+        disableProviderContact
      }
 }
 

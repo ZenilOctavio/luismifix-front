@@ -1,11 +1,24 @@
 import { Table, TableBody, TableHeader, TableRow, TableCell, TableHead } from "../ui/table"
-import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table"
-import { Provider } from "@/types/providers/Provider"
+import {
+    ColumnDef,
+    ColumnFiltersState,
+    SortingState,
+    VisibilityState,
+    flexRender,
+    getCoreRowModel,
+    getFilteredRowModel,
+    getPaginationRowModel,
+    getSortedRowModel,
+    useReactTable,
+    SortingFn
+  } from "@tanstack/react-table"
 import useProviders from "@/hooks/useProviders"
 import { toast } from "../ui/use-toast"
-import {  EllipsisVertical, Settings2 } from "lucide-react"
+import {  ChevronsUpDown, EllipsisVertical, Settings2 } from "lucide-react"
 import { DropdownMenu, DropdownMenuSeparator, DropdownMenuTrigger, DropdownMenuItem, DropdownMenuLabel, DropdownMenuContent, DropdownMenuCheckboxItem } from "../ui/dropdown-menu"
 import { Button } from "../ui/button"
+import { useState } from "react"
+import { Provider } from "@/types/providers/Provider"
 
 
 interface ProviderTableProps {
@@ -27,15 +40,26 @@ function copyToClipboard(value: string, valueName: string){
     })
 }
 
+const headersClassNames = "bg-background text-slate-500 hover:bg-background text-center flex gap-2"
 
 
 export default function ProvidersTable({onEditProvider, onProviderRowSelection}: ProviderTableProps){
     const { providers, enableProvider, disableProvider } = useProviders()
     
+    const [sorting, setSorting] = useState<SortingState>([])
+    const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+    const [columnVisibility, setColumnVisibility] =useState<VisibilityState>({})
+    const [rowSelection, setRowSelection] = useState({})
+    
+    
+    const sortingWithStatus: SortingFn<Provider> = (rowA, rowB) => {
+        return Number(rowA.original.statusProvider) - Number(rowB.original.statusProvider)
+    }
+
 
     const columns: ColumnDef<Provider>[] = [
         {
-            id: 'ID',
+            id: 'id',
             accessorKey: '_id',
             header: 'ID',
             cell: (providerContext) => {
@@ -57,26 +81,38 @@ export default function ProvidersTable({onEditProvider, onProviderRowSelection}:
             }
         },
         {
-            id: 'Nombre',
+            id: 'name',
             accessorKey: 'nameProvider',
             header: 'Nombre',
         },
         {
+            id: 'typeProvider',
             accessorFn: (provider) => provider.idTypeProvider.nameTypeProvider,
             header: 'Tipo de proveedor'
         },
         {
+            id: 'note',
             accessorKey: 'noteProvider',
             header: 'Nota'
         },
-        {
-            accessorFn: (provider) => {
-                console.log(provider.statusProvider)
-                return provider.statusProvider? 'Active' : 'Inactive'
+        {   id: 'state',
+            accessorKey: 'statusProvider',
+            sortingFn: sortingWithStatus,
+            header:({column}) => {
+                return(
+                    <Button
+                        className={headersClassNames}
+                        onClick={() => {column.toggleSorting()}}
+                    >
+                        Estado
+                        <ChevronsUpDown className="w-4"/>
+                    </Button>
+                )
             },
-            header: 'Estado'
+            cell: ({row}) => <div className="grid items-center">{row.original.statusProvider? "Activo" : "Inactivo"}</div>
         },
         {
+            id: 'date',
             accessorFn: (provider) => {
                 const date = new Date(provider.creationDateProvider)
                 console.log(date)
@@ -85,7 +121,7 @@ export default function ProvidersTable({onEditProvider, onProviderRowSelection}:
             },
             header: 'Fecha de creación'
         },
-        {   id: 'Edit',
+        {   id: 'edit',
             header: () => {
                 // return <span className="flex items-center gap-1">Edit <Edit className="inline" size={15}/></span>
                 return <></>
@@ -129,16 +165,29 @@ export default function ProvidersTable({onEditProvider, onProviderRowSelection}:
 
     const table = useReactTable({
         data: providers,
-        columns,
-        getCoreRowModel: getCoreRowModel()
-    })
+        columns: columns,
+        onSortingChange: setSorting,
+        onColumnFiltersChange: setColumnFilters,
+        getCoreRowModel: getCoreRowModel(),
+        getPaginationRowModel: getPaginationRowModel(),
+        getSortedRowModel: getSortedRowModel(),
+        getFilteredRowModel: getFilteredRowModel(),
+        onColumnVisibilityChange: setColumnVisibility,
+        onRowSelectionChange: setRowSelection,
+        state: {
+          sorting,
+          columnFilters,
+          columnVisibility,
+          rowSelection,
+        },
+      })
 
     return (
         <section>
             <div className="flex">
             <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button className="rounded shadow  flex gap-2 bg-background hover:bg-white  text-foreground ml-auto">
+            <Button className="rounded shadow  flex gap-2 bg-background hover:bg-white dark:hover:bg-slate-800 text-foreground ml-auto">
                     <Settings2/>
                     <span>Vista</span>
                 </Button>
@@ -147,6 +196,7 @@ export default function ProvidersTable({onEditProvider, onProviderRowSelection}:
             {table
               .getAllColumns()
               .filter((column) => column.getCanHide())
+              .filter((column) => column.id != 'edit')
               .map((column, index, array) => {
                 if(index == array.length-1) return
                 return (
