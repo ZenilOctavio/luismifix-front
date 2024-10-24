@@ -30,10 +30,10 @@ export default function useProducts(){
     let productTypes: ProductType[] = []
     let setProductTypes: Dispatch<ProductType[]> = () => {}
 
-    let purchasesForProducts: Record<string, Purchase[]>
+    let purchasesForProducts: Record<string, Purchase[]> = {}
     let setPurchasesForProducts: Dispatch<Record<string, Purchase[]>>
 
-    let [purchasesForProvider, setPurchaseForProvider] = useState<Record<string, Purchase[]>>({})
+    const [purchasesForProvider, setPurchaseForProvider] = useState<Record<string, Purchase[]>>({})
     const [isLoading, setIsLoading] = useState<boolean>(false)
 
     const refreshProducts = async () => {

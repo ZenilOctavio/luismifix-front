@@ -13,7 +13,6 @@ import { ProductsHistorical } from './components/pages/ProductsHistorical'
 const queryClient = new QueryClient()
 
 function App() {
-  
   return (
     <AuthProvider>
       <ThemeProvider defaultTheme= 'dark'>

@@ -26,10 +26,10 @@ const FormSchema = z.object({
   })
 })
 
-export function ProfileForm({onSubmit, className}: {onSubmit: Function | undefined, className: string | undefined}) {
+export function ProfileForm({ onSubmit, className }: { onSubmit: () => void | undefined, className: string | undefined }) {
   const { signup } = useAuth()
 
-  
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -39,38 +39,67 @@ export function ProfileForm({onSubmit, className}: {onSubmit: Function | undefin
   })
 
   async function handleSubmit(data: z.infer<typeof FormSchema>) {
-    try{
-      const responseData = await signup(data.username, data.password)
-      
-      if(!responseData.user) throw new Error(responseData.message)
 
-      console.log(responseData)
+    const loginResponseData = await signup(data.username, data.password)
+
+    console.log(loginResponseData)
+
+    if (loginResponseData.user) {
       toast({
-        title: 'Log in completed',
-        content: responseData.message,
-        description: 
-        <span className="flex items-center gap-2">
-            <CheckCheck size={16} />
-            <span>{responseData.message}</span>
-        </span>
-    })
-
-      if (onSubmit) onSubmit(responseData)
-    }
-    catch(error){
-      const response = error as SessionResponse
-
-      toast({
-        title: "Log in failed",
+        title: 'Inicio de sesión exitoso',
+        content: loginResponseData.message,
         description:
-        <span className="flex items-center gap-2">
-          <BadgeAlert size={16} />
-          <span>{response.message}</span>
-      </span>,
-        variant: 'destructive',  
+          <span className="flex items-center gap-2">
+            <CheckCheck size={16} />
+            <span>{loginResponseData.message}</span>
+          </span>
       })
-          
+      if (onSubmit) onSubmit()
+
     }
+    else {
+      toast({
+        title: "Inicio de sesión fallido",
+        description:
+          <span className="flex items-center gap-2">
+            <BadgeAlert size={16} />
+            <span>{loginResponseData.message}</span>
+          </span>,
+        variant: 'destructive',
+      })
+    }
+
+    // try{
+    //   const responseData = await signup(data.username, data.password)
+
+
+    //   console.log(responseData)
+    //   toast({
+    //     title: 'Log in completed',
+    //     content: responseData.message,
+    //     description: 
+    //     <span className="flex items-center gap-2">
+    //         <CheckCheck size={16} />
+    //         <span>{responseData.message}</span>
+    //     </span>
+    // })
+
+    //   if (onSubmit) onSubmit()
+    // }
+    // catch(error){
+    //   const response = error as SessionResponse
+
+    //   toast({
+    //     title: "Log in failed",
+    //     description:
+    //     <span className="flex items-center gap-2">
+    //       <BadgeAlert size={16} />
+    //       <span>{response.message}</span>
+    //   </span>,
+    //     variant: 'destructive',  
+    //   })
+
+    // }
 
   }
 
@@ -79,7 +108,8 @@ export function ProfileForm({onSubmit, className}: {onSubmit: Function | undefin
       <form onSubmit={form.handleSubmit(handleSubmit)} className={className} style={{
         display: 'flex',
         flexDirection: 'column',
-        gap: '2rem'
+        gap: '3rem',
+        height: '100%',
       }}>
         <FormField
           control={form.control}
@@ -88,7 +118,7 @@ export function ProfileForm({onSubmit, className}: {onSubmit: Function | undefin
             <FormItem className="">
               <FormLabel className="sm:text-lg text-sm">Usuario</FormLabel>
               <FormControl>
-                <Input placeholder="Tu nombre de usuario" {...field} className="rounded-sm h-12 shadow-lg"/>
+                <Input maxLength={50} placeholder="Tu nombre de usuario" {...field} className="rounded-sm h-12 shadow-lg" />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -98,10 +128,10 @@ export function ProfileForm({onSubmit, className}: {onSubmit: Function | undefin
           control={form.control}
           name="password"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="">
               <FormLabel className="sm:text-lg text-sm">Contraseña</FormLabel>
               <FormControl>
-                <PasswordInput placeholder="Tu contraseña" {...field}  className="rounded-sm h-12 shadow-lg"/>
+                <PasswordInput maxLength={50} placeholder="Tu contraseña" {...field} className="rounded-sm h-12 shadow-lg" />
               </FormControl>
               <FormMessage />
             </FormItem>

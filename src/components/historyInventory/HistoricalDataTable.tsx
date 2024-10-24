@@ -13,21 +13,21 @@ import {
     getPaginationRowModel,
     getSortedRowModel,
     useReactTable,
-    SortingFn
   } from "@tanstack/react-table"
 import { Avatar, AvatarFallback } from "../ui/avatar"
 
 export function HistoricalDataTable(){
 
-    const { historicalData, isFetchingHistoricalData } = useProductsHistoricalData()
+    const { historicalData } = useProductsHistoricalData()
 
-    if(!historicalData) return <></>
+    
 
     const [sorting, setSorting] = useState<SortingState>([])
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
     const [columnVisibility, setColumnVisibility] =
       useState<VisibilityState>({})
     const [rowSelection, setRowSelection] = useState({})
+
 
 
     const columns: ColumnDef<ProductsHistoricalData>[] = [
@@ -126,6 +126,8 @@ export function HistoricalDataTable(){
           rowSelection,
         },
       })
+
+    if(!historicalData) return <></>
 
     return (
         <>

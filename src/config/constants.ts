@@ -1,5 +1,5 @@
 // Base URL
-export const BACKEND_URL = (import.meta.env.DEV)? import.meta.env.VITE_BACKEND_URL : window.location.href
+export const BACKEND_URL = (import.meta.env.DEV)? import.meta.env.VITE_BACKEND_URL : window.location.origin
 // Routes
 export const LOGIN_PAGE_PATHNAME = '/'
 export const HOME_PAGE_PATHNAME = '/home'

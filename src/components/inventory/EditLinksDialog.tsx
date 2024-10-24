@@ -4,19 +4,19 @@ import useProducts from "@/hooks/useProducts";
 import { LinkItem } from "./LinkItem";
 import { Skeleton } from "../ui/skeleton";
 import { useForm } from "react-hook-form";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescription } from "../ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 import { z } from 'zod'
 import { zodResolver } from "@hookform/resolvers/zod";
 import useProviders from "@/hooks/useProviders";
 import { Input } from "../ui/input";
 import { Separator } from "../ui/separator";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
-import { moneyFormat, turnFormattedMoneyStringToNumber } from "@/lib/formating";
+import { turnFormattedMoneyStringToNumber } from "@/lib/formating";
 import { Button } from "../ui/button";
 import { CreationPurchase } from "@/types/purchases/Purchase";
 import { toast } from "../ui/use-toast";
 
-export function EditLinksDialog({product, open, onOpenChange}:{product: Product, open: boolean, onOpenChange: Function}){
+export function EditLinksDialog({product, open, onOpenChange}:{product: Product, open: boolean, onOpenChange: () => void}){
 
     const { purchasesForProducts, isLoading, createPurchase } = useProducts()
     const { providers } = useProviders()

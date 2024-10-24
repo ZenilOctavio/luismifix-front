@@ -38,7 +38,7 @@ export function ProviderContactsList({provider = null}: {provider: Provider | nu
         )
     }
 
-    const handleCloseEditContact = (bool: boolean) => {
+    const handleCloseEditContact = () => {
         setEditingContact(null)
     }
 

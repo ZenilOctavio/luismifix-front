@@ -20,18 +20,21 @@ function NavBar() {
     const { user, logout, isLoading } = useAuth()
     const {setTheme, theme} = useTheme()
 
+
     useEffect(() => {
-        if ( !isLoading && (!user || Object.keys(user).length == 0)){
+        if ((!user)){
             console.log('Theres no user')
             navigate(LOGIN_PAGE_PATHNAME)
         }
-    }, [])
+    }, [user, isLoading, navigate])
 
     const handleLogOut = async () => {
         try{
             console.log('trying')
             const response = await logout()
+
             navigate(LOGIN_PAGE_PATHNAME)
+
             toast({
                 title: 'Log out completed',
                 content: response.message,
