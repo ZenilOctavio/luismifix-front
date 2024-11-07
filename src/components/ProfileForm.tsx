@@ -10,12 +10,11 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
-import { Input, PasswordInput } from "@/components/ui/input"
+import { Input } from "@/components/ui/input"
 import { toast } from "@/components/ui/use-toast"
-import { SessionResponse } from "@/types/session/SessionResponse"
 import { useAuth } from "@/providers/AuthProvider"
 import { CheckCheck, BadgeAlert } from "lucide-react"
-
+import { SessionResponse } from "@/types/session/SessionResponse"
 
 const FormSchema = z.object({
   username: z.string().min(2, {
@@ -26,10 +25,10 @@ const FormSchema = z.object({
   })
 })
 
-export function ProfileForm({onSubmit, className}: {onSubmit: Function | undefined, className: string | undefined}) {
+export function ProfileForm({ onSubmit, className }: { onSubmit: Function | undefined, className: string | undefined }) {
   const { signup } = useAuth()
 
-  
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -39,37 +38,37 @@ export function ProfileForm({onSubmit, className}: {onSubmit: Function | undefin
   })
 
   async function handleSubmit(data: z.infer<typeof FormSchema>) {
-    try{
+    try {
       const responseData = await signup(data.username, data.password)
-      
-      if(!responseData.user) throw new Error(responseData.message)
+
+      if (!responseData.user) throw new Error(responseData.message)
 
       console.log(responseData)
       toast({
         title: 'Log in completed',
         content: responseData.message,
-        description: 
-        <span className="flex items-center gap-2">
+        description:
+          <span className="flex items-center gap-2">
             <CheckCheck size={16} />
             <span>{responseData.message}</span>
-        </span>
-    })
+          </span>
+      })
 
       if (onSubmit) onSubmit(responseData)
     }
-    catch(error){
+    catch (error) {
       const response = error as SessionResponse
 
       toast({
         title: "Log in failed",
         description:
-        <span className="flex items-center gap-2">
-          <BadgeAlert size={16} />
-          <span>{response.message}</span>
-      </span>,
-        variant: 'destructive',  
+          <span className="flex items-center gap-2">
+            <BadgeAlert size={16} />
+            <span>{response.message}</span>
+          </span>,
+        variant: 'destructive',
       })
-          
+
     }
 
   }
@@ -88,7 +87,7 @@ export function ProfileForm({onSubmit, className}: {onSubmit: Function | undefin
             <FormItem className="">
               <FormLabel className="sm:text-lg text-sm">Usuario</FormLabel>
               <FormControl>
-                <Input placeholder="Tu nombre de usuario" {...field} className="rounded-sm h-12 shadow-lg"/>
+                <Input placeholder="Tu nombre de usuario" {...field} className="rounded-sm h-12 shadow-lg" />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -101,7 +100,7 @@ export function ProfileForm({onSubmit, className}: {onSubmit: Function | undefin
             <FormItem>
               <FormLabel className="sm:text-lg text-sm">Contraseña</FormLabel>
               <FormControl>
-                <PasswordInput placeholder="Tu contraseña" {...field}  className="rounded-sm h-12 shadow-lg"/>
+                <Input type="password" maxLength={50} placeholder="Tu contraseña" {...field} className="rounded-sm h-12 shadow-lg" />
               </FormControl>
               <FormMessage />
             </FormItem>

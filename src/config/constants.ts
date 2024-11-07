@@ -1,5 +1,5 @@
 // Base URL
-export const BACKEND_URL = (import.meta.env.DEV)? import.meta.env.VITE_BACKEND_URL : window.location.href
+export const BACKEND_URL = (import.meta.env.DEV) ? import.meta.env.VITE_BACKEND_URL : window.location.origin
 // Routes
 export const LOGIN_PAGE_PATHNAME = '/'
 export const HOME_PAGE_PATHNAME = '/home'
@@ -10,6 +10,8 @@ export const PRODUCTS_HISTORICAL_PAGE_PATHNAME = '/historical'
 export const CLIENTS_PAGE_PATHNAME = '/clients'
 export const BOARD_PAGE_PATHNAME = '/board'
 export const TODO_PAGE_PATHNAME = '/to-do'
+export const ECOMMERCE_PAGE_PATHNAME = '/ecommerce'
+
 
 //API Routes
 export const API_REGISTER_PATHNAME = 'api/register'
@@ -47,8 +49,8 @@ export const API_PURCHASES_DISABLE_PATHNAME = API_PURCHASES_PATHNAME + '/disable
 
 export const API_PRODUCTS_HISTORICAL_PATHNAME = 'api/historys/products'
 
-console.log('isDev: ',import.meta.env.DEV)
-console.log('mode: ',import.meta.env.MODE)
-console.log('VITE_B_URL:',import.meta.env.VITE_BACKEND_URL)
-console.log('windowLocation: ',window.location.href)
-console.log('BACKEND_URL: ',BACKEND_URL)
+console.log('isDev: ', import.meta.env.DEV)
+console.log('mode: ', import.meta.env.MODE)
+console.log('VITE_B_URL:', import.meta.env.VITE_BACKEND_URL)
+console.log('windowLocation: ', window.location.href)
+console.log('BACKEND_URL: ', BACKEND_URL)
