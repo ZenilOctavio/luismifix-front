@@ -3,6 +3,7 @@ import { SidebarProvider, SidebarTrigger } from "../ui/sidebar";
 import { AppSidebar } from "../Ecommerce/AppSidebar";
 import { ECNavbar } from "../ECNavbar";
 import { ShoppingCartProvider } from "@/providers/ShoppingCartProvider";
+import Chatbot from "../chatbot/Chatbot";
 
 export function EcommerceLayout() {
   return (
@@ -23,6 +24,7 @@ export function EcommerceLayout() {
 
         </SidebarProvider>
       </ShoppingCartProvider>
+      <Chatbot />
     </>
   )
 }
