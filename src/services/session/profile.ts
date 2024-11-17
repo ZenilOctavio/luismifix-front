@@ -14,12 +14,10 @@ export async function profile(): Promise<ProfileResponse> {
     })
 
     const data = response.data as ProfileResponse
-    console.log(data)
-    
-    if (response.status > 299 || response.status < 200){
+    if (response.status > 299 || response.status < 200) {
         const error = response.data as SessionResponse
         throw new Error(error.message)
     }
-    
+
     return data
 }

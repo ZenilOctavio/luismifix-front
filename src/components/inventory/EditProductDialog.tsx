@@ -1,7 +1,7 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
-import { Form, FormControl, FormItem, FormLabel, FormField } from "../ui/form";
+import { Form, FormControl, FormItem, FormLabel, FormField, FormMessage } from "../ui/form";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -10,6 +10,8 @@ import { Textarea } from "../ui/textarea";
 import { toast } from "../ui/use-toast";
 import useProducts from "@/hooks/useProducts";
 import { Product, CreationProduct } from "@/types/products/Product";
+import { ProductFormSchema } from "@/schemas/product.schema";
+import { numbersMiddleware } from "@/lib/numberState.middleware";
 
 
 interface EditProductDialogProps {
@@ -18,49 +20,46 @@ interface EditProductDialogProps {
     onOpenChange: (open: boolean) => void
 }
 
-const EditProductFormSchema = z.object({
-    idTypeProduct: z.string(),
-    nameProduct: z.string(),
-    amountProduct: z.string(),
-    priceProduct: z.string(),
-    descriptionProduct: z.string()
-})
 
-export default function EditProductDialog({product, open, onOpenChange}: EditProductDialogProps) {
 
-   const { updateProduct, productTypes } = useProducts()
+export default function EditProductDialog({ product, open, onOpenChange }: EditProductDialogProps) {
 
-    const form = useForm<z.infer<typeof EditProductFormSchema>>({
-        resolver: zodResolver(EditProductFormSchema),
+    const { updateProduct, productTypes } = useProducts()
+
+    const form = useForm<z.infer<typeof ProductFormSchema>>({
+        resolver: zodResolver(ProductFormSchema),
         defaultValues: {
-            idTypeProduct: product.idTypeProduct._id,
+            typeProduct: product.idTypeProduct._id,
             nameProduct: product.nameProduct,
-            amountProduct: String(product.amountProduct),
-            priceProduct: String(product.priceProduct),
-            descriptionProduct: product.descriptionProduct
+            units: product.amountProduct,
+            price: product.priceProduct,
+            description: product.descriptionProduct
         }
     })
 
 
-    const handleSubmitForm = async (data: z.infer<typeof EditProductFormSchema>) => {
-        try{
+    const handleSubmitForm = async (data: z.infer<typeof ProductFormSchema>) => {
+        try {
             console.log(data)
             const newProductData: CreationProduct = {
                 nameProduct: data.nameProduct,
-                descriptionProduct: data.descriptionProduct,
-                idTypeProduct: data.idTypeProduct,
-                amountProduct: Number(data.amountProduct),
-                priceProduct: Number(data.priceProduct)
+                descriptionProduct: data.description,
+                idTypeProduct: data.typeProduct,
+                amountProduct: data.units,
+                priceProduct: data.price
             }
 
 
-            await updateProduct(product, newProductData)
+            const result = await updateProduct(product, newProductData)
+
+            if (!result) throw new Error('No se pudo actualizar al producto')
+
             toast({
                 title: 'Producto actualizado exitosamente'
             })
             onOpenChange(false)
         }
-        catch(err){
+        catch (err) {
             toast({
                 title: 'No se pudo actualizar al producto',
                 // description: err.message,
@@ -71,94 +70,106 @@ export default function EditProductDialog({product, open, onOpenChange}: EditPro
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogContent className="sm:max-w-[425px] p-4" >
-          <DialogHeader>
-            <DialogTitle>Editar Producto</DialogTitle>
-          </DialogHeader>
+            <DialogContent className="sm:max-w-[425px] p-4" >
+                <DialogHeader>
+                    <DialogTitle>Editar Producto</DialogTitle>
+                </DialogHeader>
 
-            <Form {...form}>
-                <form className="flex-col flex gap-4" onSubmit={form.handleSubmit(handleSubmitForm)}>
-                    <FormField
-                        control={form.control}
-                        name="nameProduct"
-                        render={(({field}) => (
-                            <FormItem>
-                                <FormLabel>Nombre</FormLabel>
-                                <FormControl>
-                                    <Input placeholder="Escribe el nuevo nombre del proveedor" {...field}/>
-                                </FormControl>
-                            </FormItem>
-                        ))}
-                    />
-                    
-                    <FormField
-                        control={form.control}
-                        name="idTypeProduct"
-                        render={(({field}) => (
-                            <FormItem>
-                                <FormLabel>Tipo de producto</FormLabel>
-                                <FormControl>
-                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                        <SelectTrigger>
-                                            <SelectValue placeholder="Selecciona el tipo de proveedor"></SelectValue>
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectGroup>
-                                                {
-                                                    productTypes?
-                                                        productTypes.map(typeProduct => (
-                                                            <SelectItem key={typeProduct._id} value={typeProduct._id}>{typeProduct.nameTypeProduct}</SelectItem>
-                                                        ))
-                                                        :
-                                                        <SelectItem value="0">No hay tipos de producto</SelectItem>
-                                                }   
-                                            </SelectGroup>
-                                        </SelectContent>
-                                    </Select>
-                                </FormControl>
-                            </FormItem>
-                        ))}
-                    />
-                    <FormField
-                        control={form.control}
-                        name="amountProduct"
-                        render={(({field}) => (
-                            <FormItem>
-                                <FormLabel>Cantidad</FormLabel>
-                                <FormControl>
-                                    <Input type="number" {...field}/>
-                                </FormControl>
-                            </FormItem>
-                        ))}
-                    />
-                    <FormField
-                        control={form.control}
-                        name="priceProduct"
-                        render={(({field}) => (
-                            <FormItem>
-                                <FormLabel>Precio</FormLabel>
-                                <FormControl>
-                                    <Input type="number" {...field}/>
-                                </FormControl>
-                            </FormItem>
-                        ))}
-                    />
-                    <FormField
-                        control={form.control}
-                        name="descriptionProduct"
-                        render={(({field}) => (
-                            <FormItem>
-                                <FormLabel>Descripcion</FormLabel>
-                                <FormControl>
-                                    <Textarea {...field}/>
-                                </FormControl>
-                            </FormItem>
-                        ))}
-                    />
-                    <Button type="submit">Guardar cambios</Button>
-                </form>
-            </Form>
-        </DialogContent>
-      </Dialog>
+                <Form {...form}>
+                    <form className="flex-col flex gap-4" onSubmit={form.handleSubmit(handleSubmitForm)}>
+                        <FormField
+                            control={form.control}
+                            name="nameProduct"
+                            render={(({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Nombre</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="Escribe el nuevo nombre del proveedor" {...field} maxLength={50} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            ))}
+                        />
+
+                        <FormField
+                            control={form.control}
+                            name="typeProduct"
+                            render={(({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Tipo de producto</FormLabel>
+                                    <FormControl>
+                                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                            <SelectTrigger>
+                                                <SelectValue placeholder="Selecciona el tipo de proveedor"></SelectValue>
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectGroup>
+                                                    {
+                                                        productTypes ?
+                                                            productTypes.map(typeProduct => (
+                                                                <SelectItem key={typeProduct._id} value={typeProduct._id}>{typeProduct.nameTypeProduct}</SelectItem>
+                                                            ))
+                                                            :
+                                                            <SelectItem value="0">No hay tipos de producto</SelectItem>
+                                                    }
+                                                </SelectGroup>
+                                            </SelectContent>
+                                        </Select>
+                                    </FormControl>
+                                </FormItem>
+                            ))}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="units"
+                            render={(({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Cantidad</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            type="number"
+                                            {...field}
+                                            {...numbersMiddleware(1_000_000, false,)}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            ))}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="price"
+                            render={(({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Precio</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            type="number"
+                                            {...field}
+                                            {...numbersMiddleware(1_000_000, false, true)}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            ))}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="description"
+                            render={(({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Descripcion</FormLabel>
+                                    <FormControl>
+                                        <Textarea {...field} maxLength={500} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            ))}
+                        />
+                        <Button type="submit">Guardar cambios</Button>
+                    </form>
+                </Form>
+            </DialogContent>
+        </Dialog>
     )
 }

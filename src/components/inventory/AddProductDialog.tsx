@@ -13,32 +13,17 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrig
 import { toast } from "../ui/use-toast"
 import { AxiosError } from "axios"
 import { ErrorResponse } from "@/types/ErrorResponse"
-import { getPositiveIntegerNumberSchema, getPositiveNumberSchema } from "@/lib/numberSchemas"
 import { numbersMiddleware } from "@/lib/numberState.middleware"
+import { ProductFormSchema } from "@/schemas/product.schema"
 
 export function AddProductDialog() {
 
     const { createProduct, productTypes } = useProducts()
 
-    const unitsSchema = getPositiveIntegerNumberSchema('Las unidades').refine((value) => value <= 1_000_000, 'Las unidades deben ser menor o igual a 1.000.000')
-    const priceSchema = getPositiveNumberSchema('El precio')
-        .refine((value) => value > 0, 'El precio debe ser mayor a 0')
-        .refine((value) => value <= 1_000_000, 'Las unidades deben ser menor o igual a 1.000.000')
 
 
-    const AddProductFormSchema = z.object({
-        nameProduct: z.string().min(4, "El nombre es requerido"),
-        description: z.string().min(10, "La descripción es requerida"),
-        link: z.string().url("El link debe ser una url"),
-        units: unitsSchema,
-        price: priceSchema,
-        typeProduct: z.string()
-
-    })
-
-
-    const form = useForm<z.infer<typeof AddProductFormSchema>>({
-        resolver: zodResolver(AddProductFormSchema),
+    const form = useForm<z.infer<typeof ProductFormSchema>>({
+        resolver: zodResolver(ProductFormSchema),
         defaultValues: {
             nameProduct: "",
             description: "",
@@ -50,7 +35,7 @@ export function AddProductDialog() {
         mode: 'onChange'
     })
 
-    const handleSubmit = (data: z.infer<typeof AddProductFormSchema>) => {
+    const handleSubmit = (data: z.infer<typeof ProductFormSchema>) => {
 
         const newProduct: CreationProduct = {
             nameProduct: data.nameProduct,
@@ -108,7 +93,7 @@ export function AddProductDialog() {
                                     <FormItem >
                                         <FormLabel>Nombre</FormLabel>
                                         <FormControl>
-                                            <Input className="rounded" placeholder="Nombre del producto" {...field} />
+                                            <Input className="rounded" placeholder="Nombre del producto" maxLength={51} {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -124,7 +109,7 @@ export function AddProductDialog() {
                                     <FormItem >
                                         <FormLabel>Descripción</FormLabel>
                                         <FormControl>
-                                            <Input className="rounded" placeholder="Añade una descripción" {...field} />
+                                            <Input className="rounded" placeholder="Añade una descripción" maxLength={501} {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -132,7 +117,7 @@ export function AddProductDialog() {
                             }}
                         />
 
-                        <FormField
+                        {/* <FormField
                             name="link"
                             control={form.control}
                             render={({ field }) => {
@@ -146,7 +131,7 @@ export function AddProductDialog() {
                                     </FormItem>
                                 )
                             }}
-                        />
+                        /> */}
 
                         <FormField
                             name="units"
@@ -162,6 +147,7 @@ export function AddProductDialog() {
                                                 placeholder="Número de unidades en almacén"
                                                 {...field}
                                                 {...numbersMiddleware(1_000_000, false,)}
+                                                maxLength={7}
                                             />
                                         </FormControl>
                                         <FormMessage />
@@ -182,7 +168,10 @@ export function AddProductDialog() {
                                                 type="number"
                                                 placeholder="Número de unidades en almacén"
                                                 {...numbersMiddleware(1_000_000, false, true)}
-                                                {...field} />
+                                                {...field}
+                                                maxLength={7}
+                                                max={7}
+                                            />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>

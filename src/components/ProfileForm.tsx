@@ -12,7 +12,6 @@ import {
 } from "@/components/ui/form"
 import { Input, PasswordInput } from "@/components/ui/input"
 import { toast } from "@/components/ui/use-toast"
-import { SessionResponse } from "@/types/session/SessionResponse"
 import { useAuth } from "@/providers/AuthProvider"
 import { CheckCheck, BadgeAlert } from "lucide-react"
 

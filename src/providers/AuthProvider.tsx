@@ -33,8 +33,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setIsLoading(true)
         const newUser = await profile()
 
-        console.log(newUser)
-
         setUser(newUser)
 
         setIsLoading(false)

@@ -1,81 +1,77 @@
-import {getProviders, getProviderByName, getProviderById, getProviderContacts } from "@/services/providers/getProviders";
+import { getProviders, getProviderByName, getProviderById, getProviderContacts } from "@/services/providers/getProviders";
 import { CreationProvider, Provider } from "@/types/providers/Provider";
-import { Dispatch, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { createProvider as createProviderService } from "@/services/providers/postProvider";
 import { AxiosError } from "axios";
 import { ErrorResponse } from "@/types/ErrorResponse";
 import { updateProvider as updateProviderService, enableProvider as enableProviderService, disableProvider as disableProviderService, disableContact } from "@/services/providers/putProviders";
-import { useProvidersContext } from "@/providers/ProvidersProvider";
 import { getTypesProviders } from "@/services/typesProvider/getTypesProvider";
-import { TypeProvider } from "@/types/providers/typeProvider";
 import { CreationProvidersContact, EditProvidersContact, ProvidersContact } from "@/types/providers/Contact";
-import { createProviderContact as createProviderContactService} from "@/services/providers/postProvider"
+import { createProviderContact as createProviderContactService } from "@/services/providers/postProvider"
 import { TypeContact } from "@/types/providers/TypeContact";
 import { getTypesContacts } from "@/services/providers/typesContacts/getTypesContacts";
 import { updateContact as updateContactService } from "@/services/providers/putProviders";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
-function useProviders(){
-    let providers: Provider[] = []
-    let setProviders: Dispatch<Provider[]> = () => {}
-    let typesProviders: TypeProvider[] = []
-    let setTypesProviders: Dispatch<TypeProvider[]> = () => {}
+function useProviders() {
 
-    
-    try{
-        const context = useProvidersContext()
+    const {
+        data: providers,
+        isFetching: isFetchingProviders,
+        refetch: refetchProviders,
+        isLoading: isLoadingProviders,
+        error: errorProviders
+    } = useQuery({
+        queryKey: ['providers'],
+        queryFn: getProviders,
+        initialData: []
+    })
 
-        if(Object.keys(context).length == 0) throw new Error('No ProvidersContext reached')
-        
-        if(context){
-            console.log('Using context')
-            providers = context.providers!
-            setProviders = context.setProviders!
-            typesProviders = context.typesProviders!
-            setTypesProviders = context.setTypesProviders!
+    const {
+        data: typesProviders,
+        isFetching: isFetchingTypesProviders,
+        refetch: refetchTypesProviders,
+        isLoading: isLoadingTypesProviders,
+        error: errorTypesProviders
+    } = useQuery({
+        queryKey: ['typesProviders'],
+        queryFn: getTypesProviders,
+        initialData: []
+    })
+
+    const { mutate: createProvider, data: createdProvider, error: createProviderError } = useMutation({
+        mutationFn: createProviderService,
+        mutationKey: ['createProvider'],
+        onSuccess: () => {
+            refetchProviders()
         }
-    }
-    catch(err){
-        console.log(err, 'Using independent state')
-        const providersState = useState<Provider[]>([])
-        const typeProvidersState = useState<TypeProvider[]>([])
-        providers = providersState[0]
-        setProviders = providersState[1]
-        typesProviders = typeProvidersState[0]
-        setTypesProviders = typeProvidersState[1]
-    }
+    })
 
-    const [ providersContacts, setProvidersContacts ] = useState<Record<string, ProvidersContact[]>>({}) 
-    const [ typeContacts, setTypeContacts ] = useState<TypeContact[]>([])
-    const [ error, setError ] = useState<string>('')
+
+    const [providersContacts, setProvidersContacts] = useState<Record<string, ProvidersContact[]>>({})
+    const [typeContacts, setTypeContacts] = useState<TypeContact[]>([])
+    const [error, setError] = useState<string>('')
 
     const refreshTypeContacts = async () => {
         const newTypeContacts = await getTypesContacts()
         setTypeContacts(newTypeContacts)
     }
-    
+
 
     const refreshProvidersContacts = async (provider: Provider) => {
         const newContacts = await getProviderContacts(provider._id)
 
-        const newProvidersContacts = {...providersContacts}
+        const newProvidersContacts = { ...providersContacts }
         newProvidersContacts[provider._id] = newContacts
 
         setProvidersContacts(newProvidersContacts)
-        
+
     }
 
-    const refreshProviders = async () => {
-        const newProviders = await getProviders()
-        const newProvidersTypes = await getTypesProviders()
-        if(newProviders)
-            setProviders(newProviders)
-        if(newProvidersTypes)
-            setTypesProviders(newProvidersTypes)
-    }
 
     const getProvider = async (by: 'id' | 'name', value: string) => {
         let provider: Provider | undefined = undefined
-        if (by === 'id'){
+        if (by === 'id') {
             provider = await getProviderById(value)
         }
         if (by === 'name') {
@@ -84,51 +80,30 @@ function useProviders(){
         return provider
     }
 
-    const createProvider = async (newProvider: CreationProvider) => {
-        try{
-            await createProviderService(newProvider)
-            const createdProvider = await getProviderByName(newProvider.nameProvider)
-            
-            const newProviders = [...providers]
-            newProviders.push(createdProvider)
-            setProviders(newProviders)
-            console.log('Nuevos usuarios',newProviders)
-            setError('')
-            
-            return createdProvider
-        }
-        catch(err){
-            const axiosError = err as AxiosError
-            const errorMessage = axiosError.response?.data as ErrorResponse
-            setError(errorMessage.message)
-            
-            return 
-        }
-    }
 
     const updateProvider = async (originalProvider: Provider, newProviderData: CreationProvider) => {
         await updateProviderService(originalProvider._id, newProviderData)
-        const updatedProvider = await getProvider('id', originalProvider._id)            
+        const updatedProvider = await getProvider('id', originalProvider._id)
 
-        refreshProviders()
-        
+        refetchProviders()
+
         return updatedProvider
     }
 
     const enableProvider = async (disabledProvider: Provider) => {
         await enableProviderService(disabledProvider._id)
-        refreshProviders()
+        refetchProviders()
     }
 
     const disableProvider = async (enabledProvider: Provider) => {
         await disableProviderService(enabledProvider._id)
-        refreshProviders()
+        refetchProviders()
     }
 
     const refreshAllProvidersContacts = async () => {
         providers.forEach(async (provider) => {
-            const providersContacts = await refreshProvidersContacts(provider)
-            console.log(providersContacts)
+            refreshProvidersContacts(provider)
+
         })
     }
 
@@ -140,28 +115,28 @@ function useProviders(){
     }
 
     const createProviderContact = async (newContact: CreationProvidersContact) => {
-        try{
+        try {
             await createProviderContactService(newContact)
-            const newContactCreated = providersContacts[newContact.idProvider].find(contact => (contact.idTypeContact._id == newContact.idTypeContact 
-                                                                                                && contact.idProvider._id == newContact.idProvider
-                                                                                                && contact.data == newContact.data))
-            const provider = providers.find(provider => provider._id == newContact.idProvider)!                                                                      
+            const newContactCreated = providersContacts[newContact.idProvider].find(contact => (contact.idTypeContact._id == newContact.idTypeContact
+                && contact.idProvider._id == newContact.idProvider
+                && contact.data == newContact.data))
+            const provider = providers.find(provider => provider._id == newContact.idProvider)!
 
             await refreshProvidersContacts(provider)
 
             setError('')
             return newContactCreated
         }
-        catch(err){
+        catch (err) {
             const axiosError = err as AxiosError
             const errorMessage = axiosError.response?.data as ErrorResponse
             setError(errorMessage.message)
-            
-            return 
+
+            return
         }
     }
 
-    const disableProviderContact = async (contact: ProvidersContact ) => {
+    const disableProviderContact = async (contact: ProvidersContact) => {
 
         await disableContact(contact._id)
 
@@ -171,17 +146,18 @@ function useProviders(){
     }
 
     useEffect(() => {
-        refreshProviders()
+        refetchProviders()
         refreshTypeContacts()
         refreshAllProvidersContacts()
     }, [])
 
 
-    return { 
-        providers, refreshProviders, createProvider, getProvider, error, updateProvider, enableProvider, disableProvider, typesProviders,
+    return {
+        providers, refreshProviders: refetchProviders, createProvider, getProvider, error, updateProvider, enableProvider, disableProvider, typesProviders,
         providersContacts, refreshProvidersContacts, refreshAllProvidersContacts, refreshTypeContacts, typeContacts, createProviderContact, updateContact,
-        disableProviderContact
-     }
+        disableProviderContact, isFetchingTypesProviders, refetchTypesProviders, isLoadingTypesProviders, errorTypesProviders, createdProvider, createProviderError,
+        isFetchingProviders, isLoadingProviders, errorProviders
+    }
 }
 
 export default useProviders
