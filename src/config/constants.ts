@@ -13,7 +13,12 @@ export const PRODUCTS_HISTORICAL_PAGE_PATHNAME = '/historical'
 export const CLIENTS_PAGE_PATHNAME = '/clients'
 export const BOARD_PAGE_PATHNAME = '/board'
 export const TODO_PAGE_PATHNAME = '/to-do'
+
+//Ecommerce
 export const ECOMMERCE_PAGE_PATHNAME = '/ecommerce'
+export const CATEGORIES_PAGE_PATHNAME = '/ecommerce/categories'
+export const PRODUCT_PAGE_PATHNAME = '/ecommerce/product/'
+
 
 
 //API Routes
