@@ -75,27 +75,27 @@ export function ProductsTable({ onEditProduct, onEditLinks }: { onEditProduct?: 
 
     const productsTableColumns = React.useMemo<ColumnDef<Product>[]>(() => {
         return ([
-            {
-                id: "select",
-                header: ({ table }) => (
-                    <input
-                        type="checkbox"
-                        defaultChecked={false}
-                        onChange={() => table.toggleAllPageRowsSelected()}
-                        aria-label="Select all"
-                    />
-                ),
-                cell: ({ row }) => (
-                    <input
-                        type="checkbox"
-                        checked={row.getIsSelected()}
-                        onChange={() => row.toggleSelected()}
-                        aria-label="Select row"
-                    />
-                ),
-                enableSorting: false,
-                enableHiding: false,
-            },
+            // {
+            //     id: "select",
+            //     header: ({ table }) => (
+            //         <input
+            //             type="checkbox"
+            //             defaultChecked={false}
+            //             onChange={() => table.toggleAllPageRowsSelected()}
+            //             aria-label="Select all"
+            //         />
+            //     ),
+            //     cell: ({ row }) => (
+            //         <input
+            //             type="checkbox"
+            //             checked={row.getIsSelected()}
+            //             onChange={() => row.toggleSelected()}
+            //             aria-label="Select row"
+            //         />
+            //     ),
+            //     enableSorting: false,
+            //     enableHiding: false,
+            // },
             {
                 id: "Nombre",
                 accessorKey: "nameProduct",
@@ -352,10 +352,10 @@ export function ProductsTable({ onEditProduct, onEditLinks }: { onEditProduct?: 
                                     {row.getVisibleCells().map((cell) => (
                                         <TableCell
                                             key={cell.id}
-                                            onClick={() => {
-                                                console.log('cellId: ', cell.id)
-                                                if (cell.id != '0_Editar') row.toggleSelected()
-                                            }}
+                                        // onClick={() => {
+                                        //     console.log('cellId: ', cell.id)
+                                        //     if (cell.id != '0_Editar') row.toggleSelected()
+                                        // }}
                                         >
                                             {flexRender(
                                                 cell.column.columnDef.cell,

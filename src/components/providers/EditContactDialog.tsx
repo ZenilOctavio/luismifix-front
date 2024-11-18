@@ -3,18 +3,19 @@ import { Dialog, DialogHeader, DialogTitle, DialogContent } from "../ui/dialog";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Form, FormControl, FormField, FormItem, FormLabel } from "../ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger } from "../ui/select";
 import { SelectValue } from "@radix-ui/react-select";
 import { Input } from "../ui/input";
 import useProviders from "@/hooks/useProviders";
 import { Button } from "../ui/button";
 import { toast } from "../ui/use-toast";
+import { contactEvaluatorResolver } from "@/lib/contactEvaluator";
 
-export function EditContactDialog({contact, onCloseEditing}: {contact: ProvidersContact | null, onCloseEditing: (bool: boolean) => void}){
+export function EditContactDialog({ contact, onCloseEditing }: { contact: ProvidersContact | null, onCloseEditing: (bool: boolean) => void }) {
 
     if (!contact || !onCloseEditing) return <></>
-    const isOpen = contact?  true : false;
+    const isOpen = contact ? true : false;
 
     const { typeContacts, updateContact, disableProviderContact } = useProviders()
 
@@ -32,7 +33,16 @@ export function EditContactDialog({contact, onCloseEditing}: {contact: Providers
     })
 
     const handleSubmitEdition = (data: z.infer<typeof editContactSchema>) => {
-        console.log(data)
+
+
+        const contactType = typeContacts.find((currentTypeContact) => currentTypeContact._id == data.idTypeContact)!
+        const evaluator = contactEvaluatorResolver(contactType.nameTypeContact.toLowerCase())
+        const evaluation = evaluator.evaluate(data.data)
+        if (!evaluation.isValid) {
+            form.setError('data', { message: evaluation.message })
+
+            return
+        }
 
         updateContact(contact, data)
             .then(() => {
@@ -48,37 +58,33 @@ export function EditContactDialog({contact, onCloseEditing}: {contact: Providers
                 })
                 form.reset()
             })
-        
+
     }
 
     const isDataDifferent = () => {
         const values = form.getValues()
         const isTypeContactDifferent = values.idTypeContact != contact.idTypeContact._id
-        console.log(values.idTypeContact, contact.idTypeContact._id)
-
         const isDataDifferent = values.data != contact.data
-        console.log(values.data, contact.data)
-
         return isTypeContactDifferent || isDataDifferent
     }
 
     const handleDisableContact = () => {
         disableProviderContact(contact)
-        .then(() => {
-            toast({
-                title: 'El contacto se eliminó correctamente',
+            .then(() => {
+                toast({
+                    title: 'El contacto se eliminó correctamente',
+                })
+                onCloseEditing(true)
             })
-            onCloseEditing(true)
-        })
-        .catch(() => {
-            toast({
-                title: 'El contacto no se pudo eliminar',
-                variant: 'destructive'
+            .catch(() => {
+                toast({
+                    title: 'El contacto no se pudo eliminar',
+                    variant: 'destructive'
+                })
             })
-        })
-        
+
     }
-    
+
     return (
         <Dialog open={isOpen} onOpenChange={onCloseEditing}>
             <DialogContent>
@@ -93,17 +99,17 @@ export function EditContactDialog({contact, onCloseEditing}: {contact: Providers
                         className="flex flex-col gap-4"
                         onSubmit={form.handleSubmit(handleSubmitEdition)}
                     >
-                       <FormField
+                        <FormField
                             control={form.control}
                             name="idTypeContact"
-                            render={({field}) => {
+                            render={({ field }) => {
                                 return (
                                     <FormItem>
-                                        <FormLabel>Id del tipo de contacto</FormLabel>
+                                        <FormLabel>Tipo de contacto</FormLabel>
                                         <FormControl>
                                             <Select defaultValue={field.value} onValueChange={field.onChange}>
                                                 <SelectTrigger>
-                                                    <SelectValue placeholder="Selecciona un tipo de contacto"/>
+                                                    <SelectValue placeholder="Selecciona un tipo de contacto" />
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     {
@@ -120,17 +126,18 @@ export function EditContactDialog({contact, onCloseEditing}: {contact: Providers
                                     </FormItem>
                                 )
                             }}
-                       />
+                        />
                         <FormField
                             control={form.control}
                             name="data"
-                            render={({field}) => {
+                            render={({ field }) => {
                                 return (
                                     <FormItem>
                                         <FormLabel>Dato de contacto</FormLabel>
                                         <FormControl>
-                                            <Input {...field}/>
+                                            <Input {...field} maxLength={100} />
                                         </FormControl>
+                                        <FormMessage />
                                     </FormItem>
                                 )
                             }}
@@ -140,7 +147,7 @@ export function EditContactDialog({contact, onCloseEditing}: {contact: Providers
                     </form>
 
                 </Form>
-                
+
             </DialogContent>
         </Dialog>
     )

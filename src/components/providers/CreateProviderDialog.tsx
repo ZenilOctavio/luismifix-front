@@ -30,7 +30,8 @@ export default function CreateProviderDialog({ open, onOpenChange }: CreateProvi
             typeProvider: typesProviders[0] ? typesProviders[0]._id : '',
             name: '',
             note: ''
-        }
+        },
+        mode: 'onChange'
     })
 
 

@@ -37,7 +37,8 @@ export default function EditProviderDialog({ provider, open, onOpenChange }: Edi
             idTypeProvider: provider.idTypeProvider._id,
             nameProvider: provider.nameProvider,
             noteProvider: provider.noteProvider
-        }
+        },
+        mode: 'onChange'
     })
 
     const currentValues = form.getValues()

@@ -34,7 +34,8 @@ export default function EditProductDialog({ product, open, onOpenChange }: EditP
             units: product.amountProduct,
             price: product.priceProduct,
             description: product.descriptionProduct
-        }
+        },
+        mode: 'onChange'
     })
 
 
@@ -62,7 +63,6 @@ export default function EditProductDialog({ product, open, onOpenChange }: EditP
         catch (err) {
             toast({
                 title: 'No se pudo actualizar al producto',
-                // description: err.message,
                 variant: 'destructive'
             })
         }
@@ -84,7 +84,7 @@ export default function EditProductDialog({ product, open, onOpenChange }: EditP
                                 <FormItem>
                                     <FormLabel>Nombre</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="Escribe el nuevo nombre del proveedor" {...field} maxLength={50} />
+                                        <Input placeholder="Escribe el nuevo nombre del proveedor" {...field} maxLength={51} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -160,7 +160,7 @@ export default function EditProductDialog({ product, open, onOpenChange }: EditP
                                 <FormItem>
                                     <FormLabel>Descripcion</FormLabel>
                                     <FormControl>
-                                        <Textarea {...field} maxLength={500} />
+                                        <Textarea {...field} maxLength={501} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
