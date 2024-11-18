@@ -1,6 +1,6 @@
 // Base URL
 export const BACKEND_URL = (import.meta.env.DEV) ? import.meta.env.VITE_BACKEND_URL : window.location.origin
-export const API_URL = import.meta.env.VITE_APIBOT_URL;
+export const API_URL = import.meta.env.VITE_BACKEND_URL;
 
 // Routes
 export const LOGIN_PAGE_PATHNAME = '/'
