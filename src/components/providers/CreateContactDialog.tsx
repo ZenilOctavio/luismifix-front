@@ -11,7 +11,7 @@ import useProviders from "@/hooks/useProviders";
 import { Input } from "../ui/input";
 import { CreationProvidersContact } from "@/types/providers/Contact";
 import { toast } from "../ui/use-toast";
-import { contactEvaluatorResolver, ContactTypeEvalutator, FacebookAccountEvaluator, InstagramAccountEvaluator, PhoneNumberEvaluator } from "@/lib/contactEvaluator";
+import { contactEvaluatorResolver } from "@/lib/contactEvaluator";
 
 
 

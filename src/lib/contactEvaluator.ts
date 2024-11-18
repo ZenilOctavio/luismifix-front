@@ -110,7 +110,7 @@ export const contactEvaluatorResolver = (value: string) => {
     case 'correo': return EmailEvaluator
     default: {
       return {
-        evaluate: (value: string) => {
+        evaluate: () => {
           return { isValid: true }
         }
       } as ContactTypeEvalutator
