@@ -57,6 +57,11 @@ export const API_PURCHASES_DISABLE_PATHNAME = API_PURCHASES_PATHNAME + '/disable
 
 export const API_PRODUCTS_HISTORICAL_PATHNAME = 'api/historys/products'
 
+
+export const API_IMAGES_PATHNAME = 'api/images'
+export const API_IMAGES_UPLOAD = API_IMAGES_PATHNAME + '/upload'
+export const API_IMAGES_GET = API_IMAGES_PATHNAME + '/product'
+
 console.log('isDev: ', import.meta.env.DEV)
 console.log('mode: ', import.meta.env.MODE)
 console.log('VITE_B_URL:', import.meta.env.VITE_BACKEND_URL)
