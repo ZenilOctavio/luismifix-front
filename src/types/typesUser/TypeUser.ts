@@ -1,4 +1,4 @@
 export interface TypeUser {
-    _id : string,
-    nameTypeUser: string
+    _id: string,
+    nameTypeUser: 'Usuario' | 'Administrador'
 }

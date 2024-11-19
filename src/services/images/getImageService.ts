@@ -10,8 +10,8 @@ export interface ImageData {
   productImage: { type: 'Buffer', data: Array<number> }
 }
 
-export async function getImageService(value: string) {
-  url.pathname = `${API_IMAGES_GET}/${value}`
+export async function getImageService(productId: string) {
+  url.pathname = `${API_IMAGES_GET}/${productId}`
 
   const response = await axios.get(url.toString())
 

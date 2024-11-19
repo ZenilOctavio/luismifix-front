@@ -4,9 +4,31 @@ import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Button } from "../ui/button";
 import { ProductCard } from "../Ecommerce/ProductCard";
 import { Separator } from "../ui/separator";
+import useProducts from "@/hooks/useProducts";
+import { getImageService } from "@/services/images/getImageService";
+import { useEffect, useState } from "react";
+import { loadImageFromBuffer } from "@/lib/loadImageFromBuffer";
 
 export function EcommerceHome() {
 
+  const { products } = useProducts()
+
+  const [imagesUrls, setImagesUrls] = useState<Record<string, string>>({})
+
+  useEffect(() => {
+    products.forEach((product) => {
+      getImageService(product._id)
+        .then(data => {
+          const imageUrl = loadImageFromBuffer(data[data.length - 1].productImage.data)
+          setImagesUrls(prev => {
+            return {
+              ...prev,
+              [product._id]: imageUrl
+            }
+          })
+        })
+    })
+  }, [products])
 
   return (
     <div className="flex flex-col gap-10 p-4">
@@ -67,8 +89,13 @@ export function EcommerceHome() {
               </CardContent>
             </Card>
           </li>
-          <li className="basis-80 h-full hover:scale-[1.01] transition-transform">
-            <ProductCard imageUrl="../../../public/home/top-10/ps4-controller.webp" name="Playstation Controller DualSense" category="Consolas" price={223} />
+          {/* <li className="basis-80 h-full hover:scale-[1.01] transition-transform">
+            <ProductCard
+              imageUrl="../../../public/home/top-10/ps4-controller.webp"
+              name="Playstation Controller DualSense"
+              category="Consolas"
+              price={223}
+            />
           </li>
           <li className="basis-80 h-full hover:scale-[1.01] transition-transform">
             <ProductCard imageUrl="../../../public/home/top-10/audifonos.webp" name="Anker Life 2 Neo" category="Auriculares" price={123} />
@@ -87,7 +114,17 @@ export function EcommerceHome() {
           </li>
           <li className="basis-80 h-full hover:scale-[1.01] transition-transform">
             <ProductCard imageUrl="../../../public/home/top-10/bocina-kardon.webp" name="Kardon Luna" category="Bocina" price={338} />
-          </li>
+          </li> */}
+
+          {
+            products.map(product => {
+              return (
+                <li key={product._id} className="basis-80 h-full hover:scale-[1.01] transition-transform">
+                  <ProductCard imageUrl={imagesUrls[product._id] || "../../../public/home/top-10/bocina-kardon.webp"} name={product.nameProduct} category={product.idTypeProduct.nameTypeProduct} price={product.priceProduct} />
+                </li>
+              )
+            })
+          }
 
         </ul>
 

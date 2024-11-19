@@ -1,9 +1,11 @@
-export interface SessionResponse{
+import { TypeUser } from "../typesUser/TypeUser"
+
+export interface SessionResponse {
     message: string
 }
-export interface ProfileResponse{
+export interface ProfileResponse {
     email: string,
-    idTypeUser: string,
+    idTypeUser: TypeUser,
     status: boolean,
     username: string,
     _id: string,
