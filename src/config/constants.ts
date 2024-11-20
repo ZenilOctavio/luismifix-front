@@ -17,7 +17,8 @@ export const TODO_PAGE_PATHNAME = '/to-do'
 //Ecommerce
 export const ECOMMERCE_PAGE_PATHNAME = '/ecommerce'
 export const CATEGORIES_PAGE_PATHNAME = '/ecommerce/categories'
-export const PRODUCT_PAGE_PATHNAME = '/ecommerce/product/'
+export const PRODUCTS_OF_CATEGORY_PAGE_PATHNAME = '/ecommerce/category/:id'
+export const PRODUCT_PAGE_PATHNAME = '/ecommerce/product/:id'
 
 
 
@@ -44,6 +45,7 @@ export const API_TYPES_PROVIDER_CONTACT_PATHNAME = API_TYPES_PATHNAME + '/typesC
 export const API_TYPES_PRODUCT_PATHNAME = API_TYPES_PATHNAME + '/typesProduct'
 
 export const API_PRODUCTS_PATHNAME = 'api/products'
+export const API_PRODUCTS_BY_TYPE_PATHNAME = API_PRODUCTS_PATHNAME + '/productsOftype'
 export const API_PRODUCTS_BY_ID_PATHNAME = API_PRODUCTS_PATHNAME + '/product'
 export const API_PRODUCTS_BY_NAME_PATHNAME = API_PRODUCTS_PATHNAME + '/search'
 export const API_PRODUCTS_ENABLE_PATHNAME = API_PRODUCTS_PATHNAME + '/enable'

@@ -12,7 +12,7 @@ export function EcommerceLayout() {
         <SidebarProvider>
           <AppSidebar />
           <div className="min-h-screen overflow-x-hidden">
-            <header className=" top-0 z-10 left-0">
+            <header className="top-0 z-10 left-0  min-w-[85vw]">
               <ECNavbar />
               <SidebarTrigger />
             </header>

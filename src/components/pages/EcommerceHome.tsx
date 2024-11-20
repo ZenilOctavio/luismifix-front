@@ -8,6 +8,7 @@ import useProducts from "@/hooks/useProducts";
 import { getImageService } from "@/services/images/getImageService";
 import { useEffect, useState } from "react";
 import { loadImageFromBuffer } from "@/lib/loadImageFromBuffer";
+import { CATEGORIES_PAGE_PATHNAME, PRODUCT_PAGE_PATHNAME } from "@/config/constants";
 
 export function EcommerceHome() {
 
@@ -36,7 +37,7 @@ export function EcommerceHome() {
         <h1 className="text-transparent mb-5 text-4xl font-bold bg-gradient-to-r bg-clip-text from-blue-600 via-blue-400 to-foreground">Bienvenido a la tienda Luismifix</h1>
         <ul className="lg:grid grid-cols-4 gap-4 h-full grid-flow-col flex flex-col">
           <li className="row-start-1 row-end-3 col-start-1 col-end-3 grow">
-            <Link to="/">
+            <Link to={CATEGORIES_PAGE_PATHNAME}>
               <CategoryCard
                 categoryName="Celulares"
                 pitch="Encuentra tu celular perfecto"
@@ -45,7 +46,7 @@ export function EcommerceHome() {
             </Link>
           </li>
           <li className="row-start-1 row-end-3 grow">
-            <Link to="/">
+            <Link to={CATEGORIES_PAGE_PATHNAME}>
               <CategoryCard
                 categoryName="Consolas"
                 pitch="Descubre soluciones ideales para tu próxima consola"
@@ -54,7 +55,7 @@ export function EcommerceHome() {
             </Link>
           </li>
           <li className="grow">
-            <Link to="/">
+            <Link to={CATEGORIES_PAGE_PATHNAME}>
               <CategoryCard
                 categoryName="Auriculares"
                 pitch="Escucha la diferencia"
@@ -63,7 +64,7 @@ export function EcommerceHome() {
             </Link>
           </li>
           <li className=" grow">
-            <Link to="/">
+            <Link to={CATEGORIES_PAGE_PATHNAME}>
               <CategoryCard
                 categoryName="Relojes inteligentes"
                 pitch="Experimenta la tecnología"
@@ -120,7 +121,9 @@ export function EcommerceHome() {
             products.map(product => {
               return (
                 <li key={product._id} className="basis-80 h-full hover:scale-[1.01] transition-transform">
-                  <ProductCard imageUrl={imagesUrls[product._id] || "../../../public/home/top-10/bocina-kardon.webp"} name={product.nameProduct} category={product.idTypeProduct.nameTypeProduct} price={product.priceProduct} />
+                  <Link to={PRODUCT_PAGE_PATHNAME.replace(':id', product._id)}>
+                    <ProductCard imageUrl={imagesUrls[product._id] || "../../../public/home/top-10/bocina-kardon.webp"} name={product.nameProduct} category={product.idTypeProduct.nameTypeProduct} price={product.priceProduct} />
+                  </Link>
                 </li>
               )
             })
