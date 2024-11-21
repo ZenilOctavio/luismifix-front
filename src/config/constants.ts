@@ -13,6 +13,8 @@ export const PRODUCTS_HISTORICAL_PAGE_PATHNAME = '/historical'
 export const CLIENTS_PAGE_PATHNAME = '/clients'
 export const BOARD_PAGE_PATHNAME = '/board'
 export const TODO_PAGE_PATHNAME = '/to-do'
+export const SUCCEEDED_PAGE_PATHNAME = '/success'
+export const CANCELED_PAGE_PATHNAME = '/cancel'
 
 //Ecommerce
 export const ECOMMERCE_PAGE_PATHNAME = '/ecommerce'

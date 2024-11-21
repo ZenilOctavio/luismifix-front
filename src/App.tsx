@@ -4,7 +4,7 @@ import LoginPage from './components/pages/LoginPage'
 import HomePage from './components/pages/HomePage'
 import ProvidersPage from './components/pages/ProvidersPage'
 import { ThemeProvider } from './providers/ThemeProvider'
-import { CATEGORIES_PAGE_PATHNAME, ECOMMERCE_PAGE_PATHNAME, HOME_PAGE_PATHNAME, INVENTORY_PAGE_PATHNAME, PRODUCT_PAGE_PATHNAME, PRODUCTS_HISTORICAL_PAGE_PATHNAME, PRODUCTS_OF_CATEGORY_PAGE_PATHNAME, PROVIDERS_PAGE_PATHNAME, REGISTER_PAGE_PATHNAME } from './config/constants'
+import { CANCELED_PAGE_PATHNAME, CATEGORIES_PAGE_PATHNAME, ECOMMERCE_PAGE_PATHNAME, HOME_PAGE_PATHNAME, INVENTORY_PAGE_PATHNAME, PRODUCT_PAGE_PATHNAME, PRODUCTS_HISTORICAL_PAGE_PATHNAME, PRODUCTS_OF_CATEGORY_PAGE_PATHNAME, PROVIDERS_PAGE_PATHNAME, REGISTER_PAGE_PATHNAME, SUCCEEDED_PAGE_PATHNAME } from './config/constants'
 import { AuthProvider } from './providers/AuthProvider'
 import { InventoryProviders } from './components/inventory/InventoryProviders'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
@@ -17,6 +17,8 @@ import { ProductView } from './components/pages/ProductView'
 import { ProductsOfCategoryView } from './components/pages/ProductsOfCategoryView'
 import { getProductsByType } from './services/products/getProductsByType'
 import { getProductById } from './services/products/getProducts'
+import { SucceedPaymentView } from './components/pages/SuceeedPaymentView'
+import { CanceledPaymentView } from './components/pages/CanceledPaymentView'
 
 const queryClient = new QueryClient()
 
@@ -24,6 +26,8 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <>
       <Route index element={<LoginPage />}></Route>
+      <Route path={SUCCEEDED_PAGE_PATHNAME} element={<SucceedPaymentView />} />
+      <Route path={CANCELED_PAGE_PATHNAME} element={<CanceledPaymentView />} />
       <Route path={REGISTER_PAGE_PATHNAME} element={<RegisterPage />}></Route>
       <Route path={HOME_PAGE_PATHNAME} element={<HomePage />}></Route>
       <Route path={INVENTORY_PAGE_PATHNAME} element={<InventoryProviders />}></Route>
