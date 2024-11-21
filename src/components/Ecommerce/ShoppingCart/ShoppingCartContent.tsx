@@ -27,7 +27,7 @@ export function ShoppingCartContent() {
           cart.products.map((item, index) => {
             const url = images[item.productId._id]
             return (
-              <li key={item.productId.nameProduct}>
+              <li key={item.productId.nameProduct} >
                 <ShoppingCartItem
                   name={item.productId.nameProduct}
                   price={item.totalPriceProduct.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })}

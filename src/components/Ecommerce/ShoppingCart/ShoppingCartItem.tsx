@@ -43,8 +43,8 @@ export function ShoppingCartItem({
 
   return (
     <article className={disabled ? `${disabledClass} flex gap-3 h-full w-full items-stretch relative` : `flex gap-3 h-full w-full items-stretch`}>
-      <figure className="basis-1/3 overflow-hidden rounded-sm bg-white">
-        <img src={imageUrl} className="w-full h-full object-cover" />
+      <figure className="basis-1/3 overflow-hidden rounded-sm bg-white ">
+        <img src={imageUrl} className="w-full h-full object-contain" />
       </figure>
       <main className="flex flex-col gap-3 basis-2/3 items-stretch ">
         <div className="flex justify-between items-center w-full">

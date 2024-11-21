@@ -46,7 +46,7 @@ export async function getProducts() {
  */
 async function getProduct(pathname: string, value: string) {
     url.pathname = `${pathname}/${value}`
-
+    console.log(url.pathname)
     const response = await axios.get(url.toString())
 
     if (response.status < 200 || response.status > 299) {
@@ -80,6 +80,9 @@ export async function getProductById(id: string) {
  * @throws {Error} Throws an error if the request fails.
  */
 export async function getProductByName(name: string) {
+
+    if (name == '') return []
+
     const data = await getProduct(API_PRODUCTS_BY_NAME_PATHNAME, name) as Array<Product>
     return data
 }

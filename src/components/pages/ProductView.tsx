@@ -1,11 +1,12 @@
 import { Button } from "@/components/ui/button"
+import { ECOMMERCE_PAGE_PATHNAME } from "@/config/constants"
 import { loadImageFromBuffer } from "@/lib/loadImageFromBuffer"
 import { ShoppingCartContext } from "@/providers/ShoppingCartProvider"
 import { getImageService } from "@/services/images/getImageService"
 import { getProductById } from "@/services/products/getProducts"
 import { Minus, Plus } from "lucide-react"
 import { useContext, useEffect, useState } from "react"
-import { useLoaderData } from "react-router-dom"
+import { useLoaderData, useNavigate } from "react-router-dom"
 
 
 export function ProductView() {
@@ -15,6 +16,8 @@ export function ProductView() {
   const [quantity, setQuantity] = useState(1)
   const [imageUrl, setImageUrl] = useState<string | null>(null)
   const { addToCart } = useContext(ShoppingCartContext)
+  const navigate = useNavigate()
+  const { open } = useContext(ShoppingCartContext)
 
   useEffect(() => {
     if (!product) return;
@@ -29,7 +32,7 @@ export function ProductView() {
 
         setImageUrl(url)
       })
-  }, [])
+  }, [product])
 
 
   if (!product) return <main><h1>No existe tal producto</h1></main>
@@ -42,6 +45,8 @@ export function ProductView() {
       price: product.priceProduct,
       quantity
     })
+    navigate(ECOMMERCE_PAGE_PATHNAME)
+    open()
   }
 
   const incrementQuantity = () => {

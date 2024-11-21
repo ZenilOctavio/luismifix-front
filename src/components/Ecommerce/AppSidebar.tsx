@@ -16,7 +16,7 @@ import {
 import { Link, useNavigate } from "react-router-dom"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu"
 import { useAuth } from "@/providers/AuthProvider"
-import { LOGIN_PAGE_PATHNAME, PRODUCTS_OF_CATEGORY_PAGE_PATHNAME } from "@/config/constants"
+import { ECOMMERCE_PAGE_PATHNAME, LOGIN_PAGE_PATHNAME, PRODUCTS_OF_CATEGORY_PAGE_PATHNAME } from "@/config/constants"
 import { useTheme } from "@/providers/ThemeProvider"
 import { Switch } from "../ui/switch"
 import { toast } from "../ui/use-toast"
@@ -76,12 +76,14 @@ export function AppSidebar() {
     <Sidebar variant="floating">
       <SidebarHeader>
         <SidebarGroup>
-          <div className="flex items-center gap-2">
-            <figure className="w-10 h-10 md:w-20 md:h-20 rounded-full overflow-hidden">
-              <img src={logoLuismifix} alt="logo" className="w-full h-full object-cover" />
-            </figure>
-            <h1 className="text-xl font-bold">Luismifix</h1>
-          </div>
+          <Link to={ECOMMERCE_PAGE_PATHNAME}>
+            <div className="flex items-center gap-2">
+              <figure className="w-10 h-10 md:w-20 md:h-20 rounded-full overflow-hidden">
+                <img src={logoLuismifix} alt="logo" className="w-full h-full object-cover" />
+              </figure>
+              <h1 className="text-xl font-bold">Luismifix</h1>
+            </div>
+          </Link>
         </SidebarGroup>
       </SidebarHeader>
 

@@ -46,8 +46,3 @@ export function isValidUrl(stringToEvaluate: string) {
     const urlRegex = /^(http|https):\/\/[\w.-]+(?:[:\d]*\/)[\w .\/?#]*$/;
     return urlRegex.test(stringToEvaluate);
 }
-export function isValidUrl(stringToEvaluate: string) {
-    // Regular expression to match valid URL format
-    const urlRegex = /^(http|https):\/\/[\w.-]+(?:[:\d]*\/)[\w .\/?#]*$/;
-    return urlRegex.test(stringToEvaluate);
-}
