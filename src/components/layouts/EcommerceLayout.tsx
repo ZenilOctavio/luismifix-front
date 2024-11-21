@@ -11,17 +11,15 @@ export function EcommerceLayout() {
       <ShoppingCartProvider>
         <SidebarProvider>
           <AppSidebar />
-          <div className="min-h-screen overflow-x-hidden">
-            <header className="top-0 z-10 left-0  min-w-[85vw]">
+          <div className="min-h-screen w-screen overflow-x-hidden flex flex-col items-stretc">
+            <header className="top-0 z-10 left-0  basis-1/12">
               <ECNavbar />
               <SidebarTrigger />
             </header>
-            <main className="px-4">
+            <main className="px-4 basis-11/12">
               <Outlet />
             </main>
-
           </div>
-
         </SidebarProvider>
       </ShoppingCartProvider>
       <Chatbot />

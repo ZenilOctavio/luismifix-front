@@ -9,7 +9,7 @@ interface ShoppingCartItemProps {
   onIncrement: () => void
   onDecrement: () => void
   onRemove: () => void
-  disabled: boolean
+  disabled?: boolean
 }
 
 export function ShoppingCartItem({
@@ -20,7 +20,7 @@ export function ShoppingCartItem({
   onIncrement,
   onDecrement,
   onRemove,
-  disabled
+  disabled = false
 }: ShoppingCartItemProps) {
 
   const incrementQuantity = () => {
@@ -54,11 +54,11 @@ export function ShoppingCartItem({
         <Button className="z-10" onClick={remove} variant="secondary"><Trash2 /></Button>
         <div className="flex items-center justify-between border rounded-sm gap-2 w-full mt-auto py-1">
           <div role="button" className={disabled ? `cursor-not-allowed opacity-50 px-2` : `hover:cursor-pointer hover:scale-[1.05] px-2`}
-            onClick={disabled ? decrementQuantity : () => { }}
+            onClick={decrementQuantity}
           ><Minus /></div>
           <span className="select-none">{quantity}</span>
           <div role="button" className={disabled ? `cursor-not-allowed opacity-50 px-2` : `hover:cursor-pointer hover:scale-[1.05] px-2`}
-            onClick={disabled ? incrementQuantity : () => { }}
+            onClick={incrementQuantity}
           ><Plus /></div>
         </div>
       </main>

@@ -16,6 +16,7 @@ import { CategoriesView } from './components/pages/CategoriesView'
 import { ProductView } from './components/pages/ProductView'
 import { ProductsOfCategoryView } from './components/pages/ProductsOfCategoryView'
 import { getProductsByType } from './services/products/getProductsByType'
+import { getProductById } from './services/products/getProducts'
 
 const queryClient = new QueryClient()
 
@@ -50,7 +51,21 @@ const router = createBrowserRouter(
           path={PRODUCTS_OF_CATEGORY_PAGE_PATHNAME}
           element={<ProductsOfCategoryView />}
         ></Route>
-        <Route path={PRODUCT_PAGE_PATHNAME} element={<ProductView />}></Route>
+        <Route
+          loader={async ({ params }) => {
+            const { id } = params
+
+            if (!id) return null
+
+            try {
+              return await getProductById(id)
+            } catch (err) {
+              return null
+            }
+          }}
+          path={PRODUCT_PAGE_PATHNAME}
+          element={<ProductView />}
+        />
       </Route>
     </>
   )

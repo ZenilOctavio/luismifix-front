@@ -5,10 +5,12 @@ import { useContext, useRef } from "react";
 import { ShoppingCartContext } from "@/providers/ShoppingCartProvider";
 import { Sheet, SheetClose, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "./ui/sheet";
 import { ShoppingCartContent } from "./Ecommerce/ShoppingCart/ShoppingCartContent";
+import { useAuth } from "@/providers/AuthProvider";
 
 export function ECNavbar() {
 
   const { toggleIsOpen, isOpen, close } = useContext(ShoppingCartContext)
+  const { user } = useAuth()
 
   const triggerRef = useRef<HTMLButtonElement>(null)
   const closeRef = useRef<HTMLButtonElement>(null)
@@ -48,7 +50,7 @@ export function ECNavbar() {
               <X />
             </Button>
             <SheetDescription>
-              Usuario 1234
+              {user ? user.username : 'Cargando...'}
             </SheetDescription>
           </SheetHeader>
           <ShoppingCartContent />

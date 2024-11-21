@@ -64,6 +64,13 @@ export const API_IMAGES_PATHNAME = 'api/images'
 export const API_IMAGES_UPLOAD = API_IMAGES_PATHNAME + '/upload'
 export const API_IMAGES_GET = API_IMAGES_PATHNAME + '/product'
 
+export const API_HISTORY_ORDERS_PATHNAME = '/api/historyOrders'
+export const API_GET_CART_PATHNAME = API_HISTORY_ORDERS_PATHNAME + `/cart/:userId`
+export const API_ADD_TO_CART_PATHNAME = API_HISTORY_ORDERS_PATHNAME + `/add`
+export const API_UPDATE_CART_PATHNAME = API_HISTORY_ORDERS_PATHNAME + `/update`
+export const API_TOTAL_CART_PATHNAME = API_HISTORY_ORDERS_PATHNAME + `/total/:userId`
+
+
 console.log('isDev: ', import.meta.env.DEV)
 console.log('mode: ', import.meta.env.MODE)
 console.log('VITE_B_URL:', import.meta.env.VITE_BACKEND_URL)
