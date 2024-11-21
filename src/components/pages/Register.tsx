@@ -8,6 +8,7 @@ import { registerUser } from "@/services/users/registerUser";
 import { toast } from "../ui/use-toast";
 import { useNavigate } from "react-router-dom";
 import { LOGIN_PAGE_PATHNAME } from "@/config/constants";
+import logo from "../../../public/logo_luismifix.png"
 
 const FormSchema = z.object({
   username: z.string().min(4, {
@@ -71,7 +72,7 @@ export function RegisterPage() {
       <main className="bg-white dark:bg-gray-800 p-8 rounded-sm flex flex-col gap-4 md:w-[400px]">
         <header className="flex flex-col items-center justify-center gap-4">
           <figure className="w-28">
-            <img src="../../../public/logo_luismifix.png" className="w-full h-full object-cover" />
+            <img src={logo} className="w-full h-full object-cover" />
           </figure>
           <h1 className="text-3xl font-semibold text-center">Crear cuenta</h1>
         </header>
