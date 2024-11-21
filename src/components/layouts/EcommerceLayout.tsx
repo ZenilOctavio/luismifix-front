@@ -1,11 +1,27 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { SidebarProvider, SidebarTrigger } from "../ui/sidebar";
 import { AppSidebar } from "../Ecommerce/AppSidebar";
 import { ECNavbar } from "../ECNavbar";
 import { ShoppingCartProvider } from "@/providers/ShoppingCartProvider";
 import Chatbot from "../chatbot/Chatbot";
+import { useEffect } from "react";
+import { useAuth } from "@/providers/AuthProvider";
+import { LOGIN_PAGE_PATHNAME } from "@/config/constants";
 
 export function EcommerceLayout() {
+
+  const { isLoading, user } = useAuth()
+  const navigate = useNavigate()
+
+
+  useEffect(() => {
+    if (!isLoading && (!user || Object.keys(user).length == 0)) {
+
+      navigate(LOGIN_PAGE_PATHNAME)
+    }
+  }, [])
+
+
   return (
     <>
       <ShoppingCartProvider>
