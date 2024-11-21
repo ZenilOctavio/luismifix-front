@@ -20,6 +20,14 @@ const initialState: ThemeProviderState = {
 
 const ThemeProviderContext = createContext<ThemeProviderState>(initialState)
 
+/**
+ * Theme provider for the application.
+ * @param children - React children to render within the provider.
+ * @param defaultTheme - Default theme to use.
+ * @param storageKey - Key to use for storing the theme in local storage.
+ * @returns - A ThemeProvider component.
+ */
+
 export function ThemeProvider({
   children,
   defaultTheme = "light",
