@@ -4,6 +4,10 @@ import { z } from "zod";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { registerUser } from "@/services/users/registerUser";
+import { toast } from "../ui/use-toast";
+import { useNavigate } from "react-router-dom";
+import { LOGIN_PAGE_PATHNAME } from "@/config/constants";
 
 const FormSchema = z.object({
   username: z.string().min(4, {
@@ -20,6 +24,7 @@ const FormSchema = z.object({
 
 export function RegisterPage() {
 
+  const navigate = useNavigate()
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -38,6 +43,27 @@ export function RegisterPage() {
       })
       return
     }
+
+    registerUser({
+      email: data.email,
+      password: data.password,
+      username: data.username,
+      typeUser: 'Usuario'
+    })
+      .then(response => {
+        toast({
+          title: 'Usuario creado con éxito',
+          description: response.message
+        })
+        navigate(LOGIN_PAGE_PATHNAME)
+      })
+      .catch(err => {
+        toast({
+          title: 'Usuario creado con éxito',
+          variant: 'destructive',
+          description: err.message
+        })
+      })
   }
 
   return (

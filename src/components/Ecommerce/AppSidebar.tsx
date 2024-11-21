@@ -1,4 +1,4 @@
-import { BadgeAlert, Calendar, CheckCheck, ChevronDown, ChevronUp, Home, Inbox, Search, Settings, User2 } from "lucide-react"
+import { BadgeAlert, CheckCheck, ChevronDown, ChevronUp, User2 } from "lucide-react"
 import logoLuismifix from "../../assets/logo_luismifix.png"
 
 import {
@@ -18,42 +18,13 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { useAuth } from "@/providers/AuthProvider"
 import { LOGIN_PAGE_PATHNAME, PRODUCTS_OF_CATEGORY_PAGE_PATHNAME } from "@/config/constants"
 import { useTheme } from "@/providers/ThemeProvider"
-import { Checkbox } from "../ui/checkbox"
 import { Switch } from "../ui/switch"
-import { useState } from "react"
 import { toast } from "../ui/use-toast"
 import { SessionResponse } from "@/types/session/SessionResponse"
 import useProducts from "@/hooks/useProducts"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../ui/collapsible"
 
-// Menu items.
-const items = [
-  {
-    title: "Home",
-    url: "#",
-    icon: Home,
-  },
-  {
-    title: "Inbox",
-    url: "#",
-    icon: Inbox,
-  },
-  {
-    title: "Calendar",
-    url: "#",
-    icon: Calendar,
-  },
-  {
-    title: "Search",
-    url: "#",
-    icon: Search,
-  },
-  {
-    title: "Settings",
-    url: "#",
-    icon: Settings,
-  },
-]
+
 
 export function AppSidebar() {
 
