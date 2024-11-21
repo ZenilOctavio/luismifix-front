@@ -7,7 +7,11 @@ import { getImageService } from "@/services/images/getImageService"
 import { loadImageFromBuffer } from "@/lib/loadImageFromBuffer"
 import { updateCartService } from "@/services/cart/updateCart"
 import { removeFromCartService } from "@/services/cart/removeFromCart"
+import { createCheckoutSessionService } from "@/services/checkout/createCheckoutSesion"
+import { loadStripe } from '@stripe/stripe-js'
+import { STRIPE_KEY } from "@/config/constants"
 
+const stripePromise = loadStripe(STRIPE_KEY)
 
 interface Item {
   id: string
@@ -29,6 +33,7 @@ interface ShoppingCartContextType {
   incrementItemQuantity: (index: number) => void
   decrementItemQuantity: (index: number) => void
   clearCart: () => void
+  checkout: () => Promise<void>
 }
 
 
@@ -135,6 +140,20 @@ export function ShoppingCartProvider({ children }: ShoppingCartProviderProps) {
     })
   }
 
+  const checkout = async () => {
+    const response = await createCheckoutSessionService(cart.userId)
+
+    const object = response.data as { id: string }
+
+    const stripe = await stripePromise
+
+    stripe?.redirectToCheckout(
+      {
+        sessionId: object.id
+      }
+    )
+  }
+
   const decrementItemQuantity = (index: number) => {
     const item = cart.products[index]
 
@@ -159,6 +178,7 @@ export function ShoppingCartProvider({ children }: ShoppingCartProviderProps) {
   return (
     <ShoppingCartContext.Provider
       value={{
+        checkout,
         images,
         cart,
         isOpen,

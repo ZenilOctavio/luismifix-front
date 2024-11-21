@@ -6,7 +6,18 @@ import { Button } from "@/components/ui/button"
 
 export function ShoppingCartContent() {
 
-  const { cart, decrementItemQuantity, incrementItemQuantity, removeFromCart, images } = useContext(ShoppingCartContext)
+  const {
+    cart,
+    decrementItemQuantity,
+    incrementItemQuantity,
+    removeFromCart,
+    images,
+    checkout
+  } = useContext(ShoppingCartContext)
+
+  const handleBuy = () => {
+    checkout()
+  }
 
   return (
     <main className="h-full flex flex-col gap-4 pb-10">
@@ -39,7 +50,7 @@ export function ShoppingCartContent() {
         <section >
           <span className="text-2xl">Total: <strong>{cart.totalAmount.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' })}</strong></span>
         </section>
-        <Button className="w-full">Comprar</Button>
+        <Button className="w-full" onClick={handleBuy}>Comprar</Button>
       </footer>
     </main>
   )

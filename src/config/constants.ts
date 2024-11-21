@@ -70,7 +70,9 @@ export const API_ADD_TO_CART_PATHNAME = API_HISTORY_ORDERS_PATHNAME + `/add`
 export const API_REMOVE_FROM_CART_PATHNAME = API_HISTORY_ORDERS_PATHNAME + `/remove`
 export const API_UPDATE_CART_PATHNAME = API_HISTORY_ORDERS_PATHNAME + `/update`
 export const API_TOTAL_CART_PATHNAME = API_HISTORY_ORDERS_PATHNAME + `/total/:userId`
+export const API_CHECKOUT_SESSION_PATHNAME = API_HISTORY_ORDERS_PATHNAME + '/create-checkout-session'
 
+export const STRIPE_KEY = 'pk_test_51QNTyRL0VegdkkPmuzI6vWvEHS5vN3EFeY8caut8WXHT0x9K8K8ZWM1iC7U4cWOOfw0pKm4GeOwibi1raQ0EnsNc00bKPMEeae'
 
 console.log('isDev: ', import.meta.env.DEV)
 console.log('mode: ', import.meta.env.MODE)
