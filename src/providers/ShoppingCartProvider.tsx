@@ -47,6 +47,11 @@ const initialItems: Item[] = []
 
 const SHOPPING_CART_STORAGE_KEY = "shopping-cart"
 
+/**
+ * Provides shopping cart context to the application.
+ * @param children - React children to render within the provider.
+ * @returns - A ShoppingCartProvider component.
+ */
 
 export function ShoppingCartProvider({ children }: ShoppingCartProviderProps) {
 

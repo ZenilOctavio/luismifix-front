@@ -7,7 +7,13 @@ import { getUserById, getUserByUsername } from "@/services/users/getUser";
 import { ErrorResponse } from "@/types/ErrorResponse";
 import { AxiosError } from "axios";
 
-function useUsers(){
+/**
+ * A hook that provides functionalities for managing users, including fetching, creating, and searching users.
+ * It uses React's useState and useEffect hooks, along with custom services for interacting with the backend API.
+ * @returns An object containing functions and state variables for managing users.
+ */
+
+function useUsers() {
     const [users, setUsers] = useState<Array<User> | Array<never>>([])
     const [error, setError] = useState('')
 
@@ -21,7 +27,7 @@ function useUsers(){
     }, [])
 
     const getUser = async (by: 'id' | 'username', value: string) => {
-        if (by === 'id'){
+        if (by === 'id') {
             const user = await getUserById(value)
             return user
         }
@@ -30,31 +36,31 @@ function useUsers(){
             return user
         }
     }
-    
+
     const registerNewUser = async (newUser: RegisterUser) => {
-        try{
+        try {
             await registerUser(newUser)
             const newUserCreated = await getUser('username', newUser.username)
-            
+
             const newUsers = [...users]
             newUsers.push(newUserCreated!)
             setUsers(newUsers)
-            console.log('Nuevos usuarios',newUsers)
+            console.log('Nuevos usuarios', newUsers)
             setError('')
-            
+
             return newUserCreated
         }
-        catch(err){
+        catch (err) {
             const axiosError = err as AxiosError
             const errorMessage = axiosError.response?.data as ErrorResponse
             setError(errorMessage.message)
-            
-            return 
+
+            return
         }
     }
 
 
-    return {users, refreshUsers, getUser, registerNewUser, error}
+    return { users, refreshUsers, getUser, registerNewUser, error }
 }
 
 export default useUsers

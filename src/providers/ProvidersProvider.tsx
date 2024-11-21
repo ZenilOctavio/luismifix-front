@@ -16,15 +16,21 @@ export const useProvidersContext = (): ProvidersContextType => {
     if (!context) {
         throw new Error('useProvidersContext must be used within an ProvidersProvider')
     }
-    return context 
+    return context
 }
 
-export const ProvidersProvider = ({children}: {children: any}) => {
+/**
+ * Provides provider context to the application.
+ * @param children - React children to render within the provider.
+ * @returns - A ProvidersProvider component.
+ */
+
+export const ProvidersProvider = ({ children }: { children: any }) => {
     const [providers, setProviders] = useState<Provider[]>([])
     const [typesProviders, setTypesProviders] = useState<TypeProvider[]>([])
 
     return (
-        <ProvidersContext.Provider value={{providers, setProviders, typesProviders, setTypesProviders}}>
+        <ProvidersContext.Provider value={{ providers, setProviders, typesProviders, setTypesProviders }}>
             {children}
         </ProvidersContext.Provider>
     )

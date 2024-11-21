@@ -21,7 +21,13 @@ import {
 } from "@/services/purchases/putPurchases";
 import { CreationPurchase, Purchase } from "@/types/purchases/Purchase";
 import { Provider } from "@/types/providers/Provider";
-
+/**
+ * A hook that provides functionalities for managing products, including fetching, creating, updating, enabling, disabling, and searching products.
+ * It also manages product types and purchases related to products.
+ * The hook uses React's useState and useEffect hooks, along with custom services for interacting with the backend API.
+ * It leverages React Query for efficient data fetching and caching.
+ * @returns An object containing functions and state variables for managing products, product types, and purchases.
+ */
 export default function useProducts() {
 
     let products: Product[] = []
