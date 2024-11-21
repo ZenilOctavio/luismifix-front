@@ -9,6 +9,10 @@ import { getImageService } from "@/services/images/getImageService";
 import { useEffect, useState } from "react";
 import { loadImageFromBuffer } from "@/lib/loadImageFromBuffer";
 import { CATEGORIES_PAGE_PATHNAME, PRODUCT_PAGE_PATHNAME } from "@/config/constants";
+import grabPhoneImage from "../../assets/home/categories/grab-phone.jpg"
+import controllersImage from "../../assets/home/categories/controllers.jpg"
+import headphonesImage from "../../assets/home/categories/headphones.jpg"
+import smartwatchImage from "../../assets/home/categories/smartwatch.jpg"
 
 export function EcommerceHome() {
 
@@ -41,7 +45,7 @@ export function EcommerceHome() {
               <CategoryCard
                 categoryName="Celulares"
                 pitch="Encuentra tu celular perfecto"
-                image="../../../public/home/categories/grab-phone.jpg"
+                image={grabPhoneImage}
               />
             </Link>
           </li>
@@ -50,7 +54,7 @@ export function EcommerceHome() {
               <CategoryCard
                 categoryName="Consolas"
                 pitch="Descubre soluciones ideales para tu próxima consola"
-                image="../../../public/home/categories/controllers.jpg"
+                image={controllersImage}
               />
             </Link>
           </li>
@@ -59,7 +63,7 @@ export function EcommerceHome() {
               <CategoryCard
                 categoryName="Auriculares"
                 pitch="Escucha la diferencia"
-                image="../../../public/home/categories/headphones.jpg"
+                image={headphonesImage}
               />
             </Link>
           </li>
@@ -68,7 +72,7 @@ export function EcommerceHome() {
               <CategoryCard
                 categoryName="Relojes inteligentes"
                 pitch="Experimenta la tecnología"
-                image="../../../public/home/categories/smartwatch.jpg"
+                image={smartwatchImage}
               />
             </Link>
           </li>
@@ -92,29 +96,29 @@ export function EcommerceHome() {
           </li>
           {/* <li className="basis-80 h-full hover:scale-[1.01] transition-transform">
             <ProductCard
-              imageUrl="../../../public/home/top-10/ps4-controller.webp"
+              imageUrl="../../assets/home/top-10/ps4-controller.webp"
               name="Playstation Controller DualSense"
               category="Consolas"
               price={223}
             />
           </li>
           <li className="basis-80 h-full hover:scale-[1.01] transition-transform">
-            <ProductCard imageUrl="../../../public/home/top-10/audifonos.webp" name="Anker Life 2 Neo" category="Auriculares" price={123} />
+            <ProductCard imageUrl="../../assets/home/top-10/audifonos.webp" name="Anker Life 2 Neo" category="Auriculares" price={123} />
           </li>
           <li className="basis-80 h-full hover:scale-[1.01] transition-transform">
-            <ProductCard imageUrl="../../../public/home/top-10/macbook.webp" name="Macbook Air 13inch M1 Chip 256GB" category="Laptops" price={335} />
+            <ProductCard imageUrl="../../assets/home/top-10/macbook.webp" name="Macbook Air 13inch M1 Chip 256GB" category="Laptops" price={335} />
           </li>
           <li className="basis-80 h-full hover:scale-[1.01] transition-transform">
-            <ProductCard imageUrl="../../../public/home/top-10/jbl-bocina.webp" name="JBL GO 3" category="Bocinas" price={334} />
+            <ProductCard imageUrl="../../assets/home/top-10/jbl-bocina.webp" name="JBL GO 3" category="Bocinas" price={334} />
           </li>
           <li className="basis-80 h-full hover:scale-[1.01] transition-transform">
-            <ProductCard imageUrl="../../../public/home/top-10/mouse.webp" name="Logitec M190 Wireless Mouse" category="Mouse" price={229} />
+            <ProductCard imageUrl="../../assets/home/top-10/mouse.webp" name="Logitec M190 Wireless Mouse" category="Mouse" price={229} />
           </li>
           <li className="basis-80 h-full hover:scale-[1.01] transition-transform">
-            <ProductCard imageUrl="../../../public/home/top-10/pixel.webp" name="Google Pixel 8 Pro 128GB" category="Celulares" price={338} />
+            <ProductCard imageUrl="../../assets/home/top-10/pixel.webp" name="Google Pixel 8 Pro 128GB" category="Celulares" price={338} />
           </li>
           <li className="basis-80 h-full hover:scale-[1.01] transition-transform">
-            <ProductCard imageUrl="../../../public/home/top-10/bocina-kardon.webp" name="Kardon Luna" category="Bocina" price={338} />
+            <ProductCard imageUrl="../../assets/home/top-10/bocina-kardon.webp" name="Kardon Luna" category="Bocina" price={338} />
           </li> */}
 
           {
@@ -122,7 +126,7 @@ export function EcommerceHome() {
               return (
                 <li key={product._id} className="basis-80 h-full hover:scale-[1.01] transition-transform">
                   <Link to={PRODUCT_PAGE_PATHNAME.replace(':id', product._id)}>
-                    <ProductCard imageUrl={imagesUrls[product._id] || "../../../public/home/top-10/bocina-kardon.webp"} name={product.nameProduct} category={product.idTypeProduct.nameTypeProduct} price={product.priceProduct} />
+                    <ProductCard imageUrl={imagesUrls[product._id] || "../../assets/home/top-10/bocina-kardon.webp"} name={product.nameProduct} category={product.idTypeProduct.nameTypeProduct} price={product.priceProduct} />
                   </Link>
                 </li>
               )

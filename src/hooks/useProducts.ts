@@ -9,26 +9,26 @@ import { updateProduct as updateProductService, disableProduct as disableProduct
 
 import { postPurchase as createPurchaseService } from "@/services/purchases/postPurchases";
 
-import { 
-    getPurchasesForProduct, 
-    getPurchasesForProvider 
+import {
+    getPurchasesForProduct,
+    getPurchasesForProvider
 } from "@/services/purchases/getPurchases";
 
-import { 
-    updatePurchase as updatePurchaseService, 
-    enablePurchase as enablePurchaseService ,
-    disablePurchase as disablePurchaseService 
+import {
+    updatePurchase as updatePurchaseService,
+    enablePurchase as enablePurchaseService,
+    disablePurchase as disablePurchaseService
 } from "@/services/purchases/putPurchases";
 import { CreationPurchase, Purchase } from "@/types/purchases/Purchase";
 import { Provider } from "@/types/providers/Provider";
 
-export default function useProducts(){
+export default function useProducts() {
 
     let products: Product[] = []
-    let setProducts: Dispatch<Product[]> = () => {}
+    let setProducts: Dispatch<Product[]> = () => { }
 
     let productTypes: ProductType[] = []
-    let setProductTypes: Dispatch<ProductType[]> = () => {}
+    let setProductTypes: Dispatch<ProductType[]> = () => { }
 
     let purchasesForProducts: Record<string, Purchase[]>
     let setPurchasesForProducts: Dispatch<Record<string, Purchase[]>>
@@ -41,7 +41,7 @@ export default function useProducts(){
 
         const newProducts = await getProducts()
         setProducts(newProducts)
-        
+
         setIsLoading(false)
 
         return newProducts
@@ -49,10 +49,10 @@ export default function useProducts(){
 
     const refreshProductTypes = async () => {
         setIsLoading(true)
-        
+
         const newProductTypes = await getTypesProduct()
         setProductTypes(newProductTypes)
-    
+
         setIsLoading(false)
     }
 
@@ -61,8 +61,8 @@ export default function useProducts(){
         let product: Product
 
         if (field == "id") product = await getProductById(value)
-        else  product = (await getProductByName(value))[0]
-    
+        else product = (await getProductByName(value))[0]
+
         setIsLoading(false)
         return product
     }
@@ -74,7 +74,7 @@ export default function useProducts(){
 
         const newProductCreated = await getProduct('name', newProduct.nameProduct)
 
-        if(!newProductCreated) return undefined
+        if (!newProductCreated) return undefined
 
         setProducts([...products, newProductCreated])
 
@@ -91,7 +91,7 @@ export default function useProducts(){
 
         const newProductUpdated = await getProduct('name', newDataProduct.nameProduct)
 
-        if(!newProductUpdated) return undefined
+        if (!newProductUpdated) return undefined
 
         setIsLoading(false)
 
@@ -116,10 +116,10 @@ export default function useProducts(){
 
         setIsLoading(false)
     }
-    
+
     const searchPurchasesForProduct = async (product: Product | string) => {
         console.log('searching purchases for product')
-        
+
         setIsLoading(true)
         let productId
         if (typeof product == 'string')
@@ -127,8 +127,8 @@ export default function useProducts(){
         else
             productId = product._id
         const purchases = await getPurchasesForProduct(productId)
-    
-        const newPurchases = {...purchasesForProducts}
+
+        const newPurchases = { ...purchasesForProducts }
         newPurchases[productId] = purchases
 
         console.log(purchases)
@@ -145,7 +145,7 @@ export default function useProducts(){
 
         const purchases = await getPurchasesForProvider(provider._id)
 
-        const newPurchases = {...purchasesForProducts}
+        const newPurchases = { ...purchasesForProducts }
         newPurchases[provider._id] = purchases
 
         setPurchaseForProvider(newPurchases)
@@ -160,7 +160,7 @@ export default function useProducts(){
         await updatePurchaseService(purchase._id, newPurchaseData)
 
         console.log(purchase.idProduct)
-        
+
         searchPurchasesForProduct(purchase.idProduct)
         searchPurchasesForProvider(purchase.idProvider)
 
@@ -182,39 +182,40 @@ export default function useProducts(){
 
     const createPurchase = async (purchase: CreationPurchase) => {
         setIsLoading(true)
-        
+
         await createPurchaseService(purchase)
 
         const product = await getProduct('id', purchase.idProduct)
-        if(product){
+        if (product) {
             searchPurchasesForProduct(product)
         }
-        
+
         setIsLoading(false)
 
     }
 
 
-    try{
+    try {
         const context = useProductsContext()
-        if(Object.keys(context).length == 0) throw new Error('No ProductsContext reached')
+        if (Object.keys(context).length == 0) throw new Error('No ProductsContext reached')
+        if (!context) throw new Error('No ProductsContext reached')
 
-        if(context){
-            console.log('Using context')
-            products = context.products!
-            setProducts = context.setProducts!
-            productTypes = context.productTypes!
-            setProductTypes = context.setProductTypes!
-            purchasesForProducts = context.purchasesForProducts!
-            setPurchasesForProducts = context.setPurchasesForProducts!
-        }
+
+        console.log('Using context')
+        products = context.products!
+        setProducts = context.setProducts!
+        productTypes = context.productTypes!
+        setProductTypes = context.setProductTypes!
+        purchasesForProducts = context.purchasesForProducts!
+        setPurchasesForProducts = context.setPurchasesForProducts!
+
     }
-    catch(err){
+    catch (err) {
         console.log(err, 'Using independent state')
         const state = useState<Product[]>([])
         products = state[0]
         setProducts = state[1]
-        
+
         const typesState = useState<ProductType[]>([])
         productTypes = typesState[0]
         setProductTypes = typesState[1]

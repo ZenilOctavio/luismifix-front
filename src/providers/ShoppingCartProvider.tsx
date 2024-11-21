@@ -6,6 +6,7 @@ import { CartServiceResponse } from "@/types/cart/CartServiceResponse"
 import { getImageService } from "@/services/images/getImageService"
 import { loadImageFromBuffer } from "@/lib/loadImageFromBuffer"
 import { updateCartService } from "@/services/cart/updateCart"
+import { removeFromCartService } from "@/services/cart/removeFromCart"
 
 
 interface Item {
@@ -106,7 +107,14 @@ export function ShoppingCartProvider({ children }: ShoppingCartProviderProps) {
 
 
   const removeFromCart = (index: number) => {
-    setItems(items.filter((_, itemIndex) => itemIndex !== index))
+    const item = cart.products[index]
+    removeFromCartService({
+      userId: cart.userId,
+      productId: item.productId._id
+    })
+      .then(() => {
+        refreshCart()
+      })
   }
 
   const clearCart = () => {

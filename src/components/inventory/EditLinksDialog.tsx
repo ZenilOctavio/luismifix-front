@@ -4,19 +4,19 @@ import useProducts from "@/hooks/useProducts";
 import { LinkItem } from "./LinkItem";
 import { Skeleton } from "../ui/skeleton";
 import { useForm } from "react-hook-form";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescription } from "../ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 import { z } from 'zod'
 import { zodResolver } from "@hookform/resolvers/zod";
 import useProviders from "@/hooks/useProviders";
 import { Input } from "../ui/input";
 import { Separator } from "../ui/separator";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
-import { moneyFormat, turnFormattedMoneyStringToNumber } from "@/lib/formating";
+import { turnFormattedMoneyStringToNumber } from "@/lib/formating";
 import { Button } from "../ui/button";
 import { CreationPurchase } from "@/types/purchases/Purchase";
 import { toast } from "../ui/use-toast";
 
-export function EditLinksDialog({product, open, onOpenChange}:{product: Product, open: boolean, onOpenChange: Function}){
+export function EditLinksDialog({ product, open, onOpenChange }: { product: Product, open: boolean, onOpenChange: Function }) {
 
     const { purchasesForProducts, isLoading, createPurchase } = useProducts()
     const { providers } = useProviders()
@@ -34,7 +34,7 @@ export function EditLinksDialog({product, open, onOpenChange}:{product: Product,
 
     const form = useForm<z.infer<typeof createPurchaseSchema>>({
         defaultValues: {
-            idProvider: (providers && providers.length)? providers[0]._id : '',
+            idProvider: (providers && providers.length) ? providers[0]._id : '',
             linkProvider: '',
             priceProduct: '$0.00'
         },
@@ -50,18 +50,18 @@ export function EditLinksDialog({product, open, onOpenChange}:{product: Product,
         }
 
         createPurchase(createPurchaseData)
-        .then(() => {
-            toast({
-                title: 'Opcion de compra añadida'
+            .then(() => {
+                toast({
+                    title: 'Opcion de compra añadida'
+                })
+                form.reset()
             })
-            form.reset()
-        })
-        .catch(() => {
-            toast({
-                title: 'Error al añadir opcion de compra',
-                variant: 'destructive'
+            .catch(() => {
+                toast({
+                    title: 'Error al añadir opcion de compra',
+                    variant: 'destructive'
+                })
             })
-        })
 
     }
 
@@ -74,7 +74,7 @@ export function EditLinksDialog({product, open, onOpenChange}:{product: Product,
                 </DialogHeader>
                 <section>
                     <Form {...form}>
-                        <form 
+                        <form
                             onSubmit={form.handleSubmit(handleSubmitPurchase)}
                             className="flex flex-col gap-4"
                         >
@@ -87,45 +87,45 @@ export function EditLinksDialog({product, open, onOpenChange}:{product: Product,
                                         control={form.control}
                                         name="idProvider"
                                         render={
-                                            ({field}) => {
+                                            ({ field }) => {
                                                 return (
                                                     <FormItem className="w-1/2">
                                                         <FormLabel>Proveedor</FormLabel>
                                                         <FormControl>
-                                                        <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                                            <SelectTrigger>
-                                                                <SelectValue placeholder="Selecciona a un proveedor"/>
-                                                            </SelectTrigger>
-                                                            <SelectContent>
-                                                                {
-                                                                    providers &&
-                                                                    providers.map((provider) => {
-                                                                        return (
-                                                                            <SelectItem value={provider._id}>{provider.nameProvider}</SelectItem>
-                                                                        )
-                                                                    })
-                                                                }
-                                                            </SelectContent>
-                                                        </Select>
+                                                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                                <SelectTrigger>
+                                                                    <SelectValue placeholder="Selecciona a un proveedor" />
+                                                                </SelectTrigger>
+                                                                <SelectContent>
+                                                                    {
+                                                                        providers &&
+                                                                        providers.map((provider) => {
+                                                                            return (
+                                                                                <SelectItem value={provider._id}>{provider.nameProvider}</SelectItem>
+                                                                            )
+                                                                        })
+                                                                    }
+                                                                </SelectContent>
+                                                            </Select>
                                                         </FormControl>
                                                     </FormItem>
                                                 )
                                             }
                                         }
                                     />
-                                  
+
                                     <FormField
                                         control={form.control}
                                         name="priceProduct"
                                         render={
-                                            ({field}) => {
+                                            ({ field }) => {
                                                 return (
                                                     <FormItem>
                                                         <FormLabel>Precio</FormLabel>
                                                         <FormControl>
-                                                            <Input {...field}/>
+                                                            <Input {...field} />
                                                         </FormControl>
-                                                        <FormMessage/>
+                                                        <FormMessage />
                                                     </FormItem>
                                                 )
                                             }
@@ -137,14 +137,14 @@ export function EditLinksDialog({product, open, onOpenChange}:{product: Product,
                                         control={form.control}
                                         name="linkProvider"
                                         render={
-                                            ({field}) => {
+                                            ({ field }) => {
                                                 return (
                                                     <FormItem>
                                                         <FormLabel>Link</FormLabel>
                                                         <FormControl>
-                                                            <Input placeholder="https://link-example.com" {...field}/>
+                                                            <Input placeholder="https://link-example.com" {...field} />
                                                         </FormControl>
-                                                        <FormMessage/>
+                                                        <FormMessage />
                                                     </FormItem>
                                                 )
                                             }
@@ -156,23 +156,23 @@ export function EditLinksDialog({product, open, onOpenChange}:{product: Product,
                         </form>
                     </Form>
                 </section>
-                
-                <Separator className="mt-4"/>
-                
+
+                <Separator className="mt-4" />
+
                 <section>
                     <ul className="flex gap-2 flex-col">
                         {
                             isLoading && (
                                 <>
                                     <li className="flex gap-2">
-                                        <Skeleton className="w-72 h-10"/>
-                                        <Skeleton className="w-16 h-10 ml-auto"/>
-                                        <Skeleton className="w-16 h-10"/>
+                                        <Skeleton className="w-72 h-10" />
+                                        <Skeleton className="w-16 h-10 ml-auto" />
+                                        <Skeleton className="w-16 h-10" />
                                     </li>
                                     <li className="flex gap-2">
-                                        <Skeleton className="w-72 h-10"/>
-                                        <Skeleton className="w-16 h-10 ml-auto"/>
-                                        <Skeleton className="w-16 h-10"/>
+                                        <Skeleton className="w-72 h-10" />
+                                        <Skeleton className="w-16 h-10 ml-auto" />
+                                        <Skeleton className="w-16 h-10" />
                                     </li>
                                 </>
                             )
@@ -183,12 +183,12 @@ export function EditLinksDialog({product, open, onOpenChange}:{product: Product,
                             purchasesForProducts[product._id]
                             &&
                             purchasesForProducts[product._id]
-                            .filter(purchase => purchase.statusPurchase)
-                            .map(purchase => {
-                                return (
-                                    <LinkItem purchase={purchase} key={purchase._id}/>
-                                )
-                            })
+                                .filter(purchase => purchase.statusPurchase)
+                                .map(purchase => {
+                                    return (
+                                        <LinkItem purchase={purchase} key={purchase._id} />
+                                    )
+                                })
                         }
                     </ul>
 

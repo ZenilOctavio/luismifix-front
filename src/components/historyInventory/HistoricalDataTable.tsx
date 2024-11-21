@@ -13,20 +13,20 @@ import {
     getPaginationRowModel,
     getSortedRowModel,
     useReactTable,
-    SortingFn
-  } from "@tanstack/react-table"
+
+} from "@tanstack/react-table"
 import { Avatar, AvatarFallback } from "../ui/avatar"
 
-export function HistoricalDataTable(){
+export function HistoricalDataTable() {
 
-    const { historicalData, isFetchingHistoricalData } = useProductsHistoricalData()
+    const { historicalData } = useProductsHistoricalData()
 
-    if(!historicalData) return <></>
+    if (!historicalData) return <></>
 
     const [sorting, setSorting] = useState<SortingState>([])
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
     const [columnVisibility, setColumnVisibility] =
-      useState<VisibilityState>({})
+        useState<VisibilityState>({})
     const [rowSelection, setRowSelection] = useState({})
 
 
@@ -42,10 +42,10 @@ export function HistoricalDataTable(){
                 console.log(historical)
                 return historical.idUser.username
             },
-            cell: ({cell}) => {
+            cell: ({ cell }) => {
 
                 const username = cell.getValue() as string
-                const initials = username.slice(0,2).toUpperCase()
+                const initials = username.slice(0, 2).toUpperCase()
                 return (
                     <div className="flex gap-2 items-center">
                         <figure>
@@ -66,7 +66,7 @@ export function HistoricalDataTable(){
                 return <strong>Producto</strong>
             },
             accessorFn: (historical) => historical.idProduct.nameProduct,
-            cell: ({cell}) => {
+            cell: ({ cell }) => {
                 return <span>{cell.getValue() as string}</span>
             }
         },
@@ -80,10 +80,10 @@ export function HistoricalDataTable(){
                     <strong>Tipo de movimiento</strong>
                 )
             },
-            cell: ({cell}) => {
+            cell: ({ cell }) => {
                 const movimiento = cell.getValue() as string
                 const formattedMovimiento = movimiento.charAt(0).toUpperCase() + movimiento.slice(1, movimiento.length).toLowerCase()
-                
+
                 return (
                     <span>{formattedMovimiento}</span>
                 )
@@ -95,11 +95,11 @@ export function HistoricalDataTable(){
             header: () => {
                 return <strong>Fecha</strong>
             },
-            cell: ({cell}) => {
+            cell: ({ cell }) => {
                 const dateString = cell.getValue() as string
                 const date = new Date(dateString)
 
-                const formattedDate = date.toLocaleTimeString('es-MX', {month: 'short', year: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true})
+                const formattedDate = date.toLocaleTimeString('es-MX', { month: 'short', year: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true })
 
                 return (
                     <span>{formattedDate}</span>
@@ -120,71 +120,71 @@ export function HistoricalDataTable(){
         onColumnVisibilityChange: setColumnVisibility,
         onRowSelectionChange: setRowSelection,
         state: {
-          sorting,
-          columnFilters,
-          columnVisibility,
-          rowSelection,
+            sorting,
+            columnFilters,
+            columnVisibility,
+            rowSelection,
         },
-      })
+    })
 
     return (
         <>
-        <Table>
-                    <TableHeader>
-                        {table.getHeaderGroups().map((headerGroup) => (
+            <Table>
+                <TableHeader>
+                    {table.getHeaderGroups().map((headerGroup) => (
                         <TableRow key={headerGroup.id}>
                             {headerGroup.headers.map((header) => {
-                            return (
-                                <TableHead key={header.id}>
-                                {header.isPlaceholder
-                                    ? null
-                                    : flexRender(
-                                        header.column.columnDef.header,
-                                        header.getContext()
-                                    )}
-                                </TableHead>
-                            )
+                                return (
+                                    <TableHead key={header.id}>
+                                        {header.isPlaceholder
+                                            ? null
+                                            : flexRender(
+                                                header.column.columnDef.header,
+                                                header.getContext()
+                                            )}
+                                    </TableHead>
+                                )
                             })}
                         </TableRow>
-                        ))}
-                    </TableHeader>
-    
-                    <TableBody>
-                        {table.getRowModel().rows?.length ? (
+                    ))}
+                </TableHeader>
+
+                <TableBody>
+                    {table.getRowModel().rows?.length ? (
                         table.getRowModel().rows.map((row) => (
                             <TableRow
                                 key={row.id}
                                 data-state={row.getIsSelected() && "selected"}
 
                             >
-                            {row.getVisibleCells().map((cell) => (
-                                <TableCell 
-                                    key={cell.id}
-                                    onClick={() => {
-                                        console.log('cellId: ',cell.id)
-                                        if (cell.id != '0_Editar') row.toggleSelected()
-                                    }}
-                                >
-                                {flexRender(
-                                    cell.column.columnDef.cell,
-                                    cell.getContext()
-                                )}
-                                </TableCell>
-                            ))}
+                                {row.getVisibleCells().map((cell) => (
+                                    <TableCell
+                                        key={cell.id}
+                                        onClick={() => {
+                                            console.log('cellId: ', cell.id)
+                                            if (cell.id != '0_Editar') row.toggleSelected()
+                                        }}
+                                    >
+                                        {flexRender(
+                                            cell.column.columnDef.cell,
+                                            cell.getContext()
+                                        )}
+                                    </TableCell>
+                                ))}
                             </TableRow>
                         ))
-                        ) : (
+                    ) : (
                         <TableRow>
                             <TableCell
-                            colSpan={historicalData.length}
-                            className="h-24 text-center"
+                                colSpan={historicalData.length}
+                                className="h-24 text-center"
                             >
-                            No results.
+                                No results.
                             </TableCell>
                         </TableRow>
-                        )}
-                    </TableBody>
-                </Table>
+                    )}
+                </TableBody>
+            </Table>
         </>
     )
 }

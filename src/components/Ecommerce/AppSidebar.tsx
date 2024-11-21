@@ -1,4 +1,5 @@
 import { Calendar, Home, Inbox, Search, Settings } from "lucide-react"
+import logoLuismifix from "../../assets/logo_luismifix.png"
 
 import {
   Sidebar,
@@ -48,7 +49,7 @@ export function AppSidebar() {
         <SidebarGroup>
           <div className="flex items-center gap-2">
             <figure className="w-10 h-10 md:w-20 md:h-20 rounded-full overflow-hidden">
-              <img src="../../../public/logo_luismifix.png" alt="logo" className="w-full h-full object-cover" />
+              <img src={logoLuismifix} alt="logo" className="w-full h-full object-cover" />
             </figure>
             <h1 className="text-xl font-bold">Luismifix</h1>
           </div>
