@@ -27,7 +27,6 @@ export function AddProductDialog() {
         defaultValues: {
             nameProduct: "",
             description: "",
-            link: "",
             units: 0,
             price: 0,
             typeProduct: "0"
@@ -170,7 +169,7 @@ export function AddProductDialog() {
                                                 {...numbersMiddleware(1_000_000, false, true)}
                                                 {...field}
                                                 maxLength={7}
-                                                max={7}
+
                                             />
                                         </FormControl>
                                         <FormMessage />

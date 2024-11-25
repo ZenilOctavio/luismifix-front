@@ -15,7 +15,7 @@ import { contactEvaluatorResolver } from "@/lib/contactEvaluator";
 
 
 
-export default function CreateContactDialog({ provider }: { provider?: Provider | undefined }) {
+export default function CreateContactDialog({ provider, onCreateContact }: { provider: Provider, onCreateContact: () => void }) {
 
     const { typeContacts, createProviderContact, refreshProvidersContacts } = useProviders()
 
@@ -56,6 +56,7 @@ export default function CreateContactDialog({ provider }: { provider?: Provider 
                 refreshProvidersContacts(provider)
 
                 form.reset()
+                onCreateContact()
             })
         }
     }

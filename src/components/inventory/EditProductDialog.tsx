@@ -38,8 +38,15 @@ export default function EditProductDialog({ product, open, onOpenChange }: EditP
         mode: 'onChange'
     })
 
+    const isChanged = form.getValues('nameProduct') != product.nameProduct
+        || form.getValues('typeProduct') != product.idTypeProduct._id
+        || form.getValues('units') != product.amountProduct
+        || form.getValues('price') != product.priceProduct
+        || form.getValues('description') != product.descriptionProduct
 
     const handleSubmitForm = async (data: z.infer<typeof ProductFormSchema>) => {
+        console.log(data)
+
         try {
             console.log(data)
             const newProductData: CreationProduct = {
@@ -166,7 +173,7 @@ export default function EditProductDialog({ product, open, onOpenChange }: EditP
                                 </FormItem>
                             ))}
                         />
-                        <Button type="submit">Guardar cambios</Button>
+                        <Button type="submit" disabled={!isChanged}>Guardar cambios</Button>
                     </form>
                 </Form>
             </DialogContent>

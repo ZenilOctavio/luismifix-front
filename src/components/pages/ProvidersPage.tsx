@@ -10,7 +10,7 @@ import CreateProviderDialog from "../providers/CreateProviderDialog"
 import { Button } from "../ui/button"
 import { CirclePlus } from "lucide-react"
 
-export default function ProvidersPage(){
+export default function ProvidersPage() {
 
     const [providerEditing, setProviderEditing] = useState<Provider | null>(null)
     const [providerCreating, setProviderCreating] = useState<boolean>(false)
@@ -27,34 +27,37 @@ export default function ProvidersPage(){
         setProviderContactsShowing(provider)
     }
 
-    const editDialog = <EditProviderDialog open={providerEditing? true : false} provider={providerEditing!} onOpenChange={closeProviderEdition}/>
+    const editDialog = <EditProviderDialog open={providerEditing ? true : false} provider={providerEditing!} onOpenChange={closeProviderEdition} />
 
 
 
     return (
         <ProvidersProvider>
             <div className="w-screen min-h-screen">
-                <NavBar/>
+                <NavBar />
                 <main className="p-4 flex flex-col md:grid grid-flow-col grid-cols-4 grid-rows-5 min-h-screen gap-4">
                     <section className="border rounded p-3 col-start-1 col-end-4 row-start-1 row-end-3">
-                        <CreateProviderDialog open={providerCreating} onOpenChange={() => {setProviderCreating(!providerCreating)}}/>
-                        <Button 
-                            variant="outline" 
+                        <CreateProviderDialog open={providerCreating} onOpenChange={() => { setProviderCreating(!providerCreating) }} />
+                        <Button
+                            variant="outline"
                             className="rounded flex gap-4"
                             onClick={() => setProviderCreating(!providerCreating)}
                         >
-                            <CirclePlus/>
+                            <CirclePlus />
                             <span>Crear proveedor</span>
                         </Button>
-                        <ProvidersTable onEditProvider={handleProviderEdition} onProviderRowSelection={handleProviderRowSelection}/>
+                        <ProvidersTable onEditProvider={handleProviderEdition} onProviderRowSelection={handleProviderRowSelection} />
                         {providerEditing && editDialog}
                     </section>
-                        <div className="col-start-4 border rounded p-2 flex items-center justify-center">
-                            <ProviderContactsList provider={providerContactsShowing}/>
-                        </div>
+                    <div className="col-start-4 border rounded p-2 flex items-center justify-center">
+                        {
+                            providerContactsShowing &&
+                            <ProviderContactsList provider={providerContactsShowing} />
+                        }
+                    </div>
 
                 </main>
-            <Toaster/>
+                <Toaster />
             </div>
         </ProvidersProvider>
     )

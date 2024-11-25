@@ -7,7 +7,7 @@ import { toast } from "../ui/use-toast"
 import CreateContactDialog from "./CreateContactDialog"
 import { EditContactDialog } from "./EditContactDialog"
 
-export function ProviderContactsList({ provider = null }: { provider: Provider | null }) {
+export function ProviderContactsList({ provider }: { provider: Provider }) {
 
     const { providersContacts, refreshProvidersContacts } = useProviders()
     const [editingContact, setEditingContact] = useState<ProvidersContact | null>(null)
@@ -40,6 +40,11 @@ export function ProviderContactsList({ provider = null }: { provider: Provider |
 
     const handleCloseEditContact = () => {
         setEditingContact(null)
+        refreshProvidersContacts(provider)
+    }
+
+    const handleCreateContact = () => {
+        refreshProvidersContacts(provider)
     }
 
     return (
@@ -54,7 +59,7 @@ export function ProviderContactsList({ provider = null }: { provider: Provider |
                                     <h2 className="text-lg font-semibold">Contactos</h2>
                                     <p>{provider.nameProvider}</p>
                                 </div>
-                                <CreateContactDialog provider={provider} />
+                                <CreateContactDialog onCreateContact={handleCreateContact} provider={provider} />
                             </header>
                             <ul className="flex flex-col gap-4 mt-5 items-stretch w-full">
                                 {
@@ -109,17 +114,20 @@ export function ProviderContactsList({ provider = null }: { provider: Provider |
                         <div className=" self-start flex flex-col items-center gap-8">
                             <header className="flex items-center gap-10">
                                 <h2 className="text-lg font-semibold">Contactos</h2>
-                                <CreateContactDialog provider={provider} />
+                                <CreateContactDialog onCreateContact={handleCreateContact} provider={provider} />
                             </header>
                             <p className="opacity-80">No hay contactos para {provider.nameProvider}</p>
                         </div>
                 }
 
             </div>
-            <EditContactDialog
-                contact={editingContact}
-                onCloseEditing={handleCloseEditContact}
-            />
+            {
+                editingContact &&
+                <EditContactDialog
+                    contact={editingContact}
+                    onCloseEditing={handleCloseEditContact}
+                />
+            }
         </>
     )
 }

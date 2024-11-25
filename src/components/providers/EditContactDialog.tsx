@@ -12,9 +12,9 @@ import { Button } from "../ui/button";
 import { toast } from "../ui/use-toast";
 import { contactEvaluatorResolver } from "@/lib/contactEvaluator";
 
-export function EditContactDialog({ contact, onCloseEditing }: { contact: ProvidersContact | null, onCloseEditing: (bool: boolean) => void }) {
+export function EditContactDialog({ contact, onCloseEditing }: { contact: ProvidersContact, onCloseEditing: (bool: boolean) => void }) {
 
-    if (!contact || !onCloseEditing) return <></>
+
     const isOpen = contact ? true : false;
 
     const { typeContacts, updateContact, disableProviderContact } = useProviders()

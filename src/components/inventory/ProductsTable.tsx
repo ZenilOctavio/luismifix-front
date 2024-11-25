@@ -380,7 +380,7 @@ export function ProductsTable({ onEditProduct, onEditLinks }: { onEditProduct?: 
 
             </div>
             <div className="flex justify-end p-2">
-                <span className="mr-auto text-sm">{table.getSelectedRowModel().rows.length} of {table.getRowCount()} row(s) selected</span>
+                {/* <span className="mr-auto text-sm">{table.getSelectedRowModel().rows.length} of {table.getRowCount()} row(s) selected</span> */}
                 <div className="flex items-center gap-4">
                     <label className="text-sm font-semibold ">Rows per page</label>
                     <Input type="number" className="w-20" value={table.getState().pagination.pageSize} onChange={(e) => { table.setPageSize(Number(e.target.value)) }} />

@@ -15,10 +15,12 @@ export const getNumberSchema = (fieldName: string) => {
 }
 
 export const getPositiveNumberSchema = (fieldName: string) => {
-  return z.string()
-    .refine((val) => !val.includes('e'), {
-      message: "Caracter inválido",
-    })
+  return z.string().or(z.number())
+    .refine(
+      (val) => {
+        if (typeof val === 'number') return true
+        return !val.includes('e')
+      })
     .refine((val) => {
       const num = Number(val);
       return !isNaN(num);
@@ -36,8 +38,12 @@ export const getPositiveNumberSchema = (fieldName: string) => {
 }
 
 export const getPositiveIntegerNumberSchema = (fieldName: string) => {
-  return z.string()
-    .refine((val) => !val.includes('e'), {
+  return z.string().or(z.number())
+    .refine(
+      (val) => {
+        if (typeof val === 'number') return true
+        return !val.includes('e')
+      }, {
       message: "Caracter inválido",
     })
     .refine((val) => {
